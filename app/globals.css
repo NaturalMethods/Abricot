@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+:root {
+    --dark-orange: #D3590B;
+    --grey-600: #6B7280;
+    --grey-200: #E5E7EB;
+    --grey-950: #0F0F0F;
+    --white: #FFFFFF;
+    --light-orange: #FFE8D9;
+    --grey-400: #9CA3AF;
+    --grey-800: #1F1F1F;
+    --red: #EF4444;
+    --light-red: #FFE0E0;
+    --grey-100: #F3F4F6;
+    --grey-50: #F9FAFB;
+    --blue: #3B82F6;
+    --light-blue: #E0ECFF;
+    --green: #27AE60;
+    --light-green: #F1FFF7;
+    --warning-orange: #E08D00;
+    --light-warning-orange: #FFF0D7;
+    --black: #000000;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+.link{
+    text-decoration: none;
+}
+
+.inter14400UP{
+    font-family: 'Inter',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    /* Neutral/Grey 950 */
+    color: #0F0F0F;
+}
+.inter16400{
+    font-family: 'Inter',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+}
+.dark-orange{
+    color: var(--dark-orange);
+}
+.grey950{
+    color: var(--grey-950);
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+.align-center{
+    align-items: center;
+}
+.justify-center{
+    justify-content: center;
+}
+.justify-space-evenly{
+    justify-content: space-evenly;
+}
+.justify-space-between{
+    justify-content: space-between;
+}
