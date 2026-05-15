@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
 :root {
     --dark-orange: #D3590B;
@@ -33,7 +34,6 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 .content {
     flex: 1;
 }
@@ -42,6 +42,13 @@ body {
     text-decoration: none;
 }
 
+.inter12400{
+    font-family: 'Inter',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+}
 .inter14400UP{
     font-family: 'Inter',sans-serif;
     font-style: normal;
@@ -54,6 +61,15 @@ body {
     /* Neutral/Grey 950 */
     color: #0F0F0F;
 }
+.inter14400{
+    font-family: 'Inter',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.02em;
+
+}
 .inter16400{
     font-family: 'Inter',sans-serif;
     font-style: normal;
@@ -61,6 +77,14 @@ body {
     font-size: 16px;
     line-height: 19px;
 }
+.manrope40700{
+    font-family: 'Manrope',sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 55px;
+}
+
 .dark-orange{
     color: var(--dark-orange);
 }
@@ -88,3 +112,15 @@ body {
 .justify-space-between{
     justify-content: space-between;
 }
+
+.split-in-two{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 44fr 56fr;
+    background: var(--grey-50);
+    place-items: center;
+
+}
+
+

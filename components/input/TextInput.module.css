@@ -1,0 +1,24 @@
+.input-container{
+    gap: 7px;
+}
+
+.input-field{
+    padding: 19px 17px;
+    gap: 10px;
+
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+}
+.input-field::placeholder{
+
+    font-family: 'Inter',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    /* identique à la hauteur de la zone de texte */
+
+    /* Neutral/Grey 600 */
+    color: #6B7280;
+
+}
