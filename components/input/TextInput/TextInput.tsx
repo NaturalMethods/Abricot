@@ -5,13 +5,19 @@ interface TextInputProps {
     placeholder?: string
     type?: string
     width?: string
+    value?: string
+    onChange?: (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => void
 }
 
 export default function TextInput({
                                       label,
                                       placeholder = "",
                                       type = "text",
-                                      width = "300px"
+                                      width = "300px",
+                                      value,
+                                      onChange,
                                   }: TextInputProps) {
 
     return (
@@ -25,6 +31,8 @@ export default function TextInput({
                 className={`inter12400 ${styles["input-field"]}`}
                 type={type}
                 placeholder={placeholder}
+                value={value}
+                onChange={onChange}
             />
         </div>
     )

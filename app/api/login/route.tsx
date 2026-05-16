@@ -1,37 +1,42 @@
 import { NextResponse } from "next/server"
-import {apiRequest} from "@/app/api/api";
+import { apiRequest } from "@/app/api/api"
 
 export async function POST(req: Request) {
-    const body = await req.json()
 
+    const body = await req.json()
     const { email, password } = body
 
-    // Appel à ton backend externe
-    const res = apiRequest("/login", {
+    const res = await apiRequest("/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
     })
 
     const data = await res
 
-    // Gestion erreur login
     if (!data.success) {
         return NextResponse.json(
-            { error: "Identifiants invalides" },
+            {
+                success: false,
+                message: "Identifiants invalides",
+                error: data?.error ?? null,
+            },
             { status: 401 }
         )
     }
 
     const token = data.data.token
+    const user = data.data.user
 
-    // Réponse + cookie sécurisé
     const response = NextResponse.json({
-        user: data.data.user,
+        success: true,
+        data: {
+            user,
+        }
     })
 
     response.cookies.set("token", token, {
         httpOnly: true,
-        secure: true, // mets false en local si besoin
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         path: "/",
     })

@@ -18,3 +18,17 @@
 .conform{
     gap: 30px;
 }
+.forgotten-password{
+    text-decoration-line: underline;
+    color: var(--dark-orange);
+
+}
+.account{
+    gap: 10px;
+}
+.new-account{
+    text-decoration-line: underline;
+
+    color: var(--dark-orange);
+
+}

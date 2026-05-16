@@ -1,4 +1,4 @@
-const BASE_URL = "https://ton-backend.com"
+const BASE_URL = "http://localhost:8000"
 
 export async function apiRequest(
     path: string,

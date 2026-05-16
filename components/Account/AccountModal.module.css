@@ -1,0 +1,20 @@
+.account-modal-container{
+
+    gap: 25px;
+
+    width: 1215px;
+    height: 644px;
+
+    background: var(--white);
+    border: 1px solid var(--grey-200);
+    border-radius: 10px;
+
+}
+.account-modal-title{
+    width: 1097px;
+
+}
+.account-modal-form{
+    gap: 25px;
+
+}

@@ -1,11 +1,18 @@
 
 import styles from "./Header.module.css"
+import Image from "next/image"
 
 export default function Footer() {
     return (
         <footer className={`flex-row  justify-space-between ${styles.footer}`}>
-            <div className={`flex-row  justify-space-between ${styles.footerdiv} `}>
-                <img className={`${styles["logo-black"]}`} src="/Logo.svg" alt="Logo" width={101} />
+            <div className={`flex-row align-center justify-space-between ${styles.footerdiv} `}>
+                <Image
+                    className={styles["logo-black"]}
+                    src="/Logo.svg"
+                    alt="Logo"
+                    width={101}
+                    height={32}
+                />
                 <p className="inter16400">Abricot 2026</p>
             </div>
         </footer>
