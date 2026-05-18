@@ -5,20 +5,33 @@ import TextInput from "../../components/input/TextInput/TextInput"
 import Image from "next/image"
 import Button from "../../components/input/Button/Button"
 import Link from "next/link"
-import { useState } from "react"
+import {useState} from "react"
 import {useRouter} from "next/navigation";
+import {useUser} from "@/app/contexts/useUser";
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [hasLoginError, setHasLoginError] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const router = useRouter()
+
+    const { setUser } = useUser()
+
 
     async function handleLogin(
         e: React.FormEvent
     ) {
         e.preventDefault()
+
+        if (isLoading) {
+            return
+        }
+
+        setHasLoginError(false)
+        setIsLoading(true)
 
         try {
             const response = await fetch("/api/login", {
@@ -36,36 +49,27 @@ export default function LoginPage() {
 
             console.log("data", data)
 
-            // ❌ erreur HTTP (401, 500...)
+            // Wrong IDs, set error state and return nothing
             if (!response.ok) {
-                console.error("Erreur HTTP login")
+                setHasLoginError(true)
+                setIsLoading(false)
                 return
             }
 
-            // ❌ échec logique backend
-            if (!data.success) {
-                console.error("Login échoué :", data.message)
+            // Success login
+            const dataUser = data.data.user
 
-                // optionnel : afficher les détails de validation
-                if (data.details) {
-                    console.error("Détails :", data.details)
-                }
+            const [firstName, lastName] = dataUser.name.split(" ")
+            const mail = dataUser.email
 
-                return
-            }
-
-            // ✅ succès login
-            const token = data.data.token
-            const user = data.data.user
-
-            console.log("user connecté :", user)
-            console.log("token :", token)
+            setUser({firstName, lastName, mail})
 
             router.push("/dashboard")
             router.refresh()
 
         } catch (error) {
-            console.error("Erreur réseau :", error)
+            console.error("Network error :", error)
+            setIsLoading(false)
         }
     }
 
@@ -97,9 +101,10 @@ export default function LoginPage() {
                             type="email"
                             width="282px"
                             value={email}
-                            onChange={(e) =>
+                            hasError={hasLoginError}
+                            onChange={(e) => {
                                 setEmail(e.target.value)
-                            }
+                            }}
                         />
 
                         <TextInput
@@ -107,14 +112,16 @@ export default function LoginPage() {
                             type="password"
                             width="282px"
                             value={password}
-                            onChange={(e) =>
+                            hasError={hasLoginError}
+                            onChange={(e) => {
                                 setPassword(e.target.value)
-                            }
+                            }}
                         />
 
                         <Button
-                            text="Se connecter"
+                            text={isLoading ? "Connexion..." : "Se connecter"}
                             type="submit"
+                            disabled={isLoading}
                         />
 
                     </div>
@@ -122,6 +129,15 @@ export default function LoginPage() {
                     <p className={`inter14400 ${styles["forgotten-password"]}`}>
                         Mot de passe oublié?
                     </p>
+
+                    {hasLoginError && (
+                        <p
+                            className={`manrope18600 ${styles["login-error"]}`}
+                            role="alert"
+                        >
+                            Email ou mot de passe incorrect
+                        </p>
+                    )}
 
                 </div>
 

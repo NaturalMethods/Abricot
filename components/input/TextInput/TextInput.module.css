@@ -9,6 +9,13 @@
     border: 1px solid #E5E7EB;
     border-radius: 4px;
 }
+
+.input-error{
+    border-color: var(--red);
+    border-radius: 5px;
+    border-width: 2px;
+}
+
 .input-field::placeholder{
 
     font-family: 'Inter',sans-serif;
@@ -16,9 +23,17 @@
     font-weight: 400;
     font-size: 12px;
     line-height: 15px;
-    /* identique à la hauteur de la zone de texte */
 
-    /* Neutral/Grey 600 */
-    color: #6B7280;
+    color: var(--grey-600);
 
+}
+.input-field:focus{
+
+    border-color: var(--warning-orange);
+    border-width: 1.5px;
+
+}
+.input-field.input-error:focus{
+    border-color: var(--flashy-red);
+    border-width: 2px;
 }

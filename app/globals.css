@@ -10,6 +10,7 @@
     --light-orange: #FFE8D9;
     --grey-400: #9CA3AF;
     --grey-800: #1F1F1F;
+    --flashy-red: #DC0000;
     --red: #EF4444;
     --light-red: #FFE0E0;
     --grey-100: #F3F4F6;
@@ -149,9 +150,11 @@ body {
 
 }
 .error-section{
-
     height: 100vh;
+}
 
+input:focus{
+    outline: none;
 }
 
 

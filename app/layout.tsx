@@ -1,4 +1,5 @@
 import "./globals.css"
+import UserProvider from "@/app/contexts/UserProvider";
 
 export default function RootLayout({
                                        children,
@@ -8,7 +9,9 @@ export default function RootLayout({
     return (
         <html lang="fr">
         <body>
-        {children}
+            <UserProvider>
+                {children}
+            </UserProvider>
         </body>
         </html>
     )

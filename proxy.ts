@@ -25,7 +25,7 @@ export async function proxy(req: NextRequest) {
     } catch {
 
         const response = NextResponse.redirect(
-            new URL("/login", req.url)
+            new URL("/", req.url)
         )
 
         response.cookies.delete("token")

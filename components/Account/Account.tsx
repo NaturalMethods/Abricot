@@ -5,6 +5,7 @@ import TextInput from "@/components/input/TextInput/TextInput"
 import { useState } from "react"
 import Button from "@/components/input/Button/Button"
 import { useRouter } from "next/navigation"
+import {useUser} from "@/app/contexts/useUser";
 
 export default function AccountForm() {
 
@@ -14,6 +15,8 @@ export default function AccountForm() {
     const [prenom, setPrenom] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const { user } = useUser()
 
     async function handleNewAccountInfos(e: React.FormEvent) {
 
@@ -68,6 +71,7 @@ export default function AccountForm() {
                         type="text"
                         width="1097px"
                         value={nom}
+                        placeholder={user?.lastName}
                         onChange={(e) => setNom(e.target.value)}
                     />
 
@@ -76,6 +80,7 @@ export default function AccountForm() {
                         type="text"
                         width="1097px"
                         value={prenom}
+                        placeholder={user?.firstName}
                         onChange={(e) => setPrenom(e.target.value)}
                     />
 
@@ -84,6 +89,7 @@ export default function AccountForm() {
                         type="email"
                         width="1097px"
                         value={email}
+                        placeholder={user?.mail}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
@@ -92,6 +98,7 @@ export default function AccountForm() {
                         type="password"
                         width="1097px"
                         value={password}
+                        placeholder={"●●●●●●●●●●●"}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
