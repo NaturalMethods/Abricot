@@ -2,46 +2,59 @@
 
 import styles from "./AccountModal.module.css"
 import TextInput from "@/components/input/TextInput/TextInput"
-import { useState } from "react"
+import {useState} from "react"
 import Button from "@/components/input/Button/Button"
-import { useRouter } from "next/navigation"
+import {useRouter} from "next/navigation"
 import {useUser} from "@/app/contexts/useUser";
+
+import {
+    updateProfile,
+    logout, updatePassword
+} from "@/lib/accountActions"
 
 export default function AccountForm() {
 
     const router = useRouter()
 
-    const [nom, setNom] = useState("")
-    const [prenom, setPrenom] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [firstName, setFirstName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("")
 
-    const { user } = useUser()
+    const { user,setUser} = useUser()
 
-    async function handleNewAccountInfos(e: React.FormEvent) {
+    async function handleNewAccountInfos(
+        e: React.FormEvent
+    ) {
 
         e.preventDefault()
 
-        const response = await fetch("/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-        })
+        const status = await updateProfile(
+            firstName,
+            lastName,
+            email,
+            user,
+            setUser,
+        )
 
-        const data = await response.json()
-        console.log("data", data)
+        const passstatus = await updatePassword(
+            password,
+            newPassword
+        )
+
+        setFirstName("")
+        setLastName("")
+        setEmail("")
+        setPassword("")
+        setNewPassword("")
+
+        router.refresh()
     }
 
     async function handleLogout() {
 
-        await fetch("/api/logout", {
-            method: "POST",
-        })
+        await logout()
 
         router.push("/")
         router.refresh()
@@ -57,7 +70,7 @@ export default function AccountForm() {
                         Mon compte
                     </h5>
                     <p className="inter16400 grey600">
-                        Amélie Dupont
+                        {user?.firstName} {user?.lastName}
                     </p>
                 </div>
 
@@ -70,18 +83,18 @@ export default function AccountForm() {
                         label="Nom"
                         type="text"
                         width="1097px"
-                        value={nom}
+                        value={lastName}
                         placeholder={user?.lastName}
-                        onChange={(e) => setNom(e.target.value)}
+                        onChange={(e) => setLastName(e.target.value)}
                     />
 
                     <TextInput
                         label="Prénom"
                         type="text"
                         width="1097px"
-                        value={prenom}
+                        value={firstName}
                         placeholder={user?.firstName}
-                        onChange={(e) => setPrenom(e.target.value)}
+                        onChange={(e) => setFirstName(e.target.value)}
                     />
 
                     <TextInput
@@ -100,6 +113,15 @@ export default function AccountForm() {
                         value={password}
                         placeholder={"●●●●●●●●●●●"}
                         onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <TextInput
+                        label="Nouveau mot de passe"
+                        type="password"
+                        width="1097px"
+                        value={newPassword}
+                        placeholder={"●●●●●●●●●●●"}
+                        onChange={(e) => setNewPassword(e.target.value)}
                     />
 
                     <Button
