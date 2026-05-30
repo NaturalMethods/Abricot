@@ -1,4 +1,5 @@
 "use client"
+
 import styles from "@/app/(no-layout)/Login.module.css";
 import Image from "next/image";
 import TextInput from "@/components/input/TextInput/TextInput";
@@ -7,8 +8,9 @@ import Link from "next/link";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {useUser} from "@/app/contexts/useUser";
+import {register} from "@/lib/authService";
 
-export default function registerPage (){
+export default function RegisterPage (){
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -32,43 +34,42 @@ export default function registerPage (){
         setIsLoading(true)
 
         try {
-            const response = await fetch("/api/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                }),
-            })
 
-            const data = await response.json()
+            const {
+                ok,
+                data
+            } = await register(
+                email,
+                password
+            )
 
-            console.log("data", data)
-
-            // Wrong IDs, set error state and return nothing
-            if (!response.ok) {
+            if (!ok) {
                 setHasRegisterError(true)
-                setIsLoading(false)
                 return
             }
 
-            // Success login
-            const dataUser = data.data.user
-
-            const [firstName, lastName] = dataUser.name.split(" ")
-            const mail = dataUser.email
-
-            setUser({firstName, lastName, mail})
+            setUser({
+                firstName: data.user.firstName,
+                lastName: data.user.lastName,
+                mail: data.user.email
+            })
 
             router.push("/dashboard")
             router.refresh()
 
         } catch (error) {
-            console.error("Network error :", error)
+
+            console.error(
+                "Network error:",
+                error
+            )
+
+        } finally {
+
             setIsLoading(false)
+
         }
+
     }
 
     return(
@@ -105,6 +106,11 @@ export default function registerPage (){
                         />
 
                     </div>
+                    {hasRegisterError && (
+                        <p className={`manrope40700 ${styles["error-message"]}`}>
+                            Identifiants invalides
+                        </p>
+                    )}
                 </div>
                 <div className={`flex-row align-center inter14400 ${styles["account"]}`}>
                     <p>Déjà inscrit ?</p>

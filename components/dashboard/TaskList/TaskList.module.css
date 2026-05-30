@@ -1,0 +1,22 @@
+.tasklist{
+
+    width: 100%;
+
+    background: #FFFFFF;
+    /* Neutral/Grey 200 */
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+
+
+}
+.tasklistcontainer{
+
+    height: 100%;
+    margin: 40px 40px 40px 40px;
+    gap: 40px;
+}
+
+.tasklistheader{
+
+    gap: 8px;
+}

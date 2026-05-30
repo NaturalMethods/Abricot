@@ -10,7 +10,7 @@ import {useUser} from "@/app/contexts/useUser";
 import {
     updateProfile,
     logout, updatePassword
-} from "@/lib/accountActions"
+} from "@/lib/authService"
 
 export default function AccountForm() {
 
@@ -30,7 +30,7 @@ export default function AccountForm() {
 
         e.preventDefault()
 
-        const status = await updateProfile(
+        await updateProfile(
             firstName,
             lastName,
             email,
@@ -38,7 +38,7 @@ export default function AccountForm() {
             setUser,
         )
 
-        const passstatus = await updatePassword(
+        await updatePassword(
             password,
             newPassword
         )
@@ -84,7 +84,7 @@ export default function AccountForm() {
                         type="text"
                         width="1097px"
                         value={lastName}
-                        placeholder={user?.lastName}
+                        placeholder={user?.lastName ?? ""}
                         onChange={(e) => setLastName(e.target.value)}
                     />
 
@@ -93,7 +93,7 @@ export default function AccountForm() {
                         type="text"
                         width="1097px"
                         value={firstName}
-                        placeholder={user?.firstName}
+                        placeholder={user?.firstName ?? ""}
                         onChange={(e) => setFirstName(e.target.value)}
                     />
 

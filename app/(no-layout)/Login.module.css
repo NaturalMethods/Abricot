@@ -36,3 +36,10 @@
 .login-error{
     color: var(--flashy-red);
 }
+
+.error-message {
+    color: var(--flashy-red);
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+}

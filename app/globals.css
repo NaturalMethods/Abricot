@@ -45,6 +45,29 @@ body {
     text-decoration: none;
 }
 
+
+h4{
+
+    font-family: 'Manrope',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    margin: 0;
+
+}
+h5{
+
+    font-family: 'Manrope',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    margin: 0;
+}
+p{
+    margin: 0;
+}
 .inter12400{
     font-family: 'Inter',sans-serif;
     font-style: normal;
@@ -80,6 +103,15 @@ body {
     font-size: 16px;
     line-height: 19px;
 }
+.inter18400{
+
+    font-family: 'Inter',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+
+}
 .manrope40700{
     font-family: 'Manrope',sans-serif;
     font-style: normal;
@@ -98,6 +130,9 @@ body {
 .dark-orange{
     color: var(--dark-orange);
 }
+.grey50{
+    color: var(--grey-50);
+}
 .grey600{
     color: var(--grey-600);
 }
@@ -107,12 +142,21 @@ body {
 .grey950{
     color: var(--grey-950);
 }
+.flashy-red{
+    color: var(--flashy-red);
+}
 
 .margin-bottom-zero{
     margin-bottom: 0;
 }
 .gap30{
     gap: 30px;
+}
+.gap8{
+    gap: 8px;
+}
+.gap15{
+    gap: 15px;
 }
 
 .flex-col{

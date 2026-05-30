@@ -1,4 +1,3 @@
-import {useUser} from "@/app/contexts/useUser";
 
 export async function updateProfile(
     firstName: string,
@@ -84,4 +83,92 @@ export async function logout() {
             method: "POST",
         }
     )
+}
+
+
+// Function to fecth login
+export async function login(
+    email: string,
+    password: string
+) {
+
+    const response = await fetch(
+        "/api/login",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type":
+                    "application/json",
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        }
+    )
+
+    const data = await response.json()
+
+
+    return {
+        ok: response.ok,
+        data
+    }
+}
+
+export function formatName(name: string) {
+
+    if(!name){
+        return {
+            firstName:"",
+            lastName:""
+        }
+    }
+    const [firstName = "", lastName = ""] = name.split(" ")
+
+    return { firstName, lastName }
+}
+
+export async function register(
+    email: string,
+    password: string
+) {
+
+    const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email,
+            password
+        }),
+    })
+
+    const data = await response.json()
+
+    console.log("dataaaaa", data)
+
+    const user = data?.data?.user
+
+    if (!response.ok || !user) {
+        return {
+            ok: false,
+            data,
+        }
+    }
+
+    const [firstName = "", lastName = ""] =
+        (user.name ?? "").split(" ")
+
+    return {
+        ok: true,
+        data: {
+            user: {
+                ...user,
+                firstName,
+                lastName,
+            },
+        },
+    }
 }

@@ -3,7 +3,7 @@
 }
 
 .input-field{
-    padding: 19px 17px;
+    padding: 0 40px 0 17px;
     gap: 10px;
 
     border: 1px solid #E5E7EB;
@@ -36,4 +36,18 @@
 .input-field.input-error:focus{
     border-color: var(--flashy-red);
     border-width: 2px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
 }

@@ -2,8 +2,8 @@
 import { createContext } from "react"
 
 export interface User {
-    firstName: string
-    lastName: string
+    firstName: string | null
+    lastName: string | null
     mail: string
 }
 

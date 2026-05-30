@@ -8,6 +8,7 @@ import Link from "next/link"
 import {useState} from "react"
 import {useRouter} from "next/navigation";
 import {useUser} from "@/app/contexts/useUser";
+import {formatName, login} from "@/lib/authService";
 
 export default function LoginPage() {
 
@@ -24,52 +25,55 @@ export default function LoginPage() {
     async function handleLogin(
         e: React.FormEvent
     ) {
+
         e.preventDefault()
 
-        if (isLoading) {
+        if (isLoading)
             return
-        }
 
         setHasLoginError(false)
         setIsLoading(true)
 
         try {
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            })
 
-            const data = await response.json()
+            const {
+                ok,
+                data
+            } = await login(
+                email,
+                password
+            )
 
-            console.log("data", data)
-
-            // Wrong IDs, set error state and return nothing
-            if (!response.ok) {
+            if (!ok) {
                 setHasLoginError(true)
-                setIsLoading(false)
                 return
             }
 
-            // Success login
             const dataUser = data.data.user
 
-            const [firstName, lastName] = dataUser.name.split(" ")
-            const mail = dataUser.email
 
-            setUser({firstName, lastName, mail})
+            const {firstName, lastName} = formatName(dataUser.name)
+
+            setUser({
+                firstName,
+                lastName,
+                mail: dataUser.email
+            })
 
             router.push("/dashboard")
             router.refresh()
 
         } catch (error) {
-            console.error("Network error :", error)
+
+            console.error(
+                "Network error:",
+                error
+            )
+
+        } finally {
+
             setIsLoading(false)
+
         }
     }
 
