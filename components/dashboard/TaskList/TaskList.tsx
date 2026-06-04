@@ -1,12 +1,18 @@
 
 import styles from "@/components/dashboard/TaskList/TaskList.module.css";
 import TextInput from "@/components/input/TextInput/TextInput";
+import {Task} from "@/app/types/Task";
 import Thumbnail from "@/components/dashboard/TaskList/Thumbnail/Thumbnail";
+import {formatDate, sortTasksByPriority} from "@/lib/utils";
+
+interface TaskListProps {
+    tasksList: Task[]
+}
 
 
-
-export default function TaskList (){
-
+export default function TaskList ({
+                                      tasksList,
+                                  }: TaskListProps){
 
     return(
         <section className={`flex-col  ${styles.tasklist}`}>
@@ -19,14 +25,17 @@ export default function TaskList (){
                     <TextInput showIcon={true} width={"357px"} height={"63px"} placeholder={"Rechercher une tâche"} label={""} />
                 </div>
 
-                <Thumbnail />
-                <Thumbnail />
-                <Thumbnail />
-                <Thumbnail />
-                <Thumbnail />
-                <Thumbnail />
-                <Thumbnail />
-
+                {sortTasksByPriority(tasksList).map((task, index) => (
+                    <Thumbnail
+                        key={task.id ?? index}
+                        taskName={task.title}
+                        taskDesc={task.description}
+                        status={task.status}
+                        comments={task.comments.length}
+                        dueDate={formatDate(task.dueDate).toString()}
+                        project={task.project}
+                    />
+                ))}
 
 
             </div>

@@ -1,0 +1,29 @@
+.kanban{
+    width: 100%;
+    height: 100%;
+
+
+}
+
+.kanbancontainer{
+
+    height : 100%;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(415px, 1fr));
+    gap: 22px;
+
+}
+
+.taskslist{
+
+
+    padding: 40px 24px;
+    gap: 40px;
+    background-color: white;
+
+    border: 1px solid var(--light-red);
+    border-radius: 10px;
+
+}
+

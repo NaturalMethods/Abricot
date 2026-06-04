@@ -1,0 +1,14 @@
+.activelistchips{
+    background: var(--light-orange);
+}
+.nonactivelistchips{
+    background: white;
+}
+
+.listchips{
+    cursor: pointer;
+    width: fit-content;
+    padding: 14px 16px;
+    gap: 10px;
+    border-radius: 8px;
+}

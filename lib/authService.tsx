@@ -147,8 +147,6 @@ export async function register(
 
     const data = await response.json()
 
-    console.log("dataaaaa", data)
-
     const user = data?.data?.user
 
     if (!response.ok || !user) {

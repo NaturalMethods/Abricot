@@ -1,0 +1,11 @@
+.gridsection{
+    max-width: 1200px;
+    height : 100%;
+
+    background-color: red;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(415px, 1fr));
+    gap: 22px;
+
+}

@@ -11,8 +11,30 @@
     height: 100%;
 }
 
+.thumbnailheader{
+    width: 100%;
+    max-width: 290px;
+
+}
+
+.thumbnailtitle{
+
+    width: 100%;
+    max-width: 153px;
+}
+.thumbnaildesc{
+    width: 100%;
+    max-width: 290px;
+
+}
+
 .thumbnailbutton{
 
     gap: 37px;
 
+}
+
+.thumbnailinfos{
+    max-width: 290px;
+    justify-items: center;
 }

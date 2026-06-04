@@ -6,8 +6,6 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { email, password } = body
 
-    console.log("res", email, password)
-
     const res = await apiRequest("/auth/register", {
         method: "POST",
         body: JSON.stringify({ email, password, name:"" }),

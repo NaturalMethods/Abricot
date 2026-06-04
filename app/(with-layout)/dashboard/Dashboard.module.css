@@ -5,12 +5,13 @@
     background-color: var(--grey-50);
 }
 .dashboardcontainer{
-    width: 1215px;
-    padding-bottom: 75px;
+    width: clamp(1000px, 100%, 1300px);
+    padding-bottom: 50px;
 }
 
 .dashboardheader{
     width: 100%;
+    align-items: ;
     padding-top: 75px;
     padding-bottom: 75px;
     height: 70px;
@@ -18,4 +19,32 @@
 
 .dashboardheadertext{
     gap:14px;
+}
+
+.chips{
+
+    width: 100%;
+    padding-bottom: 25px;
+}
+
+.listchips{
+    padding: 14px 16px;
+    gap: 10px;
+
+    background: var(--light-orange);
+    border-radius: 8px;
+
+}
+.whitelistchips{
+    padding: 14px 16px;
+    gap: 10px;
+
+    background: white;
+    border-radius: 8px;
+
+}
+
+.listchips,
+.whitelistchips {
+    cursor: pointer;
 }

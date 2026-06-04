@@ -1,0 +1,14 @@
+.card{
+    padding: 30px 34px;
+
+    width: 380px;
+    height: 351px;
+
+    background: #FFFFFF;
+    /* Neutral/Grey 200 */
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+
+
+
+}
