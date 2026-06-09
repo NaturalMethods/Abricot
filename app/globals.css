@@ -98,7 +98,7 @@ p{
     text-transform: uppercase;
 
     /* Neutral/Grey 950 */
-    color: #0F0F0F;
+    color: var(--grey-950);
 }
 .inter14400{
     font-family: 'Inter',sans-serif;
@@ -172,6 +172,9 @@ p{
 .grey50{
     color: var(--grey-50);
 }
+.grey200{
+    color: var(--grey-200)
+}
 .grey600{
     color: var(--grey-600);
 }
@@ -197,6 +200,9 @@ p{
 }
 .gap10{
     gap: 10px;
+}
+.gap56{
+    gap: 56px;
 }
 
 .flex-col{

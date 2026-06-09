@@ -27,3 +27,12 @@
 
 }
 
+.tasknumber{
+    padding: 4px 16px;
+
+    background: var(--grey-200);
+    border-radius: 50px;
+
+
+}
+

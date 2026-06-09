@@ -40,6 +40,6 @@ export const config = {
         "/account/:path*",
         "/dashboard/:path*",
         "/projects/:path*",
-        "/singleProject/:path*"
+        "/project/:path*"
     ]
 }

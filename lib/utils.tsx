@@ -22,3 +22,13 @@ export function sortTasksByPriority(tasks: Task[]): Task[] {
             priorityOrder[b.priority as Priority]
     )
 }
+
+export function getInitials(fullName?: string): string {
+    if (!fullName) return ""
+
+    return fullName
+        .trim()
+        .split(/\s+/)
+        .map(word => word[0].toUpperCase())
+        .join("")
+}

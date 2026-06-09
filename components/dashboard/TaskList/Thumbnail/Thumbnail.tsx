@@ -73,7 +73,7 @@ export default function Thumbnail ({   taskName,
                     </div>
                 </div>
                 <div className={`flex-col align-center justify-space-between ${styles.thumbnailbutton}`}>
-                    {!reduced && (<Tags label={status} />)}
+                    {!reduced && (<Tags label={status} width={"75px"} height={"25px"} />)}
                     {!reduced && (<Button width={"121px"} text={"Voir"} />)}
                 </div>
             </div>)}
@@ -88,8 +88,8 @@ export default function Thumbnail ({   taskName,
                                     <div className={`flex-col  gap8 ${styles.thumbnailheader}`}>
 
                                         <div className={`flex-row justify-space-between`}>
-                                            <h5 className={`truncate ${styles.thumbnailtitle}`}>{taskName}</h5>
-                                            <Tags label={status} />
+                                            <h5 className={` ${styles.thumbnailtitle}`}>{taskName.slice(0,25)}</h5>
+                                            <Tags label={status} width={"75px"} height={"25px"} />
 
                                         </div>
                                         <p className={`inter14400 grey600 truncate ${styles.thumbnaildesc}`}> {taskDesc}</p>

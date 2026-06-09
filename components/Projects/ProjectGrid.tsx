@@ -8,11 +8,19 @@ interface ProjectGridProps{
 
 export default function ProjectGrid ({ projects,}   :ProjectGridProps){
 
-
-
     return(
         <section className={`flex-col align-center ${styles.gridsection} `}>
 
+            {projects.map((project,index) => (
+
+                <ProjectCard key={project.id ?? index} project={project} />
+
+            ))}
+            {projects.map((project,index) => (
+
+                <ProjectCard key={project.id ?? index} project={project} />
+
+            ))}
             {projects.map((project,index) => (
 
                 <ProjectCard key={project.id ?? index} project={project} />

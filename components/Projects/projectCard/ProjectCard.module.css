@@ -1,8 +1,8 @@
 .card{
-    padding: 30px 34px;
+    padding: 30px 15px;
 
-    width: 380px;
-    height: 351px;
+    min-width: 350px;
+    height: 321px;
 
     background: #FFFFFF;
     /* Neutral/Grey 200 */
@@ -10,5 +10,24 @@
     border-radius: 10px;
 
 
+
+}
+
+.headercard{
+
+    height: 67px;
+
+}
+
+.progressbar{
+    width: 100%;
+    height: 7px;
+    background: var(--grey-200);
+    border-radius: 40px;
+
+}
+
+.members{
+    gap: -25px;
 
 }

@@ -27,7 +27,10 @@ export default function Kanban ({
         <section className={`flex-col  ${styles.kanban}`}>
             <div className={`flex-col  ${styles.kanbancontainer}`}>
                 <div className={`flex-col  ${styles.taskslist}`}>
-                    <h5>À faire</h5>
+                    <div className="flex-row gap8">
+                        <h5>À faire</h5>
+                        <p className={`inter14400 grey600 ${styles.tasknumber}`}>{todoTasks.length}</p>
+                    </div>
                     {todoTasks.map((task, index) => (
                         <Thumbnail
                             key={task.id ?? index}
@@ -44,7 +47,10 @@ export default function Kanban ({
 
 
                 <div className={`flex-col  ${styles.taskslist}`}>
-                    <h5>En cours</h5>
+                    <div className="flex-row gap8">
+                        <h5>En cours</h5>
+                        <p className={`inter14400 grey600 ${styles.tasknumber}`}>{inProgressTasks.length}</p>
+                    </div>
                     {inProgressTasks.map((task, index) => (
                         <Thumbnail
                             key={task.id ?? index}
@@ -58,9 +64,11 @@ export default function Kanban ({
                 </div>
 
 
-
                 <div className={`flex-col  ${styles.taskslist}`}>
-                    <h5>Terminées</h5>
+                    <div className="flex-row gap8">
+                        <h5>Terminées</h5>
+                        <p className={`inter14400 grey600 ${styles.tasknumber}`}>{doneTasks.length}</p>
+                    </div>
                     {doneTasks.map((task, index) => (
                         <Thumbnail
                             key={task.id ?? index}

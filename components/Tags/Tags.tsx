@@ -4,9 +4,17 @@ import styles from "@/components/Tags/Tags.module.css";
 interface TagsProps{
 
     label:string
+    width?: string
+    height?: string
+    backgroundColor?:string
+    textColor?:string
+    font?: string
+    padding?: string
+    border?: string
+    style?: React.CSSProperties
 }
 
-export default function Tags ({label =""}:TagsProps){
+export default function Tags ({style, label="", padding="0", width, height, border="0", font="inter14400", backgroundColor, textColor}:TagsProps){
 
     let backgroundColors = "light-red"
     let textColors = "flashy-red"
@@ -34,11 +42,24 @@ export default function Tags ({label =""}:TagsProps){
             break
     }
 
-
+    if(backgroundColor && textColor){
+        backgroundColors = backgroundColor
+        textColors = textColor
+    }
 
     return(
-        <div style={{ backgroundColor: `var(--${backgroundColors})` }}  className={`flex-col align-center justify-center ${styles.tags}` }>
-            <label className={`inter14400 ${textColors}`}>{label}</label>
+        <div style={{
+            backgroundColor: `var(--${backgroundColors})`,
+            width: width ?? "fit-content",
+            height: height ?? "fit-content",
+            padding: padding,
+            border: border,
+            position: "relative",
+            zIndex: style?.zIndex,
+            marginLeft: style?.marginLeft,
+        }}
+             className={`flex-col align-center justify-center ${styles.tags}` }>
+            <label className={`${font} ${textColors}`}>{label}</label>
         </div>
 
     )
