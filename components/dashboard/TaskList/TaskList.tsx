@@ -31,7 +31,7 @@ export default function TaskList ({
                         taskName={task.title}
                         taskDesc={task.description}
                         status={task.status}
-                        comments={task.comments.length}
+                        comments={task.comments}
                         dueDate={formatDate(task.dueDate).toString()}
                         project={task.project}
                     />

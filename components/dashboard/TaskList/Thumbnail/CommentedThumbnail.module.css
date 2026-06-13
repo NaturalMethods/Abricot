@@ -1,0 +1,23 @@
+.thumbnail{
+
+    width: 100%;
+
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+}
+
+.margintop{
+    margin-top: 25px;
+}
+
+.comments{
+    height: 80px;
+
+}
+
+.thumbnailbutton{
+
+    gap: 37px;
+
+}
+

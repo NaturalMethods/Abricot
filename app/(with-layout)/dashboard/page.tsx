@@ -38,7 +38,6 @@ export default function DashboardPage (){
         fetchTasks()
     }, [])
 
-
     const {user} = useUser()
     return(
         <section className={`flex-col align-center ${styles.dashboardpage}`}>

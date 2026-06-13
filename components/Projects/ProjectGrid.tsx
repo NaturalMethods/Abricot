@@ -16,16 +16,6 @@ export default function ProjectGrid ({ projects,}   :ProjectGridProps){
                 <ProjectCard key={project.id ?? index} project={project} />
 
             ))}
-            {projects.map((project,index) => (
-
-                <ProjectCard key={project.id ?? index} project={project} />
-
-            ))}
-            {projects.map((project,index) => (
-
-                <ProjectCard key={project.id ?? index} project={project} />
-
-            ))}
 
         </section>
 

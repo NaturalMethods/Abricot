@@ -1,5 +1,4 @@
 .input-container{
-    gap: 7px;
 }
 
 .input-field{
@@ -7,7 +6,7 @@
     gap: 10px;
 
     border: 1px solid #E5E7EB;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
 .input-error{

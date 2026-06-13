@@ -33,11 +33,12 @@ export default function Kanban ({
                     </div>
                     {todoTasks.map((task, index) => (
                         <Thumbnail
+                            format={"reduced"}
                             key={task.id ?? index}
                             taskName={task.title}
                             taskDesc={task.description}
                             status={task.status}
-                            comments={task.comments.length}
+                            comments={task.comments}
                             dueDate={formatDate(task.dueDate).toString()}
                             project={task.project} reduced={true}                        />
                     ))}
@@ -53,11 +54,12 @@ export default function Kanban ({
                     </div>
                     {inProgressTasks.map((task, index) => (
                         <Thumbnail
+                            format = {"reduced"}
                             key={task.id ?? index}
                             taskName={task.title}
                             taskDesc={task.description}
                             status={task.status}
-                            comments={task.comments.length}
+                            comments={task.comments}
                             dueDate={formatDate(task.dueDate).toString()}
                             project={task.project} reduced={true}                        />
                     ))}
@@ -71,11 +73,12 @@ export default function Kanban ({
                     </div>
                     {doneTasks.map((task, index) => (
                         <Thumbnail
+                            format={"reduced"}
                             key={task.id ?? index}
                             taskName={task.title}
                             taskDesc={task.description}
                             status={task.status}
-                            comments={task.comments.length}
+                            comments={task.comments}
                             dueDate={formatDate(task.dueDate).toString()}
                             project={task.project} reduced={true}                        />
                     ))}

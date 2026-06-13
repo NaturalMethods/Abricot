@@ -24,3 +24,48 @@ export async function getProjects(
     return data.data.data
 
 }
+
+export async function getProject(id:String):Promise<{
+        project: Project
+    }> {
+        const response = await fetch(
+            `/api/project/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                },
+            }
+        )
+
+        const data = await response.json()
+        if (!response.ok) {
+        throw new Error("Impossible de récupérer le projet")
+    }
+
+    return data.data.data
+
+}
+export async function getProjectTasks(id:String):Promise<{
+    project: Project
+}> {
+    const response = await fetch(
+        `/api/project/${id}/tasks`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type":
+                    "application/json",
+            },
+        }
+    )
+
+    const data = await response.json()
+    if (!response.ok) {
+        throw new Error("Impossible de récupérer le projet")
+    }
+    console.log("data:",data)
+    return data.data.data
+
+}

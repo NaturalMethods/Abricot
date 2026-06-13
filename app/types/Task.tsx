@@ -8,5 +8,6 @@ export interface Task {
     dueDate: string
     priority: "HIGH" | "MEDIUM" | "LOW"
     project: Project
-    comments: Comment[]
+    comments: []
+    assignees: []
 }

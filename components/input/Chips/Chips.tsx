@@ -5,6 +5,7 @@ interface ChipsProps {
     text: string
     onClick?: () => void
     width?: string
+    height?: string
     active?: boolean
 }
 
@@ -12,13 +13,15 @@ export default function Chips ({
                                    text,
                                    onClick,
                                    width = "",
+                                   height = "",
                                    active = false,
                                }: ChipsProps) {
 
     return(
         <div className={`flex-row align-center justify-center ${styles.listchips} ${active ? styles.activelistchips : styles.nonactivelistchips}`}
              onClick={onClick}
-             style={width ? { width } : undefined}>
+             style={{width: width,
+                     height: height}}>
             <Image
                 src="/listicon.svg"
                 alt="icon"
