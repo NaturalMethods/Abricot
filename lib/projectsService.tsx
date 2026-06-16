@@ -25,9 +25,7 @@ export async function getProjects(
 
 }
 
-export async function getProject(id:String):Promise<{
-        project: Project
-    }> {
+export async function getProject(id: string | undefined):Promise<{ project: Project }> {
         const response = await fetch(
             `/api/project/${id}`,
             {

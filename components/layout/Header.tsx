@@ -13,7 +13,7 @@ export default function Header() {
     return (
         <header className={`flex-row align-center justify-space-evenly ${styles.header}`}>
 
-            <img className="logo" src="/Logo.svg" alt="Logo" width={147} />
+            <img className="logo" src="/Logo.svg" alt="Website Logo" width={147} />
 
             <HeaderMenu />
             <Link className="link" href="/account"><UserButton firstName={user?.firstName} lastName={user?.lastName} /></Link>

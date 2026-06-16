@@ -19,6 +19,7 @@ export default function AssignedTasks ({
                                   }: AssignedTasksProps){
 
     const [calendarVisible, setCalendarVisible] = useState(false)
+    const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
 
     function setCalendarPanelVisible(){
         setCalendarVisible(true)
@@ -47,17 +48,27 @@ export default function AssignedTasks ({
             <div className={`flex-col  ${styles.tasklistcontainer}`}>
                 <div className={`flex-row align-center justify-space-between`}>
                     <div className={`flex-col justify-center  ${styles.tasklistheader}`}>
-                        <h5 className="grey800">Tâches</h5>
+                        <h2 className="grey800">Tâches</h2>
                         <p className="inter16400 grey600">Par ordre de priorité</p>
                     </div>
                     <div className="flex-row align-center gap15">
                         <Chips text={"Liste"} height={"17px"} onClick={setListPanelVisible} active={!calendarVisible}/>
-                        <Chips text={"Calendar"} height={"17px"} onClick={setCalendarPanelVisible} active={calendarVisible}/>
-                        <Dropdown/>
-                        <TextInput showIcon={true} width={"357px"} height={"63px"} placeholder={"Rechercher une tâche"} label={""} />
+                        <Chips text={"Calendrier"} height={"17px"} onClick={setCalendarPanelVisible} active={calendarVisible}/>
+                        <Dropdown onChange={setSelectedStatus} />
+                        <TextInput showIcon={true}
+                                   altIcon={"Icone de loupe"}
+                                   width={"357px"}
+                                   height={"63px"}
+                                   placeholder={"Rechercher une tâche"}
+                                   ariaLabel={"Rechercher une tâche"}
+                                   label={""} />
                     </div>
                 </div>
-                {sortTasksByPriority(projectTasks ?? [])?.map((task, index) => (
+                {sortTasksByPriority(projectTasks ?? []).filter((task) => {
+                    if (!selectedStatus) return true
+                    return task.status === selectedStatus
+                })
+                    ?.map((task, index) => (
                     <Thumbnail
                         key={task.id ?? index}
                         taskName={task.title}
@@ -68,6 +79,7 @@ export default function AssignedTasks ({
                         project={task.project}
                         format={"commented"}
                         assignees={task.assignees}
+                        task={task}
                     />
                 ))}
             </div>

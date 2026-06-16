@@ -6,10 +6,12 @@ import {useEffect, useState} from "react";
 import {Project} from "@/app/types/Project";
 import {getProjects} from "@/lib/projectsService";
 import Button from "@/components/input/Button/Button";
+import ModalProject from "@/components/Modal/Project/ModalProject";
 
 export default function ProjectsPage (){
 
     const [projects, setProjects] = useState<Project[]>([])
+    const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         async function fetchTasks() {
@@ -30,11 +32,13 @@ export default function ProjectsPage (){
 
                 <div className={`flex-row align-center justify-space-between ${styles.projectheader}`}>
                         <div className={`flex-col  ${styles.dashboardheadertext}`}>
-                            <h4 className="grey800">Mes projets</h4>
+                            <h1 className="grey800">Mes projets</h1>
                             <p className="inter18400">Gérez vos projets</p>
                         </div>
 
-                        <Button text={"+ Créer un projet"} />
+                    <Button text={"+ Créer un projet"} onClick={() => setIsOpen(true)} />
+                    <ModalProject isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isCreation={true}/>
+
                 </div>
                 <ProjectGrid projects={projects}/>
             </div>

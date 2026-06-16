@@ -1,6 +1,7 @@
 import {Task} from "@/app/types/Task";
 
-export function formatDate(dateString: string) {
+export function formatDate(dateString: string | undefined) {
+    if(dateString === undefined) return ""
     return new Intl.DateTimeFormat("fr-FR", {
         day: "numeric",
         month: "long",
@@ -13,6 +14,21 @@ const priorityOrder: Record<Priority, number> = {
     HIGH: 0,
     MEDIUM: 1,
     LOW: 2,
+}
+export function formatCommentDate(dateString: string): string {
+    const date = new Date(dateString);
+
+    const datePart = date.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+    });
+
+    const timePart = date.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    return `${datePart}, ${timePart}`;
 }
 
 export function sortTasksByPriority(tasks: Task[]): Task[] {
@@ -31,4 +47,8 @@ export function getInitials(fullName?: string): string {
         .split(/\s+/)
         .map(word => word[0].toUpperCase())
         .join("")
+}
+
+export function setPageTitle(title: string | undefined) {
+    document.title = `${title} - Mon App`;
 }

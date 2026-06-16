@@ -9,7 +9,7 @@ export default function Footer() {
                 <Image
                     className={styles["logo-black"]}
                     src="/Logo.svg"
-                    alt="Logo"
+                    alt="Website black Logo"
                     width={101}
                     height={32}
                 />

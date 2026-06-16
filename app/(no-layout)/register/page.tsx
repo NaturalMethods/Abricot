@@ -89,6 +89,7 @@ export default function RegisterPage (){
                             label="Email"
                             type="email"
                             width="282px"
+                            ariaLabel={"Email"}
                             onChange={(e) => {
                                 setEmail(e.target.value)
                             }}
@@ -96,6 +97,7 @@ export default function RegisterPage (){
                         <TextInput label="Password"
                                    type="password"
                                    width="282px"
+                                   ariaLabel={"Password"}
                                    onChange={(e) => {
                                        setPassword(e.target.value)
                                    }}

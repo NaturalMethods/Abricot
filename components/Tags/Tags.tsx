@@ -3,7 +3,7 @@ import styles from "@/components/Tags/Tags.module.css";
 
 interface TagsProps{
 
-    label:string
+    label?:string
     width?: string
     height?: string
     backgroundColor?:string
@@ -59,7 +59,7 @@ export default function Tags ({style, label="", padding="0", width, height, bord
             marginLeft: style?.marginLeft,
         }}
              className={`flex-col align-center justify-center ${styles.tags}` }>
-            <label className={`${font} ${textColors}`}>{label}</label>
+            <span className={`${font} ${textColors}`}>{label}</span>
         </div>
 
     )

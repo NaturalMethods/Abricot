@@ -8,6 +8,8 @@ interface ProjectGridProps{
 
 export default function ProjectGrid ({ projects,}   :ProjectGridProps){
 
+    console.log(projects);
+
     return(
         <section className={`flex-col align-center ${styles.gridsection} `}>
 

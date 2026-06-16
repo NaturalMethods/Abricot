@@ -1,12 +1,9 @@
 .wrapper {
     position: relative;
-    width: 152px;
     font-family: 'Inter', sans-serif;
 }
 
 .button {
-    width: 152px;
-    height: 63px;
 
     background-color: white;
     color: var(--grey-600);
@@ -17,7 +14,6 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
 
 }
 
@@ -25,8 +21,6 @@
     position: absolute;
     top: 55px;
     left: 0;
-
-    width: 153px;
 
     background: white;
     border: 1px solid var(--grey-200);

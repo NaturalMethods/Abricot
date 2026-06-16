@@ -66,9 +66,9 @@ export default function AccountForm() {
             <section className={`flex-col align-center ${styles["account-modal-container"]}`}>
 
                 <div className={`flex-col ${styles["account-modal-title"]}`}>
-                    <h5 className="manrope18600 grey800 margin-bottom-zero">
+                    <h2 className="manrope18600 grey800 margin-bottom-zero">
                         Mon compte
-                    </h5>
+                    </h2>
                     <p className="inter16400 grey600">
                         {user?.firstName} {user?.lastName}
                     </p>
@@ -84,6 +84,7 @@ export default function AccountForm() {
                         type="text"
                         width="1097px"
                         value={lastName}
+                        ariaLabel={"Nom"}
                         placeholder={user?.lastName ?? ""}
                         onChange={(e) => setLastName(e.target.value)}
                     />
@@ -93,6 +94,7 @@ export default function AccountForm() {
                         type="text"
                         width="1097px"
                         value={firstName}
+                        ariaLabel={"Prénom"}
                         placeholder={user?.firstName ?? ""}
                         onChange={(e) => setFirstName(e.target.value)}
                     />
@@ -102,6 +104,7 @@ export default function AccountForm() {
                         type="email"
                         width="1097px"
                         value={email}
+                        ariaLabel={"Email"}
                         placeholder={user?.mail}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -111,6 +114,7 @@ export default function AccountForm() {
                         type="password"
                         width="1097px"
                         value={password}
+                        ariaLabel="Password"
                         placeholder={"●●●●●●●●●●●"}
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -119,6 +123,7 @@ export default function AccountForm() {
                         label="Nouveau mot de passe"
                         type="password"
                         width="1097px"
+                        ariaLabel={"Nouveau mot de passe"}
                         value={newPassword}
                         placeholder={"●●●●●●●●●●●"}
                         onChange={(e) => setNewPassword(e.target.value)}

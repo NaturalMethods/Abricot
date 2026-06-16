@@ -1,0 +1,43 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999999;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+
+    min-width: 400px;
+    max-width: 90vw;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+    animation: slideIn 0.25s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-80px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.padding {
+    padding: 10px 30px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+}

@@ -6,33 +6,40 @@ import Tags from "@/components/Tags/Tags";
 import Button from "@/components/input/Button/Button";
 import Image from "next/image";
 import {Project} from "@/app/types/Project";
-import {getInitials} from "@/lib/utils";
+import {formatCommentDate, formatDate, getInitials} from "@/lib/utils";
+import {useEffect, useState} from "react";
+import {useUser} from "@/app/contexts/useUser";
+import TextInput from "@/components/input/TextInput/TextInput";
+import ModalTask from "@/components/Modal/Task/ModalTask";
+import {Task} from "@/app/types/Task";
 
 interface ThumbnailProps{
-    taskName: string
-    taskDesc?: string
-    dueDate?: string
-    comments?: []
     project?: Project
     format?: string
     reduced?:boolean
     commented?: boolean
-    status?: string
-    assignees?: []
+    isModal?: boolean
+    task?: Task
 
 }
 
-export default function Thumbnail ({   taskName,
-                                       taskDesc,
-                                       project,
-                                       dueDate,
-                                       comments,
-                                       status="",
+export default function Thumbnail ({   project,
                                        format="default",
                                        reduced = false,
-                                       assignees,
+                                        isModal = false,
+                                        task
                                         }:ThumbnailProps){
 
+
+    const {user} = useUser()
+    const [commentsVisible, setCommentsVisible] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
+    const [comment, setComment] = useState("");
+
+    useEffect(() => {
+
+
+    }, [commentsVisible]);
 
     let thumbnailClass = styles.thumbnail
     let reducedBool = false
@@ -65,15 +72,15 @@ export default function Thumbnail ({   taskName,
                 <div className={"flex-col gap30"}>
                     <div className={"flex-col gap8"}>
                         <div className={`flex-row align-center justify-space-between`}>
-                            <h5>{taskName}</h5>
+                            <h2>{task?.title}</h2>
                         </div>
-                        <p className="inter14400 grey600"> {taskDesc}</p>
+                        <p className="inter14400 grey600"> {task?.description}</p>
                     </div>
                     <div className={"flex-row align-center gap15"}>
                         <div className={"flex-row gap8"}>
                             <Image
                                 src="/greydirectoryicon.svg"
-                                alt="icon"
+                                alt="icone de repertoire"
                                 width={18}
                                 height={14}
                             />
@@ -83,28 +90,30 @@ export default function Thumbnail ({   taskName,
                         <div className={"flex-row gap8"}>
                             <Image
                                 src="/minicalendar.svg"
-                                alt="icon"
+                                alt="icone de calendrier"
                                 width={18}
                                 height={14}
                             />
-                            <p className="inter12400 grey600">{dueDate}</p>
+                            <p className="inter12400 grey600">{formatDate(task?.dueDate).toString()}</p>
                         </div>
                         <span>|</span>
                         <div className={"flex-row gap8"}>
                             <Image
                                 src="/chaticon.svg"
-                                alt="icon"
+                                alt="icon de message"
                                 width={18}
                                 height={14}
                             />
-                            <p className="inter12400 grey600">{comments?.length}</p>
+                            <p className="inter12400 grey600">{task?.comments?.length}</p>
                         </div>
 
                     </div>
                 </div>
                 <div className={`flex-col align-center justify-space-between ${styles.thumbnailbutton}`}>
-                    {!reduced && (<Tags label={status} width={"75px"} height={"25px"} />)}
-                    {!reduced && (<Button width={"121px"} text={"Voir"} />)}
+                    {!reduced && (<Tags label={task?.status} width={"75px"} height={"25px"} />)}
+                    {!reduced && (<Button width={"121px"} text={"Voir"} onClick={() => setIsOpen(true)}  />)}
+                    {!isModal && <ModalTask task={task} isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isShow={true}/>
+                    }
                 </div>
             </div>)}
 
@@ -118,11 +127,11 @@ export default function Thumbnail ({   taskName,
                                     <div className={`flex-col  gap8 ${styles.thumbnailheader}`}>
 
                                         <div className={`flex-row justify-space-between`}>
-                                            <h5 className={` ${styles.thumbnailtitle}`}>{taskName.slice(0,25)}</h5>
-                                            <Tags label={status} width={"75px"} height={"25px"} />
+                                            <h2 className={` truncate ${styles.thumbnailtitle}`}>{task?.title}</h2>
+                                            <Tags label={task?.status} width={"75px"} height={"25px"} />
 
                                         </div>
-                                        <p className={`inter14400 grey600 truncate ${styles.thumbnaildesc}`}> {taskDesc}</p>
+                                        <p className={`inter14400 grey600 truncate ${styles.thumbnaildesc}`}> {task?.description}</p>
 
                                     </div>
 
@@ -132,7 +141,7 @@ export default function Thumbnail ({   taskName,
                                 <div className={"flex-row gap8"}>
                                     <Image
                                         src="/greydirectoryicon.svg"
-                                        alt="icon"
+                                        alt="icone de repertoire"
                                         width={18}
                                         height={14}
                                     />
@@ -142,27 +151,29 @@ export default function Thumbnail ({   taskName,
                                 <div className={"flex-row gap8"}>
                                     <Image
                                         src="/minicalendar.svg"
-                                        alt="icon"
+                                        alt="icone de calendrier"
                                         width={18}
                                         height={14}
                                     />
-                                    <p className=" truncate inter12400 grey600">{dueDate}</p>
+                                    <p className=" truncate inter12400 grey600">{formatDate(task?.dueDate).toString()}</p>
                                 </div>
                                 <span>|</span>
                                 <div className={"flex-row gap8"}>
                                     <Image
                                         src="/chaticon.svg"
-                                        alt="icon"
+                                        alt="icone de message"
                                         width={18}
                                         height={14}
                                     />
-                                    <p className="inter12400 grey600">{comments?.length}</p>
+                                    <p className="inter12400 grey600">{task?.comments?.length}</p>
                                 </div>
 
                             </div>
 
                     </div>
-                    <Button width={"121px"} text={"Voir"} />
+                    <Button width={"121px"} text={"Voir"} onClick={() => setIsOpen(true)}  />
+                    {!isModal && <ModalTask task={task} isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isShow={true}/>
+                    }
                 </div>
             </div>)}
 
@@ -172,17 +183,17 @@ export default function Thumbnail ({   taskName,
                         <div className={"flex-col"}>
                             <div className={`flex-row align-center`}>
                                 <div className={`flex-row align-center gap8`}>
-                                    <h5>{taskName}</h5>
-                                    <Tags label={status} width={"75px"} height={"25px"} />
+                                    <h2>{task?.title}</h2>
+                                    <Tags label={task?.status} width={"75px"} height={"25px"} />
 
                                 </div>
 
                             </div>
-                            <p className="inter14400 grey600"> {taskDesc}</p>
+                            <p className="inter14400 grey600"> {task?.description}</p>
                         </div>
                         <Image
                             src="/dotbutton.svg"
-                            alt="search"
+                            alt="Menu"
                             width={57}
                             height={57}
                         />
@@ -195,15 +206,15 @@ export default function Thumbnail ({   taskName,
                             <p className="inter12400 grey600">Echéance : </p>
                             <Image
                                 src="/minicalendar.svg"
-                                alt="icon"
+                                alt="icone de calendrier"
                                 width={18}
                                 height={14}
                             />
-                            <p className="inter12400 grey600">{dueDate}</p>
+                            <p className="inter12400 grey600">{formatDate(task?.dueDate).toString()}</p>
                         </div>
                         <div className={"flex-row align-center gap15"}>
                             <p className="inter12400 grey600">Assigné à : </p>
-                            {assignees?.map((assignee, index) => (
+                            {task?.assignees?.map((assignee, index) => (
                                 <div className="flex-row gap8" key={index}>
                                     <Tags
                                         label={getInitials(assignee.user.name) ?? ""}
@@ -233,16 +244,97 @@ export default function Thumbnail ({   taskName,
                         </div>
                     </div>
 
-                    <div className={`flex-col ${commentedStyles.comments}`}>
+                    <div className={`flex-col gap10 ${commentedStyles.comments}`}>
                         <hr className="separator" />
-                        <div className="flex-row justify-space-between max-h-100 align-center">
-                            <p className="inter14400 grey800">Commentaires ({comments?.length})</p>
+
+                        <div
+                            className="flex-row justify-space-between max-h-100 align-center"
+                            onClick={() => setCommentsVisible(!commentsVisible)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <p className="inter14400 grey800">
+                                Commentaires ({task?.comments?.length})
+                            </p>
+
                             <Image
-                                src="/arrowup.svg"
-                                alt="icon"
+                                src={commentsVisible ? "/arrowdown.svg" : "/arrowup.svg"}
+                                alt="Ouvrir/Fermer les commentaires"
                                 width={16}
                                 height={8}
                             />
+                        </div>
+
+                        <div
+                            className={`${commentedStyles.commentsContent} ${
+                                commentsVisible ? commentedStyles.open : ""
+                            }`}
+                        >
+                            <div className={"flex-col gap10"}>
+
+                                {task?.comments?.map((comment, index) => (
+                                    <div className={"flex-row gap15"} key={index}>
+                                        <Tags
+                                            label={getInitials(comment.author.name) ?? ""}
+                                            font="inter10400"
+                                            padding="8px 5px"
+                                            width="17px"
+                                            height="12px"
+                                            backgroundColor="grey-200"
+                                            textColor="grey-950"
+                                            border="1px solid #FFFFFF"
+                                        />
+
+                                        <div className={`flex-col justify-center gap10 max-w-100 ${commentedStyles.commentbackground}`}>
+                                            <div className={"flex-row justify-space-between"}>
+                                                <p className={"inter14400"}>
+                                                    {comment.author.name}
+                                                </p>
+                                                <p className={"inter10400 grey600"}>
+                                                    {formatCommentDate(comment.createdAt)}
+                                                </p>
+                                            </div>
+
+                                            <p className={"inter10400"}>
+                                                {comment.content}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <div className={"flex-row gap15"}>
+                                    <Tags
+                                        label={getInitials(
+                                            ` ${user?.firstName} ${user?.lastName}`
+                                        ) ?? ""}
+                                        font="inter10400"
+                                        padding={"8px 5px"}
+                                        width={"17px"}
+                                        height={"12px"}
+                                        backgroundColor={"light-orange"}
+                                        textColor={"grey950"}
+                                    />
+
+                                    <TextInput
+                                        label=""
+                                        placeholder="Ajouter un commentaire"
+                                        width="100%"
+                                        height={"83px"}
+                                        backgroundColor={"grey-50"}
+                                        value={comment}
+                                        ariaLabel={"ajouter un commentaire"}
+                                        onChange={(e) => setComment(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className={"flex-col max-w-100 flex-end marginbot10"}>
+                                    <Button
+                                        width={"209px"}
+                                        text={"Envoyer"}
+                                        disabled={comment.trim() === ""}
+                                    />
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

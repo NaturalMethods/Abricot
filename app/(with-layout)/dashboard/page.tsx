@@ -9,11 +9,14 @@ import Chips from "@/components/input/Chips/Chips";
 import {getTasksList} from "@/lib/dashboardService";
 import {Task} from "@/app/types/Task";
 import Kanban from "@/components/dashboard/Kanban/Kanban";
+import ModalProject from "@/components/Modal/Project/ModalProject";
+import {setPageTitle} from "@/lib/utils";
 
 
 export default function DashboardPage (){
 
     const [kanbanVisible, setKanbanVisible] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     function setKanbanPanelVisible(){
         setKanbanVisible(true)
@@ -26,6 +29,7 @@ export default function DashboardPage (){
     const [tasksList, setTasksList] = useState<Task[]>([])
 
     useEffect(() => {
+        setPageTitle("Tableau de bord")
         async function fetchTasks() {
             try {
                 const data = await getTasksList()
@@ -45,11 +49,12 @@ export default function DashboardPage (){
             <div className={`flex-col align-center ${styles.dashboardcontainer}`}>
                 <div className={`flex-row align-center justify-space-between ${styles.dashboardheader}`}>
                     <div className={`flex-col  ${styles.dashboardheadertext}`}>
-                        <h4 className="grey800">Tableau de bord</h4>
+                        <h1 className="grey800">Tableau de bord</h1>
                         <p className="inter18400">Bonjour {user?.firstName} {user?.lastName}, voici un aperçu de vos projets et tâches</p>
                     </div>
 
-                    <Button text={"+ Créer un projet"} />
+                    <Button text={"+ Créer un projet"} onClick={() => setIsOpen(true)} />
+                    <ModalProject isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isCreation={true}/>
                 </div>
 
                 <div className={`flex-row flex-start gap10 ${styles.chips}`}>
