@@ -1,25 +1,22 @@
-import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
-import { apiRequest } from "@/app/api/api"
+import {getTokenFromCookie} from "@/lib/utilsServer";
+import {apiFetch} from "@/lib/projectsService";
+import {NextResponse} from "next/server";
 
 export async function GET() {
 
-    const cookieStore = await cookies()
-    const token = cookieStore.get("token")?.value
+    const token = await getTokenFromCookie()
 
-    const data = await apiRequest("/dashboard/assigned-tasks", {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
+    const data2 = await apiFetch(
+        "/dashboard/assigned-tasks",
+        "GET",
+        token)
 
-    if (!data.success) {
+    if (!data2.success) {
         return NextResponse.json(
             {
                 success: false,
                 message: "Unauthorized",
-                error: data?.error ?? null,
+                error: data2?.error ?? null,
             },
             { status: 401 }
         )
@@ -27,6 +24,6 @@ export async function GET() {
 
     return NextResponse.json({
         success: true,
-        data: data
+        data: data2
     })
 }

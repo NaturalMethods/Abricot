@@ -21,6 +21,6 @@ export async function getTasksList(
             throw new Error("Impossible de récupérer les tâches")
         }
 
-        return data.data.data
+        return data.data.data.tasks
 
 }

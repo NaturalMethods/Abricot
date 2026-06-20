@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
-import { apiRequest } from "@/app/api/api"
+import {NextResponse} from "next/server"
+import {cookies} from "next/headers"
+import {apiRequest} from "@/app/api/api"
 
 export async function GET() {
 
@@ -30,4 +30,55 @@ export async function GET() {
         success: true,
         data: data
     })
+}
+
+export async function POST(req: Request) {
+
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token")?.value
+
+    if (!token) {
+        return NextResponse.json(
+            {
+                success: false,
+                message: "Unauthorized, No Token",
+            },
+            {
+                status: 401,
+            }
+        )
+    }
+
+    const body = await req.json()
+    const { name, description } = body
+
+    console.log("name:",name, "desc:", description)
+
+    const data = await apiRequest("/projects", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            name: name,
+            description: description,
+            }),
+    })
+
+    if (!data.success) {
+        return NextResponse.json(
+            {
+                success: false,
+                message: data.message,
+                error: data.error,
+            },
+            {
+                status: data.status ?? 500,
+            }
+        )
+    }
+
+
+    return Response.json(data)
 }

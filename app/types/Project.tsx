@@ -1,12 +1,14 @@
-import {Task} from "@/app/types/Task";
+import {Member, User} from "@/app/types/User";
 
 export interface Project{
 
-    description?: string
     id?: string
-    name?: string
-    _count?:[]
-    tasks: Task[]
-    members?: []
-    owner: string
+    name: string
+    description?: string
+    ownerId?: string
+    owner?: User
+    members?: Member[]
+    createdAt?: string
+    updatedAt?: string
+
 }

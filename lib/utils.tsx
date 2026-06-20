@@ -1,7 +1,7 @@
 import {Task} from "@/app/types/Task";
 
 export function formatDate(dateString: string | undefined) {
-    if(dateString === undefined) return ""
+    if (dateString === undefined) return ""
     return new Intl.DateTimeFormat("fr-FR", {
         day: "numeric",
         month: "long",
@@ -15,6 +15,7 @@ const priorityOrder: Record<Priority, number> = {
     MEDIUM: 1,
     LOW: 2,
 }
+
 export function formatCommentDate(dateString: string): string {
     const date = new Date(dateString);
 
@@ -50,5 +51,20 @@ export function getInitials(fullName?: string): string {
 }
 
 export function setPageTitle(title: string | undefined) {
-    document.title = `${title} - Mon App`;
+    document.title = `${title} - Abricot`;
 }
+
+
+export async function fetchDatas(functionToUse: () => any, saveState: any) {
+
+    try {
+        const data = await functionToUse()
+        saveState(data)
+    } catch (error) {
+        console.error(error)
+    }
+
+
+}
+
+

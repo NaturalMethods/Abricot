@@ -14,7 +14,14 @@ interface TagsProps{
     style?: React.CSSProperties
 }
 
-export default function Tags ({style, label="", padding="0", width, height, border="0", font="inter14400", backgroundColor, textColor}:TagsProps){
+export default function Tags ({style, label="",
+                                  padding="0",
+                                  width,
+                                  height,
+                                  border="0",
+                                  font="inter14400",
+                                  backgroundColor,
+                                  textColor}:TagsProps){
 
     let backgroundColors = "light-red"
     let textColors = "flashy-red"

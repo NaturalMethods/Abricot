@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
 import { apiRequest } from "@/app/api/api"
+import {getTokenFromCookie} from "@/lib/utilsServer";
 
 export async function GET() {
 
-    const cookieStore = await cookies()
-    const token = cookieStore.get("token")?.value
+    const token = await getTokenFromCookie()
 
     const data = await apiRequest("/auth/profile", {
         method: "GET",
@@ -34,8 +33,7 @@ export async function GET() {
 }
 export async function PUT(req: Request) {
 
-    const cookieStore = await cookies()
-    const token = cookieStore.get("token")?.value
+    const token = getTokenFromCookie()
 
     const body = await req.json()
     const { name, email } = body

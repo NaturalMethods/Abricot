@@ -76,7 +76,7 @@ export default function TextInput({
                 {showIcon && (
                     <Image
                         src={iconSrc}
-                        alt={altIcon}
+                        alt={altIcon ?? ""}
                         width={18}
                         height={18}
                         className={styles["input-icon"]}

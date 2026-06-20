@@ -33,7 +33,8 @@ export default function UserProvider({ children }: UserProviderProps) {
             setUser({
                 firstName: fullName[0],
                 lastName: fullName[1] ?? "",
-                mail: data.data.user.email
+                mail: data.data.user.email,
+                id: data.data.user.id,
             })
         }
 

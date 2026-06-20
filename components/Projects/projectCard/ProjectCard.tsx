@@ -2,29 +2,30 @@
 
 import styles from "@/components/Projects/projectCard/ProjectCard.module.css";
 import Image from "next/image";
-import { Project } from "@/app/types/Project";
+import {Project} from "@/app/types/Project";
 import Tags from "@/components/Tags/Tags";
-import { getInitials } from "@/lib/utils";
-import { useUser } from "@/app/contexts/useUser";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getProject } from "@/lib/projectsService";
+import {getInitials} from "@/lib/utils";
+import {useUser} from "@/app/contexts/useUser";
+import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
+import {getProjectTasks} from "@/lib/projectsService";
+import {Task} from "@/app/types/Task";
 
 interface ProjectCardProps {
     project: Project;
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
-    const { user } = useUser();
+export default function ProjectCard({project}: ProjectCardProps) {
+    const {user} = useUser();
     const router = useRouter();
 
-    const [projectData, setProjectData] = useState<Project | null>(null);
+    const [projectTasks, setProjectTasks] = useState<Task[]>();
 
     useEffect(() => {
         async function fetchProject() {
             try {
-                const data = await getProject(project.id);
-                setProjectData(data.project);
+                const data = await getProjectTasks(project.id);
+                setProjectTasks(data);
             } catch (error) {
                 console.error(error);
             }
@@ -34,12 +35,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     }, [project.id]);
 
     // 🔥 PROGRESS LOGIC
-    const tasks = projectData?.tasks ?? [];
+    const tasks = projectTasks ?? [];
 
     const total = tasks.length;
 
     const done = tasks.filter(
-        t => t.status?.toLowerCase().trim() === "done"
+        (t: Task) => t.status?.toLowerCase().trim() === "done"
     ).length;
 
     const percent = total === 0 ? 0 : (done / total) * 100;
@@ -48,26 +49,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
     const barColor = isComplete ? "var(--green)" : "var(--warning-orange)";
 
-    // ⛔ évite render si pas chargé (optionnel mais propre UX)
-    if (!projectData) {
-        return (
-            <section className={styles.card}>
-                <p>Chargement...</p>
-            </section>
-        );
-    }
 
     return (
         <section
-            style={{ cursor: "pointer" }}
+            style={{cursor: "pointer"}}
             className={`flex-col gap56 ${styles.card}`}
             onClick={() => router.push(`/project/${project.id}`)}
         >
             {/* HEADER */}
             <div className={`flex-col gap8 ${styles.headercard}`}>
-                <h2>{projectData.name}</h2>
+                <h2>{project.name}</h2>
                 <p className="inter14400 grey600">
-                    {projectData.description}
+                    {project.description}
                 </p>
             </div>
 
@@ -107,7 +100,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                         height={14}
                     />
                     <p className="inter10400 grey600">
-                        Équipe ({(projectData.members?.length ?? 0) + 1})
+                        Équipe ({(project.members?.length ?? 0) + 1})
                     </p>
                 </div>
 
@@ -127,7 +120,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                     />
 
                     <Tags
-                        label={projectData.owner.name}
+                        label={project.owner?.name}
                         padding="8px 16px"
                         height="12px"
                         backgroundColor="light-orange"
@@ -135,7 +128,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                     />
 
                     <div className={`flex-row ${styles.members}`}>
-                        {projectData.members?.map((member, index) => (
+                        {project?.members?.map((member, index) => (
                             <Tags
                                 key={member.id ?? index}
                                 label={getInitials(member.user.name) ?? ""}

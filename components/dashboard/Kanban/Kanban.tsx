@@ -5,11 +5,13 @@ import Thumbnail from "@/components/dashboard/TaskList/Thumbnail/Thumbnail";
 
 interface KanbanProps {
     tasksList: Task[]
+    visible ?: boolean
 }
 
 
 export default function Kanban ({
                                       tasksList,
+                                      visible = true
                                   }: KanbanProps){
 
     const todoTasks = tasksList.filter(task => task.status === "TODO")
@@ -18,6 +20,8 @@ export default function Kanban ({
 
 
     console.log(tasksList)
+
+    if(!visible) return null
 
     return(
         <section className={`flex-col  ${styles.kanban}`}>

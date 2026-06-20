@@ -12,6 +12,7 @@ import {useUser} from "@/app/contexts/useUser";
 import TextInput from "@/components/input/TextInput/TextInput";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import {Task} from "@/app/types/Task";
+import DotMenu from "@/components/input/DotMenu/DotMenu";
 
 interface ThumbnailProps{
     project?: Project
@@ -21,13 +22,18 @@ interface ThumbnailProps{
     isModal?: boolean
     task?: Task
 
+    onEdit?: (id: string|undefined) => void;
+    onDelete?: (id : string|undefined) => void;
+
 }
 
 export default function Thumbnail ({   project,
                                        format="default",
                                        reduced = false,
                                         isModal = false,
-                                        task
+                                        task,
+                                        onEdit,
+                                        onDelete
                                         }:ThumbnailProps){
 
 
@@ -112,7 +118,7 @@ export default function Thumbnail ({   project,
                 <div className={`flex-col align-center justify-space-between ${styles.thumbnailbutton}`}>
                     {!reduced && (<Tags label={task?.status} width={"75px"} height={"25px"} />)}
                     {!reduced && (<Button width={"121px"} text={"Voir"} onClick={() => setIsOpen(true)}  />)}
-                    {!isModal && <ModalTask task={task} isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isShow={true}/>
+                    {!isModal && <ModalTask task={task} isOpen={isOpen} onCloseAction={() => setIsOpen(false)} setIsOpen={setIsOpen} isShow={true}/>
                     }
                 </div>
             </div>)}
@@ -172,7 +178,7 @@ export default function Thumbnail ({   project,
 
                     </div>
                     <Button width={"121px"} text={"Voir"} onClick={() => setIsOpen(true)}  />
-                    {!isModal && <ModalTask task={task} isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isShow={true}/>
+                    {!isModal && <ModalTask task={task} isOpen={isOpen} onCloseAction={() => setIsOpen(false)} setIsOpen={setIsOpen} isShow={true}/>
                     }
                 </div>
             </div>)}
@@ -191,11 +197,9 @@ export default function Thumbnail ({   project,
                             </div>
                             <p className="inter14400 grey600"> {task?.description}</p>
                         </div>
-                        <Image
-                            src="/dotbutton.svg"
-                            alt="Menu"
-                            width={57}
-                            height={57}
+                        <DotMenu
+                            onEditAction={() => onEdit?.(task?.id)}
+                            onDeleteAction={() => onDelete?.(task?.id)}
                         />
                     </div>
 
@@ -271,10 +275,10 @@ export default function Thumbnail ({   project,
                         >
                             <div className={"flex-col gap10"}>
 
-                                {task?.comments?.map((comment, index) => (
+                                {task?.comments?.map((taskComment, index) => (
                                     <div className={"flex-row gap15"} key={index}>
                                         <Tags
-                                            label={getInitials(comment.author.name) ?? ""}
+                                            label={getInitials(taskComment.author.name) ?? ""}
                                             font="inter10400"
                                             padding="8px 5px"
                                             width="17px"
@@ -287,15 +291,15 @@ export default function Thumbnail ({   project,
                                         <div className={`flex-col justify-center gap10 max-w-100 ${commentedStyles.commentbackground}`}>
                                             <div className={"flex-row justify-space-between"}>
                                                 <p className={"inter14400"}>
-                                                    {comment.author.name}
+                                                    {taskComment.author.name}
                                                 </p>
                                                 <p className={"inter10400 grey600"}>
-                                                    {formatCommentDate(comment.createdAt)}
+                                                    {formatCommentDate(taskComment.createdAt)}
                                                 </p>
                                             </div>
 
                                             <p className={"inter10400"}>
-                                                {comment.content}
+                                                {taskComment.content}
                                             </p>
                                         </div>
                                     </div>

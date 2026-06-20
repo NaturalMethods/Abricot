@@ -15,6 +15,7 @@ export type Option = {
     label: string
     value: string | null
 }
+
 type Props = {
     width?: string
     height?: string
@@ -22,69 +23,173 @@ type Props = {
     options?: Option[]
     placeHolder?: string
     label?: string
-    onChange?: (value: string | null) => void
+    multiSelect?: boolean
+    onChange?: (value: string | null | string[]) => void
 }
 
-export default function Dropdown({ width="152px",
-                                     height="63px",
-                                     justify="space-evenly",
-                                     options= defaultOptions,
-                                     placeHolder="Statut",
-                                    label,
+export default function Dropdown({
+                                     width = "152px",
+                                     height = "63px",
+                                     justify = "space-evenly",
+                                     options = defaultOptions,
+                                     placeHolder = "Statut",
+                                     label,
+                                     multiSelect = false,
                                      onChange,
                                  }: Props) {
     const [open, setOpen] = useState(false)
+
     const [selected, setSelected] = useState<Option | null>(null)
+
+    const [selectedOptions, setSelectedOptions] = useState<Option[]>([])
 
     const ref = useRef<HTMLDivElement>(null)
 
-    function handleSelect(option: Option) {
+    function handleSingleSelect(option: Option) {
         setSelected(option)
         setOpen(false)
         onChange?.(option.value)
     }
 
+    function handleMultiSelect(option: Option) {
+        setSelectedOptions((prev) => {
+            const exists = prev.some(
+                (item) => item.value === option.value
+            )
+
+            const updated = exists
+                ? prev.filter(
+                    (item) => item.value !== option.value
+                )
+                : [...prev, option]
+
+            onChange?.(
+                updated
+                    .map((item) => item.value)
+                    .filter(
+                        (value): value is string =>
+                            value !== null
+                    )
+            )
+
+            return updated
+        })
+    }
+
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (ref.current && !ref.current.contains(event.target as Node)) {
+            if (
+                ref.current &&
+                !ref.current.contains(event.target as Node)
+            ) {
                 setOpen(false)
             }
         }
 
-        document.addEventListener("mousedown", handleClickOutside)
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        )
+
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            )
         }
     }, [])
 
-    const inputId = label ? label.toLowerCase().replace(/\s+/g, "-") : undefined;
+    const inputId = label
+        ? label.toLowerCase().replace(/\s+/g, "-")
+        : undefined
 
+    const displayText = multiSelect
+        ? selectedOptions.length > 0
+            ? `${selectedOptions.length} collaborateur${
+                selectedOptions.length > 1 ? "s" : ""
+            }`
+            : placeHolder
+        : selected
+            ? selected.label
+            : placeHolder
 
     return (
-        <div ref={ref} className={styles.wrapper} style={{width, height}}>
-            {label && <label className={"inter14400"} htmlFor={inputId}>{label}</label>}
+        <div
+            ref={ref}
+            className={styles.wrapper}
+            style={{ width, height }}
+        >
+            {label && (
+                <label
+                    className="inter14400"
+                    htmlFor={inputId}
+                >
+                    {label}
+                </label>
+            )}
+
             <button
+                type="button"
                 id={inputId}
                 className={`inter14400 ${styles.button}`}
-                style={{width,height, justifyContent: justify }}
-                onClick={() => setOpen((v) => !v)}
+                style={{
+                    width,
+                    height,
+                    justifyContent: justify,
+                }}
+                onClick={() =>
+                    setOpen((prev) => !prev)
+                }
             >
-                <p>{selected ? selected.label : placeHolder}</p>
+                <p>{displayText}</p>
 
-                <Image src="/arrowdown.svg" width={16} height={8} alt="" />
+                <Image
+                    src="/arrowdown.svg"
+                    width={16}
+                    height={8}
+                    alt=""
+                />
             </button>
 
             {open && (
-                <div className={styles.menu} style={{width}}>
-                    {options.map((option) => (
-                        <div
-                            key={option.label}
-                            className={styles.item}
-                            onClick={() => handleSelect(option)}
-                        >
-                            {option.label}
-                        </div>
-                    ))}
+                <div
+                    className={styles.menu}
+                    style={{ width }}
+                >
+                    {options.map((option) => {
+                        const isSelected = multiSelect
+                            ? selectedOptions.some(
+                                (item) =>
+                                    item.value ===
+                                    option.value
+                            )
+                            : selected?.value ===
+                            option.value
+
+                        return (
+                            <div
+                                key={`${option.label}-${option.value}`}
+                                className={styles.item}
+                                onClick={() =>
+                                    multiSelect
+                                        ? handleMultiSelect(
+                                            option
+                                        )
+                                        : handleSingleSelect(
+                                            option
+                                        )
+                                }
+                            >
+                                <span>
+                                    {option.label}
+                                </span>
+
+                                {isSelected && (
+                                    <span>✓</span>
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
             )}
         </div>

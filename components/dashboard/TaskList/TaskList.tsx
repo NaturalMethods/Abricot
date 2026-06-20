@@ -3,50 +3,86 @@ import styles from "@/components/dashboard/TaskList/TaskList.module.css";
 import TextInput from "@/components/input/TextInput/TextInput";
 import {Task} from "@/app/types/Task";
 import Thumbnail from "@/components/dashboard/TaskList/Thumbnail/Thumbnail";
-import {formatDate, sortTasksByPriority} from "@/lib/utils";
+import {sortTasksByPriority} from "@/lib/utils";
+import {useState} from "react";
+import {deleteTask} from "@/lib/projectsService";
 
 interface TaskListProps {
     tasksList: Task[]
+    edTask?: (id: string) => void
+    delTask?: (id: string, projectId: string)=> void
+
+    visible?: boolean
 }
 
 
 export default function TaskList ({
                                       tasksList,
-                                  }: TaskListProps){
+                                      visible = true,
+                                  }: TaskListProps) {
 
-    return(
-        <section className={`flex-col  ${styles.tasklist}`}>
-            <div className={`flex-col  ${styles.tasklistcontainer}`}>
-                <div className={`flex-row align-center justify-space-between`}>
-                    <div className={`flex-col justify-center  ${styles.tasklistheader}`}>
-                        <h2 className="grey800">Mes tâches assignées</h2>
-                        <p className="inter16400 grey600">Par ordre de priorité</p>
+
+    const [isModalCreation, setIsModalCreation] = useState(true);
+
+    const [refreshKey, setRefreshKey] = useState(0)
+
+    function edTask() {
+
+        openModal(false)
+        console.log("Ed")
+        refreshTasks()
+    }
+
+    function delTask(id: string, projectId: string) {
+        console.log("Del ")
+        deleteTask(id, projectId)
+        refreshTasks()
+    }
+
+    function refreshTasks() {
+        setRefreshKey((k) => k + 1)
+    }
+
+    function openModal(isCreation: boolean) {
+
+        if (!isCreation)
+            setIsModalCreation(false)
+        else
+            setIsModalCreation(true)
+
+        setIsOpen(true)
+    }
+
+
+    return (
+        visible && (
+            <section className={`flex-col  ${styles.tasklist}`}>
+                <div className={`flex-col  ${styles.tasklistcontainer}`}>
+                    <div className={`flex-row align-center justify-space-between`}>
+                        <div className={`flex-col justify-center  ${styles.tasklistheader}`}>
+                            <h2 className="grey800">Mes tâches assignées</h2>
+                            <p className="inter16400 grey600">Par ordre de priorité</p>
+                        </div>
+                        <TextInput showIcon={true}
+                                   width={"357px"}
+                                   height={"63px"}
+                                   placeholder={"Rechercher une tâche"}
+                                   ariaLabel={"Rechercher une tâche"}
+                                   altIcon={"Icone de loupe"}
+                                   label={""}/>
                     </div>
-                    <TextInput showIcon={true}
-                               width={"357px"}
-                               height={"63px"}
-                               placeholder={"Rechercher une tâche"}
-                               ariaLabel={"Rechercher une tâche"}
-                               altIcon={"Icone de loupe"}
-                               label={""} />
+
+                    {sortTasksByPriority(tasksList).map((task, index) => (
+                        <Thumbnail
+                            key={task.id ?? index}
+                            project={task.project}
+                            task={task}
+                            onEdit={() => edTask?.(task.id, task.project.id)}
+                            onDelete={() => delTask?.(task.id, task.project.id)}
+                        />
+                    ))}
+
+
                 </div>
-
-                {sortTasksByPriority(tasksList).map((task, index) => (
-                    <Thumbnail
-                        key={task.id ?? index}
-                        taskName={task.title}
-                        taskDesc={task.description}
-                        status={task.status}
-                        comments={task.comments}
-                        dueDate={formatDate(task.dueDate).toString()}
-                        project={task.project}
-                        task={task}
-                    />
-                ))}
-
-
-            </div>
-        </section>
-
-    )
+            </section>))
 }

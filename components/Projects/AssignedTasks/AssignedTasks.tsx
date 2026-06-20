@@ -3,7 +3,7 @@ import styles from "@/components/dashboard/TaskList/TaskList.module.css";
 import TextInput from "@/components/input/TextInput/TextInput";
 import {Task} from "@/app/types/Task";
 import Thumbnail from "@/components/dashboard/TaskList/Thumbnail/Thumbnail";
-import {formatDate, sortTasksByPriority} from "@/lib/utils";
+import {sortTasksByPriority} from "@/lib/utils";
 import Chips from "@/components/input/Chips/Chips";
 import {useEffect, useState} from "react";
 import Dropdown from "@/components/input/Dropdown/Dropdown";
@@ -11,12 +11,13 @@ import {getProjectTasks} from "@/lib/projectsService";
 
 interface AssignedTasksProps {
     id: string
+    refreshKey: number
+    edTask?: (id: string) => void
+    delTask?: (id: string)=> void
 }
 
 
-export default function AssignedTasks ({
-                                      id,
-                                  }: AssignedTasksProps){
+export default function AssignedTasks ({id, refreshKey, edTask, delTask}: AssignedTasksProps){
 
     const [calendarVisible, setCalendarVisible] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
@@ -31,17 +32,19 @@ export default function AssignedTasks ({
     const [projectTasks, setProjectTasks] = useState<Task[]>([])
 
     useEffect(() => {
+
+        console.log("Key:", refreshKey)
         async function fetchTasks() {
             try {
-                const data = await getProjectTasks(id)
-                setProjectTasks(data.tasks)
+                const tasks = await getProjectTasks(id)
+                setProjectTasks(tasks)
             } catch (error) {
                 console.error(error)
             }
         }
+            fetchTasks()
 
-        fetchTasks()
-    }, [])
+    }, [refreshKey])
 
     return(
         <section className={`flex-col  ${styles.tasklist}`}>
@@ -56,7 +59,7 @@ export default function AssignedTasks ({
                         <Chips text={"Calendrier"} height={"17px"} onClick={setCalendarPanelVisible} active={calendarVisible}/>
                         <Dropdown onChange={setSelectedStatus} />
                         <TextInput showIcon={true}
-                                   altIcon={"Icone de loupe"}
+                                   altIcon={"Icône de loupe"}
                                    width={"357px"}
                                    height={"63px"}
                                    placeholder={"Rechercher une tâche"}
@@ -71,15 +74,11 @@ export default function AssignedTasks ({
                     ?.map((task, index) => (
                     <Thumbnail
                         key={task.id ?? index}
-                        taskName={task.title}
-                        taskDesc={task.description}
-                        comments={task.comments}
-                        status={task.status}
-                        dueDate={formatDate(task.dueDate).toString()}
                         project={task.project}
                         format={"commented"}
-                        assignees={task.assignees}
                         task={task}
+                        onEdit={() => edTask?.(task.id)}
+                        onDelete={() => delTask?.(task.id)}
                     />
                 ))}
             </div>

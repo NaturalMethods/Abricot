@@ -7,24 +7,31 @@ import {Project} from "@/app/types/Project";
 import {getProjects} from "@/lib/projectsService";
 import Button from "@/components/input/Button/Button";
 import ModalProject from "@/components/Modal/Project/ModalProject";
+import {setPageTitle} from "@/lib/utils";
 
 export default function ProjectsPage (){
 
     const [projects, setProjects] = useState<Project[]>([])
     const [isOpen, setIsOpen] = useState(false)
+    const [refreshKey, setRefreshKey] = useState(0)
+
+    function refreshProjects() {
+        setRefreshKey((k) => k + 1)
+    }
 
     useEffect(() => {
+        setPageTitle("Projets")
         async function fetchTasks() {
             try {
-                const data = await getProjects()
-                setProjects(data.projects)
+                const fetchProjects = await getProjects()
+                setProjects(fetchProjects)
             } catch (error) {
                 console.error(error)
             }
         }
 
         fetchTasks()
-    }, [])
+    }, [refreshKey])
 
     return(
         <section className={`flex-col align-center ${styles.projectpage}`}>
@@ -37,7 +44,7 @@ export default function ProjectsPage (){
                         </div>
 
                     <Button text={"+ Créer un projet"} onClick={() => setIsOpen(true)} />
-                    <ModalProject isOpen={isOpen} onClose={() => setIsOpen(false)} setIsOpen={setIsOpen} isCreation={true}/>
+                    <ModalProject isOpen={isOpen} onCloseAction={() => refreshProjects()} setIsOpen={setIsOpen} isCreation={true}/>
 
                 </div>
                 <ProjectGrid projects={projects}/>

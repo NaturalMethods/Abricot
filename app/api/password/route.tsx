@@ -1,11 +1,10 @@
-import {cookies} from "next/headers";
 import {apiRequest} from "@/app/api/api";
 import {NextResponse} from "next/server";
+import {getTokenFromCookie} from "@/lib/utilsServer";
 
 export async function PUT(req: Request) {
 
-    const cookieStore = await cookies()
-    const token = cookieStore.get("token")?.value
+    const token = getTokenFromCookie()
 
     const body = await req.json()
     const { currentPassword, newPassword } = body

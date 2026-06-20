@@ -5,6 +5,7 @@ export interface User {
     firstName: string | null
     lastName: string | null
     mail: string
+    id: string
 }
 
 interface UserContextValue {

@@ -57,7 +57,8 @@ export default function LoginPage() {
             setUser({
                 firstName,
                 lastName,
-                mail: dataUser.email
+                mail: dataUser.email,
+                id: dataUser.id,
             })
 
             router.push("/dashboard")
