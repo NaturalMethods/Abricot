@@ -3,7 +3,8 @@ import Button from "@/components/input/Button/Button";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import Image from "next/image";
 import {Project} from "@/app/types/Project";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
 
 
 interface ProjectHeaderProps {
@@ -13,6 +14,13 @@ interface ProjectHeaderProps {
 export function ProjectHeader({project}: ProjectHeaderProps){
 
     const [isCreationTaskModalOpen, setIsCreationTaskModalOpen] = useState(false);
+
+    const refresh = useContext(RefreshContext);
+
+    function modalCloseAction(){
+        setIsCreationTaskModalOpen(false)
+        refresh()
+    }
 
     return (
         <div className={`flex-row align-center justify-space-between ${styles.projectheader}`}>
@@ -24,8 +32,7 @@ export function ProjectHeader({project}: ProjectHeaderProps){
                 <Button text={"Créer une tâche"} onClick={() => setIsCreationTaskModalOpen(true)} />
                 <ModalTask project={project}
                            isOpen={isCreationTaskModalOpen}
-                           onCloseAction={() => setIsCreationTaskModalOpen(false)}
-                           setIsOpen={setIsCreationTaskModalOpen}
+                           onCloseAction={modalCloseAction}
                            isCreation={true} />
 
 

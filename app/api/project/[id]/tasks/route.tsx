@@ -35,7 +35,7 @@ export async function GET(request: Request,
 
 export async function POST(req: Request) {
 
-    const token = getTokenFromCookie()
+    const token = await getTokenFromCookie()
 
     if (!token) {
         return NextResponse.json(
@@ -50,9 +50,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const {id, name, description } = body
-
-    console.log("id:", id, "name:",name, "desc:", description)
+    const {id, name, description, dueDate,assigneeIds, status } = body
 
     const data = await apiRequest(`/projects/${id}/tasks`, {
         method: "POST",
@@ -63,6 +61,9 @@ export async function POST(req: Request) {
         body: JSON.stringify({
             title: name,
             description: description,
+            dueDate: dueDate,
+            assigneeIds: assigneeIds,
+            status: status
         }),
     })
 

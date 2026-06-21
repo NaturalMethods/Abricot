@@ -15,7 +15,6 @@ export async function getProjects() : Promise<Project[]> {
     )
 
     const data = await response.json()
-    console.log("data:",data.data.data.projects)
     if (!response.ok) {
         throw new Error("Impossible de récupérer les projets")
     }
@@ -61,12 +60,13 @@ export async function getProjectTasks(id:String):Promise<Task[]> {
     if (!response.ok) {
         throw new Error("Impossible de récupérer le projet")
     }
-    console.log("datatask:",data)
     return data.data.data.tasks
 
 }
 
-export async function createProject(project: Project){
+export async function createProject(project: Project, contributors: string[]){
+
+    console.log("Contributors", contributors)
 
     const response = await fetch("/api/projects", {
         method: "POST",
@@ -75,13 +75,12 @@ export async function createProject(project: Project){
         },
         body: JSON.stringify({
             name: project.name,
-            description: project.description
+            description: project.description,
+            contributors: contributors
         }),
     })
 
     const data = await response.json()
-
-    console.log("Project créé:", data)
 
     if (!response.ok) {
         return {
@@ -92,7 +91,9 @@ export async function createProject(project: Project){
     return data
 }
 
-export async function createTask(project: Project){
+export async function createTask(project: Project, dueDate: string ,assigneeIds: string[],status: string){
+
+    console.log("assigneeIds:", assigneeIds)
 
     const response = await fetch(`/api/project/${project.id}/tasks`, {
         method: "POST",
@@ -102,13 +103,15 @@ export async function createTask(project: Project){
         body: JSON.stringify({
             id: project.id,
             name: project.name,
-            description: project.description
+            description: project.description,
+            dueDate: dueDate,
+            assigneeIds: assigneeIds,
+            status: status
         }),
     })
 
     const data = await response.json()
 
-    console.log("Tâche créé:", data)
 
     if (!response.ok) {
         return {
@@ -136,7 +139,6 @@ export async function deleteTask(id: string, projectId: string|undefined){
 
         const data = await response.json()
 
-        console.log("Tâche supprimée:", data)
 
         if (!response.ok) {
             return {
@@ -148,18 +150,22 @@ export async function deleteTask(id: string, projectId: string|undefined){
     }
 }
 
-export async function modifyTask( project:Project, taskId?: String,){
+export async function modifyTask( project:Project,task: Task, assigneesIds: string[]){
 
-    const response = await fetch(`/api/project/${project.id}/tasks/${taskId}`, {
+
+    const response = await fetch(`/api/project/${project.id}/tasks/${task.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            id: taskId,
             projectId: project.id,
-            name: project.name,
-            description: project.description
+            id: task?.id,
+            title: task.title,
+            description: task.description,
+            status: task.status,
+            dueDate: task.dueDate,
+            assigneesIds: assigneesIds,
         }),
     })
 
@@ -175,6 +181,8 @@ export async function modifyTask( project:Project, taskId?: String,){
     }
     return data
 }
+
+
 
 export function apiFetch(
     url: string,
@@ -196,4 +204,53 @@ export function apiFetch(
             }
             : {}),
     })
+}
+
+export async function createComment(id:string, taskId:string, comment: string){
+
+    const response = await fetch(`/api/project/${id}/tasks/${taskId}/comments`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            id: id,
+            taskId:taskId,
+            content: comment
+        }),
+    })
+
+    const data = await response.json()
+
+    console.log("Commentaire envoyé:", data)
+
+    if (!response.ok) {
+        return {
+            ok: false,
+            data,
+        }
+    }
+    return data
+}
+
+export async function searchUser(name: string) {
+    const response = await fetch(
+        `/api/users/search?query=${encodeURIComponent(name)}`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+
+    if (!response.ok) {
+        return null
+    }
+
+    const data = await response.json()
+
+    console.log("userssss:", data)
+
+    return data.data.users
 }

@@ -18,9 +18,6 @@ export default function Kanban ({
     const inProgressTasks = tasksList.filter(task => task.status === "IN_PROGRESS")
     const doneTasks = tasksList.filter(task => task.status === "DONE")
 
-
-    console.log(tasksList)
-
     if(!visible) return null
 
     return(

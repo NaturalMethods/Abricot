@@ -6,13 +6,13 @@ import styles from "./Modal.module.css"
 
 type ModalProps = {
     isOpen: boolean
-    onClose: () => void
+    onCloseAction: () => void
     children: React.ReactNode
 }
 
 export default function Modal({
                                   isOpen,
-                                  onClose,
+                                  onCloseAction,
                                   children,
                               }: ModalProps) {
     const [mounted, setMounted] = useState(false)
@@ -24,7 +24,7 @@ export default function Modal({
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
-                onClose()
+                onCloseAction()
             }
         }
 
@@ -32,12 +32,12 @@ export default function Modal({
 
         return () =>
             document.removeEventListener("keydown", handleEscape)
-    }, [onClose])
+    }, [onCloseAction])
 
     if (!mounted || !isOpen) return null
 
     return createPortal(
-        <div className={styles.overlay} onClick={onClose}>
+        <div className={styles.overlay} onClick={onCloseAction}>
             <div
                 className={styles.modal}
                 onClick={(e) => e.stopPropagation()}

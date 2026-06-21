@@ -7,17 +7,21 @@ import {Project} from "@/app/types/Project";
 import {getProjects} from "@/lib/projectsService";
 import Button from "@/components/input/Button/Button";
 import ModalProject from "@/components/Modal/Project/ModalProject";
-import {setPageTitle} from "@/lib/utils";
+import {fetchDatas, setPageTitle} from "@/lib/utils";
+import { RefreshContext } from "@/app/contexts/TaskContext/TaskContext";
 
 export default function ProjectsPage (){
 
     const [projects, setProjects] = useState<Project[]>([])
     const [isOpen, setIsOpen] = useState(false)
-    const [refreshKey, setRefreshKey] = useState(0)
 
-    function refreshProjects() {
-        setRefreshKey((k) => k + 1)
-    }
+    const [reloadKey, setReloadKey] = useState(0);
+    const refresh = () => {
+        setReloadKey(k => k + 1);
+    };
+    useEffect(() => {
+        fetchDatas(() => getProjects(), setProjects);
+    }, [reloadKey]);
 
     useEffect(() => {
         setPageTitle("Projets")
@@ -31,7 +35,7 @@ export default function ProjectsPage (){
         }
 
         fetchTasks()
-    }, [refreshKey])
+    }, [])
 
     return(
         <section className={`flex-col align-center ${styles.projectpage}`}>
@@ -44,10 +48,12 @@ export default function ProjectsPage (){
                         </div>
 
                     <Button text={"+ Créer un projet"} onClick={() => setIsOpen(true)} />
-                    <ModalProject isOpen={isOpen} onCloseAction={() => refreshProjects()} setIsOpen={setIsOpen} isCreation={true}/>
+                    <ModalProject isOpen={isOpen} onCloseAction={() => refresh()}  setIsOpen={setIsOpen} isCreation={true}/>
 
                 </div>
-                <ProjectGrid projects={projects}/>
+                <RefreshContext.Provider value={refresh}>
+                    <ProjectGrid projects={projects}/>
+                </RefreshContext.Provider>
             </div>
 
         </section>

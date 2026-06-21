@@ -16,9 +16,12 @@ interface TextInputProps {
     altIcon?: string
     backgroundColor?: string
     ariaLabel?: string
-    onChange?: (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void
+    isAutoComplete?: boolean
+    autoCompletionFunction: any
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+
+    // ✅ AJOUT
+    onSelectSuggestion?: (value: string) => void
 }
 
 export default function TextInput({
@@ -33,39 +36,71 @@ export default function TextInput({
                                       iconSrc = "/search.svg",
                                       altIcon,
                                       backgroundColor,
-                                      ariaLabel="",
+                                      ariaLabel = "",
+                                      isAutoComplete = false,
+                                      autoCompletionFunction,
                                       onChange,
+                                      onSelectSuggestion,
                                   }: TextInputProps) {
+
     const [showError, setShowError] = useState(hasError)
+    const [suggestions, setSuggestions] = useState<string[]>([])
+    const [showSuggestions, setShowSuggestions] = useState(false)
 
     useEffect(() => {
         setShowError(hasError)
     }, [hasError])
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setShowError(false)
         onChange?.(e)
+
+        if (isAutoComplete) {
+            const result = await autoCompletionFunction(e.target.value)
+
+            console.log("Result:",result)
+            setSuggestions(result)
+
+            setShowSuggestions(
+                e.target.value.trim() !== "" && result.length > 0
+            )
+        }
     }
 
-    const inputId = label ? label.toLowerCase().replace(/\s+/g, "-") : undefined;
+    function handleSelectSuggestion(suggestion: string) {
+        // 👉 envoie au parent
+        onSelectSuggestion?.(suggestion)
+
+        // reset UI
+        setShowSuggestions(false)
+        setSuggestions([])
+    }
+
+    const inputId = label
+        ? label.toLowerCase().replace(/\s+/g, "-")
+        : undefined
 
     return (
         <div
             className={`flex-col inter14400 ${styles["input-container"]}`}
-            style={{ width: width}}
+            style={{ width, position: "relative" }}
         >
             {label && <label htmlFor={inputId}>{label}</label>}
 
             <div
                 className={styles["input-wrapper"]}
-                style={{width, height }}
+                style={{ width, height }}
             >
                 <input
                     id={inputId}
                     className={`inter14400 ${styles["input-field"]} ${
                         showError ? styles["input-error"] : ""
                     }`}
-                    style={{ width,height, backgroundColor:`var(--${backgroundColor})`}}
+                    style={{
+                        width,
+                        height,
+                        backgroundColor: `var(--${backgroundColor})`
+                    }}
                     type={type}
                     placeholder={placeholder}
                     value={value}
@@ -83,6 +118,22 @@ export default function TextInput({
                     />
                 )}
             </div>
+
+            {showSuggestions && (
+                <div className={styles["autocomplete-menu"]}>
+                    {suggestions.map((suggestion, index) => (
+                        <div
+                            key={index}
+                            className={styles["autocomplete-item"]}
+                            onMouseDown={() =>
+                                handleSelectSuggestion(suggestion)
+                            }
+                        >
+                            {suggestion}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

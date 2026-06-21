@@ -24,8 +24,6 @@ export async function GET() {
             { status: 401 }
         )
     }
-
-    console.log(data)
     return NextResponse.json({
         success: true,
         data: data
@@ -50,9 +48,17 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { name, description } = body
+    const { name, description, contributors } = body
 
-    console.log("name:",name, "desc:", description)
+
+
+    const test =JSON.stringify({
+            name: name,
+            description: description,
+            contributors: contributors
+        })
+
+    console.log("Con;",test)
 
     const data = await apiRequest("/projects", {
         method: "POST",
@@ -63,9 +69,11 @@ export async function POST(req: Request) {
         body: JSON.stringify({
             name: name,
             description: description,
+            contributors: contributors
             }),
     })
 
+    console.log("message",data.message)
     if (!data.success) {
         return NextResponse.json(
             {

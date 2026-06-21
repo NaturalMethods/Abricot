@@ -24,23 +24,13 @@ export default function TaskList ({
 
     const [isModalCreation, setIsModalCreation] = useState(true);
 
-    const [refreshKey, setRefreshKey] = useState(0)
-
     function edTask() {
 
         openModal(false)
-        console.log("Ed")
-        refreshTasks()
     }
 
     function delTask(id: string, projectId: string) {
-        console.log("Del ")
         deleteTask(id, projectId)
-        refreshTasks()
-    }
-
-    function refreshTasks() {
-        setRefreshKey((k) => k + 1)
     }
 
     function openModal(isCreation: boolean) {
@@ -50,7 +40,6 @@ export default function TaskList ({
         else
             setIsModalCreation(true)
 
-        setIsOpen(true)
     }
 
 

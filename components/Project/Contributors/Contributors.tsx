@@ -16,7 +16,6 @@ export function ContributorsHeader({project}: ContributorsHeaderProps){
             <div className={`flex-row  align-center gap8 ${styles.contributorlist}`}>
                 <OwnerTags project={project}/>
                 <ContributorsTags project={project}/>
-
             </div>
         </div>
 

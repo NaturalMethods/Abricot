@@ -1,7 +1,7 @@
 "use client"
 
 import Modal from "@/components/Modal/Modal"
-import React, { useState } from "react"
+import React, {useContext, useState} from "react"
 import TextInput from "@/components/input/TextInput/TextInput"
 import Button from "@/components/input/Button/Button"
 import Image from "next/image"
@@ -11,13 +11,15 @@ import { Task } from "@/app/types/Task"
 import Tags from "@/components/Tags/Tags"
 import Dropdown, { Option } from "@/components/input/Dropdown/Dropdown"
 import { Project } from "@/app/types/Project"
-import {createTask, modifyTask} from "@/lib/projectsService"
+import {createTask, deleteTask, modifyTask} from "@/lib/projectsService"
 import { useRouter } from "next/navigation"
+import {Status, TagsSelect} from "@/components/Tags/TagsSelect";
+import CalendarInput from "@/components/input/TextInput/CalendarInput";
+import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
 
 type ModalProps = {
     isOpen: boolean
     onCloseAction: () => void
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
     isCreation?: boolean
     isModification?: boolean
     isShow?: boolean
@@ -27,7 +29,6 @@ type ModalProps = {
 
 export default function ModalTask({
                                       isOpen,
-                                      setIsOpen,
                                       isCreation,
                                       isShow,
                                       isModification,
@@ -35,8 +36,6 @@ export default function ModalTask({
                                       onCloseAction,
                                       task,
                                   }: ModalProps) {
-
-    const router = useRouter()
 
     const projectId = project?.id
 
@@ -58,6 +57,9 @@ export default function ModalTask({
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [dueDate, setDueDate] = useState("")
+    const [assignedTo, setAssignedTo] = useState<string|null|string[]>()
+    const [status, setStatus] = useState<Status | null>(null)
+
 
     const isFormValid = title.trim().length > 0
 
@@ -65,8 +67,17 @@ export default function ModalTask({
         setTitle("")
         setDescription("")
         setDueDate("")
-        setIsOpen(false)
+
         onCloseAction()
+    }
+
+    const refresh = useContext(RefreshContext);
+    function edTask(){
+        refresh()
+    }
+    async function delTask(taskId: string){
+        await deleteTask(taskId, project?.id)
+        refresh()
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -74,36 +85,42 @@ export default function ModalTask({
 
         if (!isFormValid) return
         if (!projectId) return
-
         if(isCreation) {
             const resp = await createTask({
                 id: projectId,
                 name: title.trim(),
                 description: description.trim(),
-            })
+            }, dueDate,assignedTo ,status??"TODO")
             if (resp?.success) {
                 closeModal()
-                router.push(`/project/${projectId}`)
             }
         }
-        if(isModification) {
 
-            const resp = await modifyTask({
-                id: projectId,
-                name: title.trim(),
-                description: description.trim(),
-            },task?.id)
+        if (isModification) {
+            console.log("assignee:", assignedTo);
+
+            const resp = await modifyTask(
+                { id: projectId, name: project.name },
+                {
+                    id: task?.id,
+                    title: title !== "" ? title : task?.title,
+                    description: description !== "" ? description : task?.description,
+                    status: status !== "" ? status : task?.status,
+                    dueDate: dueDate !== "" ? dueDate : task?.dueDate,
+
+                },
+                assignedTo
+            );
+
             if (resp?.success) {
-                closeModal()
-                router.push(`/project/${projectId}`)
+                closeModal();
             }
-
         }
 
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={closeModal}>
+        <Modal isOpen={isOpen} onCloseAction={closeModal}>
             {isCreation && (
                 <div className={`flex-col align-center gap15 ${styles.padding}`}>
                     <form onSubmit={handleSubmit}>
@@ -143,35 +160,29 @@ export default function ModalTask({
                                     }
                                 />
 
-                                <TextInput
+                                <CalendarInput
                                     label="Échéance*"
                                     value={dueDate}
                                     width="452px"
                                     ariaLabel="Date d'échéance"
-                                    showIcon
+                                    onChange={setDueDate}
                                     iconSrc="/minicalendar.svg"
                                     altIcon="Icone de calendrier"
-                                    onChange={(e) =>
-                                        setDueDate(e.target.value)
-                                    }
                                 />
 
                                 <Dropdown
+                                    multiSelect
                                     label="Assigné à :"
                                     width="100%"
                                     justify="space-between"
                                     options={assignedToOptions}
                                     placeHolder="Choisir un ou plusieurs collaborateurs"
+                                    onChange={(userIds) => {
+                                        setAssignedTo(userIds)
+                                    }}
                                 />
 
-                                <div className="flex-col gap15">
-                                    <p className="inter14400">Statut:</p>
-                                    <div className="flex-row gap8">
-                                        <Tags label="TODO" width="75px" height="25px" />
-                                        <Tags label="IN_PROGRESS" width="75px" height="25px" />
-                                        <Tags label="DONE" width="75px" height="25px" />
-                                    </div>
-                                </div>
+                                <TagsSelect value={status} onChange={setStatus} />
                             </div>
 
                             <Button
@@ -187,7 +198,11 @@ export default function ModalTask({
 
             {isShow && (
                 <div className={`flex-col align-center gap15 ${styles.padding}`}>
-                    <Thumbnail task={task} isModal format="commented" />
+                    <Thumbnail task={task} isModal format="commented"
+                               project={project}
+                               onEdit={() => edTask()}
+                               onDelete={() => delTask(task?.id)}/>
+
                 </div>
             )}
 
@@ -232,26 +247,26 @@ export default function ModalTask({
                                     }
                                 />
 
-                                <TextInput
+                                <CalendarInput
                                     label="Échéance*"
                                     value={dueDate}
                                     width="452px"
                                     ariaLabel="Date d'échéance"
-                                    showIcon
-                                    placeholder={task?.dueDate}
+                                    onChange={setDueDate}
                                     iconSrc="/minicalendar.svg"
                                     altIcon="Icone de calendrier"
-                                    onChange={(e) =>
-                                        setDueDate(e.target.value)
-                                    }
                                 />
 
                                 <Dropdown
+                                    multiSelect
                                     label="Assigné à :"
                                     width="100%"
                                     justify="space-between"
                                     options={assignedToOptions}
                                     placeHolder="Choisir un ou plusieurs collaborateurs"
+                                    onChange={(userIds) => {
+                                        setAssignedTo(userIds)
+                                    }}
                                 />
 
                                 <div className="flex-col gap15">
@@ -266,7 +281,7 @@ export default function ModalTask({
 
                             <Button
                                 type="submit"
-                                text="+ Ajouter une tâche"
+                                text="Enregistrer"
                                 width="181px"
                                 disabled={!isFormValid}
                             />

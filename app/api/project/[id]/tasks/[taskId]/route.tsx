@@ -21,8 +21,6 @@ export async function DELETE(req: Request) {
     const body = await req.json()
     const {id, projectId } = body
 
-    console.log("id:", id, "ProjectId:",projectId,)
-
     const data = await apiRequest(`/projects/${projectId}/tasks/${id}`, {
         method: "DELETE",
         headers: {
@@ -69,7 +67,7 @@ export async function PUT(req: Request) {
     }
 
     const body = await req.json()
-    const {id, projectId, title, description } = body
+    const {id, projectId, title, description,status, dueDate, assigneesIds } = body
 
 
     const data = await apiRequest(`/projects/${projectId}/tasks/${id}`, {
@@ -82,7 +80,10 @@ export async function PUT(req: Request) {
             id: id,
             projectId: projectId,
             title: title,
-            description: description
+            description: description,
+            status: status??"TODO",
+            dueDate: dueDate,
+            assigneeIds: assigneesIds
         }),
     })
 

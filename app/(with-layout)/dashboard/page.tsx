@@ -10,6 +10,7 @@ import {Task} from "@/app/types/Task";
 import Kanban from "@/components/dashboard/Kanban/Kanban";
 import {fetchDatas, setPageTitle} from "@/lib/utils";
 import {DashboardHeader} from "@/components/dashboard/Header/DashboardHeader";
+import { RefreshContext } from "@/app/contexts/TaskContext/TaskContext";
 
 
 export default function DashboardPage (){
@@ -27,6 +28,14 @@ export default function DashboardPage (){
         fetchDatas(() => getTasksList(), setTasksList)
     }, [])
 
+    const [reloadKey, setReloadKey] = useState(0);
+    const refresh = () => {
+        setReloadKey(k => k + 1);
+    };
+    useEffect(() => {
+        fetchDatas(() => getTasksList(), setTasksList);
+    }, [reloadKey]);
+
     const {user} = useUser()
     return(
         <section className={`flex-col align-center ${styles.dashboardpage}`}>
@@ -38,10 +47,10 @@ export default function DashboardPage (){
                     <Chips text={"Liste"} onClick={switchPanel} active={!kanbanVisible}/>
                     <Chips text={"Kanban"} onClick={switchPanel} active={kanbanVisible}/>
                 </div>
-
-                <TaskList tasksList={tasksList} visible={!kanbanVisible} />
-                <Kanban tasksList={tasksList} visible={kanbanVisible}  />
-
+                <RefreshContext.Provider value={refresh}>
+                    <TaskList tasksList={tasksList} visible={!kanbanVisible} />
+                    <Kanban tasksList={tasksList} visible={kanbanVisible}  />
+                </RefreshContext.Provider>
             </div>
         </section>
 
