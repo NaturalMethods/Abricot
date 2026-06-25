@@ -32,7 +32,9 @@ export async function GET(req: Request) {
             },
         })
 
-        return NextResponse.json(data)
+        console.log("users:", data.data.users)
+
+        return NextResponse.json(data.data.users)
     } catch (error) {
         console.error("SEARCH USERS ERROR:", error)
 

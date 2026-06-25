@@ -69,6 +69,8 @@ export async function PUT(req: Request) {
     const body = await req.json()
     const {id, projectId, title, description,status, dueDate, assigneesIds } = body
 
+    console.log("Body: ", projectId,"Id:", id)
+
 
     const data = await apiRequest(`/projects/${projectId}/tasks/${id}`, {
         method: "PUT",

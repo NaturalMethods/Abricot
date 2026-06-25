@@ -52,28 +52,26 @@ export default function Dropdown({
     }
 
     function handleMultiSelect(option: Option) {
-        setSelectedOptions((prev) => {
-            const exists = prev.some(
-                (item) => item.value === option.value
-            )
+        const exists = selectedOptions.some(
+            (item) => item.value === option.value
+        )
 
-            const updated = exists
-                ? prev.filter(
-                    (item) => item.value !== option.value
+        const updated = exists
+            ? selectedOptions.filter(
+                (item) => item.value !== option.value
+            )
+            : [...selectedOptions, option]
+
+        setSelectedOptions(updated)
+
+        onChange?.(
+            updated
+                .map((item) => item.value)
+                .filter(
+                    (value): value is string =>
+                        value !== null
                 )
-                : [...prev, option]
-
-            onChange?.(
-                updated
-                    .map((item) => item.value)
-                    .filter(
-                        (value): value is string =>
-                            value !== null
-                    )
-            )
-
-            return updated
-        })
+        )
     }
 
     useEffect(() => {

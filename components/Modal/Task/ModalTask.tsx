@@ -8,11 +8,9 @@ import Image from "next/image"
 import styles from "../Modal.module.css"
 import Thumbnail from "@/components/dashboard/TaskList/Thumbnail/Thumbnail"
 import { Task } from "@/app/types/Task"
-import Tags from "@/components/Tags/Tags"
 import Dropdown, { Option } from "@/components/input/Dropdown/Dropdown"
 import { Project } from "@/app/types/Project"
 import {createTask, deleteTask, modifyTask} from "@/lib/projectsService"
-import { useRouter } from "next/navigation"
 import {Status, TagsSelect} from "@/components/Tags/TagsSelect";
 import CalendarInput from "@/components/input/TextInput/CalendarInput";
 import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
@@ -39,20 +37,22 @@ export default function ModalTask({
 
     const projectId = project?.id
 
-    const assignedToOptions: Option[] = [
-        ...(project?.owner
-            ? [
-                {
-                    label: project.owner.name,
-                    value: project.owner.id,
-                },
-            ]
-            : []),
-        ...(project?.members?.map((member) => ({
-            label: member.user.name,
-            value: member.user.id,
-        })) || []),
-    ]
+    const assignedToOptions: Option[] = Array.from(
+        new Map(
+            [
+                ...(project?.owner
+                    ? [{
+                        label: project.owner.name,
+                        value: project.owner.id,
+                    }]
+                    : []),
+                ...(project?.members?.map((member) => ({
+                    label: member.user.name,
+                    value: member.user.id,
+                })) ?? []),
+            ].map((option) => [option.value, option])
+        ).values()
+    );
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
@@ -61,7 +61,20 @@ export default function ModalTask({
     const [status, setStatus] = useState<Status | null>(null)
 
 
-    const isFormValid = title.trim().length > 0
+    function isFormValid():boolean
+    {
+        if(isModification && (title.trim().length > 0 ||
+            description.trim().length > 0 ||
+            dueDate.trim().length > 0
+            )) return true
+
+        if(isCreation && (title.trim().length > 0 &&
+            description.trim().length > 0 &&
+            dueDate.trim().length > 0)) return true
+
+        return false;
+
+    }
 
     function closeModal() {
         setTitle("")
@@ -83,7 +96,7 @@ export default function ModalTask({
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
 
-        if (!isFormValid) return
+        if (!isFormValid()) return
         if (!projectId) return
         if(isCreation) {
             const resp = await createTask({
@@ -102,12 +115,11 @@ export default function ModalTask({
             const resp = await modifyTask(
                 { id: projectId, name: project.name },
                 {
-                    id: task?.id,
-                    title: title !== "" ? title : task?.title,
-                    description: description !== "" ? description : task?.description,
-                    status: status !== "" ? status : task?.status,
-                    dueDate: dueDate !== "" ? dueDate : task?.dueDate,
-
+                    id: task?.id ??"",
+                    title: title !== "" ? title : task?.title ?? "",
+                    description: description !== "" ? description : task?.description ?? "",
+                    status: status ?? task?.status ?? "TODO",
+                    dueDate: dueDate !== "" ? dueDate : task?.dueDate ?? "",
                 },
                 assignedTo
             );
@@ -145,10 +157,8 @@ export default function ModalTask({
                                     value={title}
                                     width="452px"
                                     ariaLabel="Titre"
-                                    onChange={(e) =>
-                                        setTitle(e.target.value)
-                                    }
-                                />
+                                    onChange={(e) => setTitle(e.target.value)}
+                                                                 />
 
                                 <TextInput
                                     label="Description*"
@@ -189,7 +199,7 @@ export default function ModalTask({
                                 type="submit"
                                 text="+ Ajouter une tâche"
                                 width="181px"
-                                disabled={!isFormValid}
+                                disabled={!isFormValid()}
                             />
                         </div>
                     </form>
@@ -201,7 +211,7 @@ export default function ModalTask({
                     <Thumbnail task={task} isModal format="commented"
                                project={project}
                                onEdit={() => edTask()}
-                               onDelete={() => delTask(task?.id)}/>
+                               onDelete={() => delTask(task?.id ?? "")}/>
 
                 </div>
             )}
@@ -269,21 +279,15 @@ export default function ModalTask({
                                     }}
                                 />
 
-                                <div className="flex-col gap15">
-                                    <p className="inter14400">Statut:</p>
-                                    <div className="flex-row gap8">
-                                        <Tags label="TODO" width="75px" height="25px" />
-                                        <Tags label="IN_PROGRESS" width="75px" height="25px" />
-                                        <Tags label="DONE" width="75px" height="25px" />
-                                    </div>
-                                </div>
+                                <TagsSelect value={status} onChange={setStatus} />
+
                             </div>
 
                             <Button
                                 type="submit"
                                 text="Enregistrer"
                                 width="181px"
-                                disabled={!isFormValid}
+                                disabled={!isFormValid()}
                             />
                         </div>
                     </form>

@@ -37,6 +37,12 @@ export default function ProjectsPage (){
         fetchTasks()
     }, [])
 
+    function modalCloseAction(){
+        setIsOpen(false)
+        refresh()
+    }
+
+
     return(
         <section className={`flex-col align-center ${styles.projectpage}`}>
             <div className={`flex-col align-start ${styles.projectcontainer}`}>
@@ -48,7 +54,8 @@ export default function ProjectsPage (){
                         </div>
 
                     <Button text={"+ Créer un projet"} onClick={() => setIsOpen(true)} />
-                    <ModalProject isOpen={isOpen} onCloseAction={() => refresh()}  setIsOpen={setIsOpen} isCreation={true}/>
+                    <ModalProject isOpen={isOpen} onCloseAction={() => modalCloseAction()} setIsOpen={setIsOpen}
+                                  isCreation={true} isModification={false} />
 
                 </div>
                 <RefreshContext.Provider value={refresh}>

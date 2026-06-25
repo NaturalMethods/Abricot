@@ -26,6 +26,8 @@ export default function singleProjectsPage (){
     };
     useEffect(() => {
         fetchDatas(() => getProjectTasks(id), setProjectTasks);
+        fetchDatas(() => getProject(id), setProject);
+        console.log("project data:", projectTasks)
     }, [reloadKey]);
 
 

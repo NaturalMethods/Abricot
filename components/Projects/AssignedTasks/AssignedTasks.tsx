@@ -46,7 +46,7 @@ export default function AssignedTasks ({project, projectTasks, id}: AssignedTask
             <div className={`flex-col  ${styles.tasklistcontainer}`}>
                 <AssignedTasksHeader panelVisibilityState={calendarVisible} setPanelState={setCalendarVisible} setStatusFilter={setSelectedStatus}/>
 
-                {sortTasksByPriority(projectTasks ?? []).filter((task) => {
+                {projectTasks.length > 0 && sortTasksByPriority(projectTasks ?? []).filter((task) => {
                     if (!selectedStatus) return true
                     return task.status === selectedStatus
                 })

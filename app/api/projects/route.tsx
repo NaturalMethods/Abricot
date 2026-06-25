@@ -24,9 +24,12 @@ export async function GET() {
             { status: 401 }
         )
     }
+
+    console.log("Test2:", data)
+
     return NextResponse.json({
         success: true,
-        data: data
+        data: data.data.projects
     })
 }
 

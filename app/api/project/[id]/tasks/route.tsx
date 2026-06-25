@@ -29,7 +29,7 @@ export async function GET(request: Request,
 
     return NextResponse.json({
         success: true,
-        data: data
+        data: data.data.tasks
     })
 }
 

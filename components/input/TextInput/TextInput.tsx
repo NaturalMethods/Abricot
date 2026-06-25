@@ -17,7 +17,7 @@ interface TextInputProps {
     backgroundColor?: string
     ariaLabel?: string
     isAutoComplete?: boolean
-    autoCompletionFunction: any
+    autoCompletionFunction?: any
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 
     // ✅ AJOUT

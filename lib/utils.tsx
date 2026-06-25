@@ -33,6 +33,7 @@ export function formatCommentDate(dateString: string): string {
 }
 
 export function sortTasksByPriority(tasks: Task[]): Task[] {
+
     return [...tasks].sort(
         (a, b) =>
             priorityOrder[a.priority as Priority] -

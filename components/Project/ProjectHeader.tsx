@@ -5,6 +5,7 @@ import Image from "next/image";
 import {Project} from "@/app/types/Project";
 import {useContext, useState} from "react";
 import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
+import ModalProject from "@/components/Modal/Project/ModalProject";
 
 
 interface ProjectHeaderProps {
@@ -14,18 +15,37 @@ interface ProjectHeaderProps {
 export function ProjectHeader({project}: ProjectHeaderProps){
 
     const [isCreationTaskModalOpen, setIsCreationTaskModalOpen] = useState(false);
+    const [isModalProjectOpen, setModalProjectOpen] = useState(false);
 
     const refresh = useContext(RefreshContext);
 
     function modalCloseAction(){
-        setIsCreationTaskModalOpen(false)
+
+        if(isCreationTaskModalOpen)
+            setIsCreationTaskModalOpen(false)
+
+
+        if(isModalProjectOpen) {
+            setModalProjectOpen(false)
+        }
         refresh()
     }
 
     return (
         <div className={`flex-row align-center justify-space-between ${styles.projectheader}`}>
             <div className={`flex-col  ${styles.dashboardheadertext}`}>
-                <h1 className="grey800">{project?.name}</h1>
+                <div className={"flex-row align-center gap8"}>
+                    <h1 className="grey800">{project?.name}</h1>
+                    <p className={"inter14400 dark-orange underline"} onClick={()=> setModalProjectOpen(true)}>Modifier</p>
+                    <ModalProject isOpen={isModalProjectOpen}
+                                  onCloseAction={() => modalCloseAction()}
+                                  setIsOpen={setModalProjectOpen}
+                                  isModification={true}
+                                  isCreation={false}
+                                  project={project}
+                    />
+
+                </div>
                 <p className="inter18400 grey600">{project?.description}</p>
             </div>
             <div className="flex-row gap15">
