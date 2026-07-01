@@ -53,7 +53,7 @@ export default function ProjectCard({project}: ProjectCardProps) {
     return (
         <section
             style={{cursor: "pointer"}}
-            className={`flex-col gap56 ${styles.card}`}
+            className={`flex-col gap56 lg:min-w-[325px] ${styles.card}`}
             onClick={() => router.push(`/project/${project.id}`)}
         >
             {/* HEADER */}
@@ -65,7 +65,7 @@ export default function ProjectCard({project}: ProjectCardProps) {
             </div>
 
             {/* PROGRESS */}
-            <div className="flex-col gap15">
+            <div className="flex-col gap-2">
                 <div className="flex-row justify-space-between">
                     <p className="inter12400 grey600">Progression</p>
                     <p className="inter12400 grey800">
@@ -113,8 +113,8 @@ export default function ProjectCard({project}: ProjectCardProps) {
                         }
                         font="inter10400"
                         padding="8px 5px"
-                        width="17px"
-                        height="12px"
+                        width="27px"
+                        height="27px"
                         backgroundColor="light-orange"
                         textColor="grey950"
                     />
@@ -122,7 +122,7 @@ export default function ProjectCard({project}: ProjectCardProps) {
                     <Tags
                         label={project.owner?.name}
                         padding="8px 16px"
-                        height="12px"
+                        height="27px"
                         backgroundColor="light-orange"
                         textColor="warning-orange"
                     />
@@ -134,13 +134,13 @@ export default function ProjectCard({project}: ProjectCardProps) {
                                 label={getInitials(member.user.name) ?? ""}
                                 font="inter10400"
                                 padding="8px 5px"
-                                width="17px"
-                                height="12px"
+                                width="27px"
+                                height="27px"
                                 backgroundColor="grey-200"
                                 textColor="grey-950"
                                 border="1px solid #FFFFFF"
                                 style={{
-                                    marginLeft: index === 0 ? 0 : "-10px",
+                                    marginLeft: index === 0 ? 0 : "-5px",
                                     zIndex: index + 1,
                                     position: "relative",
                                 }}

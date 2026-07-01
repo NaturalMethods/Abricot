@@ -55,7 +55,7 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
     // 🔥 MODE DISPLAY FORCÉ
     if (isDisplay) {
         return (
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{whiteSpace: 'nowrap', display: "flex", alignItems: "center" , gap: 8 }}>
                 <Image
                     src="/minicalendar.svg"
                     alt="calendar"

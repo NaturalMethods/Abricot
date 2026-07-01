@@ -9,7 +9,7 @@ interface ProjectGridProps{
 export default function ProjectGrid ({ projects,}   :ProjectGridProps){
 
     return(
-        <section className={`flex-col align-center ${styles.gridsection} `}>
+        <section className={`align-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${styles.gridsection} `}>
 
             {projects.map((project,index) => (
 

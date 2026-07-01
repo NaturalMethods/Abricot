@@ -13,7 +13,7 @@ import { Project } from "@/app/types/Project"
 import {createTask, deleteTask, modifyTask} from "@/lib/projectsService"
 import {Status, TagsSelect} from "@/components/Tags/TagsSelect";
 import CalendarInput from "@/components/input/TextInput/CalendarInput";
-import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
+import {RefreshContext} from "@/app/contexts/RefreshContext/RefreshContext";
 
 type ModalProps = {
     isOpen: boolean
@@ -84,7 +84,7 @@ export default function ModalTask({
         onCloseAction()
     }
 
-    const refresh = useContext(RefreshContext);
+    const {refresh} = useContext(RefreshContext);
     function edTask(){
         refresh()
     }

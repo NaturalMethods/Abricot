@@ -4,8 +4,9 @@ import ModalTask from "@/components/Modal/Task/ModalTask";
 import Image from "next/image";
 import {Project} from "@/app/types/Project";
 import {useContext, useState} from "react";
-import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
+import {RefreshContext} from "@/app/contexts/RefreshContext/RefreshContext";
 import ModalProject from "@/components/Modal/Project/ModalProject";
+import ModalIA from "@/components/Modal/ModalIA/ModalIA";
 
 
 interface ProjectHeaderProps {
@@ -16,9 +17,11 @@ export function ProjectHeader({project}: ProjectHeaderProps){
 
     const [isCreationTaskModalOpen, setIsCreationTaskModalOpen] = useState(false);
     const [isModalProjectOpen, setModalProjectOpen] = useState(false);
+    const [isModalIAOpen, setModalIAOpen] = useState(false);
 
-    const refresh = useContext(RefreshContext);
+    const {refresh} = useContext(RefreshContext);
 
+    // Function called when closing the modal, hide the modal and refresh the page components
     function modalCloseAction(){
 
         if(isCreationTaskModalOpen)
@@ -28,6 +31,11 @@ export function ProjectHeader({project}: ProjectHeaderProps){
         if(isModalProjectOpen) {
             setModalProjectOpen(false)
         }
+
+        if(isModalIAOpen){
+            setModalIAOpen(false)
+        }
+
         refresh()
     }
 
@@ -49,7 +57,7 @@ export function ProjectHeader({project}: ProjectHeaderProps){
                 <p className="inter18400 grey600">{project?.description}</p>
             </div>
             <div className="flex-row gap15">
-                <Button text={"Créer une tâche"} onClick={() => setIsCreationTaskModalOpen(true)} />
+                <Button text={"Créer une tâche"} width={"141px"} onClick={() => setIsCreationTaskModalOpen(true)} />
                 <ModalTask project={project}
                            isOpen={isCreationTaskModalOpen}
                            onCloseAction={modalCloseAction}
@@ -65,7 +73,10 @@ export function ProjectHeader({project}: ProjectHeaderProps){
                                 width={16}
                                 height={16}
                             />
-                        } variant={"darkorange"} />
+                        } variant={"darkorange"}
+                        onClick={() => setModalIAOpen(true)}
+                />
+                <ModalIA isOpen={isModalIAOpen} setIsOpen={setModalIAOpen} onCloseAction={modalCloseAction}/>
             </div>
 
 

@@ -14,6 +14,8 @@ interface TextInputProps {
     showIcon?: boolean
     iconSrc?: string
     altIcon?: string
+    iconWidth?: number
+    iconHeight?: number
     backgroundColor?: string
     ariaLabel?: string
     isAutoComplete?: boolean
@@ -22,6 +24,8 @@ interface TextInputProps {
 
     // ✅ AJOUT
     onSelectSuggestion?: (value: string) => void
+    border?: string
+    borderRadius?: string
 }
 
 export default function TextInput({
@@ -35,12 +39,16 @@ export default function TextInput({
                                       showIcon = false,
                                       iconSrc = "/search.svg",
                                       altIcon,
+                                      iconWidth = 18,
+                                      iconHeight = 18,
                                       backgroundColor,
                                       ariaLabel = "",
                                       isAutoComplete = false,
                                       autoCompletionFunction,
                                       onChange,
                                       onSelectSuggestion,
+                                      border = "1px solid #E5E7EB",
+                                      borderRadius = "8px",
                                   }: TextInputProps) {
 
     const [showError, setShowError] = useState(hasError)
@@ -99,7 +107,9 @@ export default function TextInput({
                     style={{
                         width,
                         height,
-                        backgroundColor: `var(--${backgroundColor})`
+                        backgroundColor: `var(--${backgroundColor})`,
+                        border: border,
+                        borderRadius: borderRadius,
                     }}
                     type={type}
                     placeholder={placeholder}
@@ -112,8 +122,8 @@ export default function TextInput({
                     <Image
                         src={iconSrc}
                         alt={altIcon ?? ""}
-                        width={18}
-                        height={18}
+                        width={iconWidth}
+                        height={iconHeight}
                         className={styles["input-icon"]}
                     />
                 )}

@@ -11,7 +11,7 @@ export interface Task {
     creatorId?: string
     description?: string
     dueDate?: string
-    id: string
+    id?: string
     priority?: "HIGH"|"MEDIUM"|"LOW"
     project?: Project
     projectId?: string

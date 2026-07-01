@@ -1,3 +1,5 @@
+import {proxyFetch} from "@/lib/projectsService";
+
 
 export async function updateProfile(
     firstName: string,
@@ -12,37 +14,26 @@ export async function updateProfile(
     const newEmail = email || user?.mail
     const newName = `${newFirstName} ${newLastName}`
 
+    const body = { name: newName,
+                   email: newEmail }
+
     if(firstName !== "" || lastName !== "" || email !== "") {
-        const response = await fetch(
-            "/api/profile",
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type":
-                        "application/json",
-                },
-                body: JSON.stringify({
-                    name: newName,
-                    email: newEmail,
-                }),
-            }
-        )
 
-        const data = await response.json()
+        const data = await proxyFetch(`/api/profile`, "PUT", body)
 
-        if (!data)
-            return
+        if(data.success) {
 
-        const [fName, lName] =
-            data.data.user.name.split(" ")
+            const [fName, lName] =
+                data.data.user.name.split(" ")
 
-        setUser({
-            firstName: fName,
-            lastName: lName,
-            mail: data.data.user.email
-        })
+            setUser({
+                firstName: fName,
+                lastName: lName,
+                mail: data.data.user.email
+            })
 
-        return data
+            return data
+        }
     }
     return null
 }
@@ -109,6 +100,7 @@ export async function login(
 
     const data = await response.json()
 
+    console.log("login:", data)
 
     return {
         ok: response.ok,

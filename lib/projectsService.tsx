@@ -1,6 +1,5 @@
 import {Project} from "@/app/types/Project";
 import {Task} from "@/app/types/Task";
-import {apiRequest} from "@/app/api/api";
 
 const BASE_URL = "http://localhost:3000"
 
@@ -51,7 +50,6 @@ export async function getProjectTasks(id:String):Promise<Task[]> {
     const res = await proxyFetch(`/api/project/${id}/tasks`, "GET")
     return res.data
 }
-
 export async function createProject(project: Project, contributors: string[]){
 
     const body = {
@@ -148,27 +146,18 @@ export async function searchUser(name: string) {
     return await proxyFetch(`/api/users/search?query=${encodeURIComponent(name)}`, "GET")
 }
 
+export async function askIA(prompt: string){
 
+    const body = {
+        prompt: prompt
+    }
 
+    const res = await proxyFetch(`/api/IA`, "POST", body)
 
-export function apiFetch(
-    url: string,
-    method: string,
-    token?: string | undefined,
-    body?: unknown,
-) {
+    console.log("REsss:",res)
 
-    return apiRequest(url, {
-        method: method,
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        ...(method !== "GET" && body
-            ? {
-                body: JSON.stringify(body),
-            }
-            : {}),
-    })
+    return res
 }
+
+
 

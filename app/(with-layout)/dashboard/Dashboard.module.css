@@ -1,20 +1,7 @@
 .dashboardpage{
-    width: 100%;
-    min-height: 100vh;
-
     background-color: var(--grey-50);
 }
-.dashboardcontainer{
-    width: clamp(1000px, 100%, 1300px);
-    padding-bottom: 50px;
-}
 
-.dashboardheader{
-    width: 100%;
-    padding-top: 75px;
-    padding-bottom: 75px;
-    height: 70px;
-}
 
 .dashboardheadertext{
     gap:14px;

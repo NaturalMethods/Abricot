@@ -33,10 +33,12 @@ export async function GET() {
 }
 export async function PUT(req: Request) {
 
-    const token = getTokenFromCookie()
+    const token = await getTokenFromCookie()
 
     const body = await req.json()
     const { name, email } = body
+
+
 
     const data = await apiRequest("/auth/profile", {
         method: "PUT",
@@ -46,6 +48,9 @@ export async function PUT(req: Request) {
         },
         body: JSON.stringify({ name,email }),
     })
+
+    console.log("Dataprofile:", data)
+
 
     if (!data.success) {
         return NextResponse.json(

@@ -13,8 +13,8 @@ export default function UserButton({ firstName, lastName }: UserButtonProps) {
             : ""
 
     return (
-        <section className={`flex-col align-center justify-center ${styles["user-button"]}`}>
-            <p className="inter14400UP grey950">{initials}</p>
+        <section className={`flex-col align-center justify-center w-[30px] h-[30px] sm:w-[65px] sm:h-[65px] ${styles["user-button"]}`}>
+            <p className="inter10400 sm:inter14400UP grey950">{initials}</p>
         </section>
 
     )

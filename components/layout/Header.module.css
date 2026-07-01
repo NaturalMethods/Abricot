@@ -1,18 +1,4 @@
 
-.header{
-    gap: 50px;
-    width: 100%;
-    height: 100px;
-}
-
-.menu{
-
-}
-.navbutton{
-    width: 512px;
-    height: 78px;
-    gap: 16px;
-}
 
 .logo{
 
@@ -24,13 +10,6 @@
 }
 
 .header-button{
-
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-
-    width: 248px;
-    height: 78px;
 
     background: var(--white);
     border-radius: 10px;
@@ -50,9 +29,6 @@
 }
 
 .user-button{
-
-    width: 65px;
-    height: 65px;
 
     background: var(--light-orange);
     border-radius: 32px;

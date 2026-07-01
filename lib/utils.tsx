@@ -7,15 +7,12 @@ export function formatDate(dateString: string | undefined) {
         month: "long",
     }).format(new Date(dateString))
 }
-
 type Priority = "HIGH" | "MEDIUM" | "LOW"
-
 const priorityOrder: Record<Priority, number> = {
     HIGH: 0,
     MEDIUM: 1,
     LOW: 2,
 }
-
 export function formatCommentDate(dateString: string): string {
     const date = new Date(dateString);
 
@@ -31,7 +28,6 @@ export function formatCommentDate(dateString: string): string {
 
     return `${datePart}, ${timePart}`;
 }
-
 export function sortTasksByPriority(tasks: Task[]): Task[] {
 
     return [...tasks].sort(
@@ -40,7 +36,6 @@ export function sortTasksByPriority(tasks: Task[]): Task[] {
             priorityOrder[b.priority as Priority]
     )
 }
-
 export function getInitials(fullName?: string): string {
     if (!fullName) return ""
 
@@ -50,22 +45,38 @@ export function getInitials(fullName?: string): string {
         .map(word => word[0].toUpperCase())
         .join("")
 }
-
 export function setPageTitle(title: string | undefined) {
     document.title = `${title} - Abricot`;
 }
-
-
-export async function fetchDatas(functionToUse: () => any, saveState: any) {
+export async function fetchDatas(functionToUse: () => any, saveState: any, setLoadingState?: (value:boolean) => void) {
 
     try {
+        setLoadingState?.(true)
         const data = await functionToUse()
         saveState(data)
     } catch (error) {
         console.error(error)
+    }finally {
+        setTimeout(() => {
+            setLoadingState?.(false);
+        }, 400);
     }
 
-
 }
+export async function multipleFetch(functions: (() => Promise<any>)[],  setLoadingState?: (value:boolean) => void) {
+    try {
+        setLoadingState?.(true)
+        await Promise.all(
+            functions.map(fn => fn())
+        );
+    } catch (e) {
+        console.error(e);
+    }finally{
+        setTimeout(() => {
+            setLoadingState?.(false);
+        }, 400);
+    }
+}
+
 
 

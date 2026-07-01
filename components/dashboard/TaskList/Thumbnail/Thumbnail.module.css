@@ -1,13 +1,7 @@
 .thumbnail{
 
-    width: 100%;
-    height: 162px;
-
-    border: 1px solid #E5E7EB;
-    border-radius: 10px;
 }
 .thumbnailcontainer{
-    width: 95%;
     height: 100%;
 
 }
@@ -17,18 +11,15 @@
 .thumbnailheader{
 
     width: 100%;
-    max-width: 290px;
 
 }
 
 .thumbnailtitle{
 
     width: 100%;
-    max-width: 153px;
 }
 .thumbnaildesc{
     width: 100%;
-    max-width: 290px;
 
 }
 
@@ -39,6 +30,5 @@
 }
 
 .thumbnailinfos{
-    max-width: 290px;
     justify-items: center;
 }

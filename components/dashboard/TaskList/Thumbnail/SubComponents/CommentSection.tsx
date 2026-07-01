@@ -9,7 +9,7 @@ import {Task} from "@/app/types/Task";
 import {useUser} from "@/app/contexts/useUser";
 import {createComment} from "@/lib/projectsService";
 import {Project} from "@/app/types/Project";
-import {RefreshContext} from "@/app/contexts/TaskContext/TaskContext";
+import {RefreshContext} from "@/app/contexts/RefreshContext/RefreshContext";
 
 interface CommentSectionProps{
 

@@ -13,3 +13,24 @@ export async function apiRequest(
 
     return res.json()
 }
+
+export function apiFetch(
+    url: string,
+    method: string,
+    token?: string | undefined,
+    body?: unknown,
+) {
+
+    return apiRequest(url, {
+        method: method,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        ...(method !== "GET" && body
+            ? {
+                body: JSON.stringify(body),
+            }
+            : {}),
+    })
+}

@@ -11,9 +11,9 @@ export default function Header() {
     const { user } = useUser()
 
     return (
-        <header className={`flex-row align-center justify-space-evenly ${styles.header}`}>
+        <header className={`flex flex-row items-center pl-8 pr-8 justify-evenly w-full lg:gap-12 min-h-[70px] md:h-[100px]`}>
 
-            <img className="logo" src="/Logo.svg" alt="Website Logo" width={147} />
+            <img className="logo w-[90px] sm:w-[147px] h-auto" src="/Logo.svg" alt="Website Logo"/>
 
             <HeaderMenu />
             <Link className="link" href="/account"><UserButton firstName={user?.firstName} lastName={user?.lastName} /></Link>

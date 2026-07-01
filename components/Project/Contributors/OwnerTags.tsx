@@ -10,8 +10,8 @@ export function OwnerTags({project}:OwnerTagsProps){
 
     return(
         <div className="flex-row gap5">
-            <Tags label={getInitials(` ${project?.owner?.name}`) ?? ""} font ="inter10400" padding={"8px 5px"} width={"17px"} height={"12px"} backgroundColor={"light-orange"} textColor={"grey950"}/>
-            <Tags label={"Propriétaire"}  padding={"8px 16px"}  height={"12px"} backgroundColor={"light-orange"} textColor={"dark-orange2"}/>
+            <Tags label={getInitials(` ${project?.owner?.name}`) ?? ""} font ="inter10400" padding={"8px 5px"} width={"27px"} height={"27px"} backgroundColor={"light-orange"} textColor={"grey950"}/>
+            <Tags label={"Propriétaire"}  padding={"8px 16px"}  height={"25px"} backgroundColor={"light-orange"} textColor={"dark-orange2"}/>
         </div>
 
     )

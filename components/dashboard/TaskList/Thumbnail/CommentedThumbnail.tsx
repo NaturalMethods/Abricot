@@ -31,8 +31,8 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
 
     return (
 
-        <div className={`flex-row align-center justify-space-between ${styles.thumbnailcontainer}`}>
-            <div className={`flex-col gap30 max-w-100 ${commentedStyles.margintop}`}>
+        <div className={`flex-row align-center pt-6 pb-6 pl-10 pr-10 w-full justify-space-between ${styles.thumbnailcontainer}`}>
+            <div className={`flex-col gap30 w-full ${commentedStyles.margintop}`}>
                 <div className={"flex-row justify-space-between"}>
                     <div className={"flex-col"}>
                         <div className={`flex-row align-center`}>
@@ -70,8 +70,8 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
                                     label={getInitials(assignee.user.name) ?? ""}
                                     font="inter10400"
                                     padding="8px 5px"
-                                    width="17px"
-                                    height="12px"
+                                    width="27px"
+                                    height="27px"
                                     backgroundColor="grey-200"
                                     textColor="grey-950"
                                     border="1px solid #FFFFFF"
@@ -84,7 +84,7 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
                                 <Tags
                                     label={assignee.user.name}
                                     padding="8px 16px"
-                                    height="12px"
+                                    height="25px"
                                     backgroundColor="grey-200"
                                     textColor="grey600"
                                 />

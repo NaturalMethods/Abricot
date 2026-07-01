@@ -22,7 +22,7 @@ export default function Kanban ({
 
     return(
         <section className={`flex-col  ${styles.kanban}`}>
-            <div className={`flex-col  ${styles.kanbancontainer}`}>
+            <div className={` grid md:grid-cols-[repeat(auto-fit,minmax(415px,1fr))] gap-[22px]  ${styles.kanbancontainer}`}>
                 <div className={`flex-col  ${styles.taskslist}`}>
                     <div className="flex-row gap8">
                         <h2>À faire</h2>

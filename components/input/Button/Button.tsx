@@ -5,6 +5,7 @@ interface ButtonProps {
     onClick?: () => void
     type?: "button" | "submit" | "reset"
     width?: string
+    height?: string
     disabled?: boolean
     variant?: "default" | "darkorange"
     icon?: React.ReactNode
@@ -15,6 +16,7 @@ export default function Button({
                                    onClick,
                                    type = "button",
                                    width = "",
+                                    height ="",
                                    disabled,
                                    variant = "default",
                                    icon
@@ -24,7 +26,7 @@ export default function Button({
             type={type}
             onClick={onClick}
             disabled={disabled}
-            style={{ width }}
+            style={{ width, height }}
             className={`
                 inter16400 
                 ${styles.button} 

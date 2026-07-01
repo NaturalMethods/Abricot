@@ -1,15 +1,12 @@
 import {getTokenFromCookie} from "@/lib/utilsServer";
-import {apiFetch} from "@/lib/projectsService";
 import {NextResponse} from "next/server";
+import {apiFetch} from "@/app/api/api";
 
 export async function GET() {
 
     const token = await getTokenFromCookie()
 
-    const data2 = await apiFetch(
-        "/dashboard/assigned-tasks",
-        "GET",
-        token)
+    const data2 = await apiFetch("/dashboard/assigned-tasks", "GET", token)
 
     if (!data2.success) {
         return NextResponse.json(

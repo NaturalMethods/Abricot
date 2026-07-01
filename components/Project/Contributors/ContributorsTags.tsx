@@ -20,8 +20,8 @@ export function ContributorsTags({project}:ContributorsTagsProps,){
                         label={getInitials(member.user.name) ?? ""}
                         font="inter10400"
                         padding="8px 5px"
-                        width="17px"
-                        height="12px"
+                        width="25px"
+                        height="25px"
                         backgroundColor="grey-200"
                         textColor="grey-950"
                         border="1px solid #FFFFFF"
@@ -34,7 +34,7 @@ export function ContributorsTags({project}:ContributorsTagsProps,){
                     <Tags
                         label={member.user.name}
                         padding="8px 16px"
-                        height="12px"
+                        height="25px"
                         backgroundColor="grey-200"
                         textColor="grey600"
                     />

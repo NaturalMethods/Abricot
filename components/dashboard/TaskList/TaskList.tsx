@@ -45,24 +45,27 @@ export default function TaskList ({
 
     return (
         visible && (
-            <section className={`flex-col  ${styles.tasklist}`}>
-                <div className={`flex-col  ${styles.tasklistcontainer}`}>
-                    <div className={`flex-row align-center justify-space-between`}>
-                        <div className={`flex-col justify-center  ${styles.tasklistheader}`}>
+            <section className={`flex flex-col w-full bg-white border border-[#E5E7EB] rounded-[10px] `}>
+                <div className={`flex flex-col gap-10 sm:m-10 m-4 ${styles.tasklistcontainer}`}>
+                    <div className={`flex flex-row items-center justify-between`}>
+                        <div className={`flex flex-col justify-center  ${styles.tasklistheader}`}>
                             <h2 className="grey800">Mes tâches assignées</h2>
                             <p className="inter16400 grey600">Par ordre de priorité</p>
                         </div>
+                        <div className={"md:w-[357px]"}>
                         <TextInput showIcon={true}
-                                   width={"357px"}
+                                   width={"100%"}
                                    height={"63px"}
                                    placeholder={"Rechercher une tâche"}
                                    ariaLabel={"Rechercher une tâche"}
                                    altIcon={"Icone de loupe"}
                                    label={""}/>
+                        </div>
                     </div>
 
                     {sortTasksByPriority(tasksList).map((task, index) => (
                         <Thumbnail
+                            height={"162px"}
                             key={task.id ?? index}
                             project={task.project}
                             task={task}
