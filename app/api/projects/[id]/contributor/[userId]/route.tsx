@@ -1,10 +1,11 @@
-import {getTokenFromCookie} from "@/lib/utilsServer";
+import {cookies} from "next/headers";
 import {NextResponse} from "next/server";
 import {apiRequest} from "@/app/api/api";
 
-export async function PUT(req: Request) {
+export async function DELETE(req: Request) {
 
-    const token = await getTokenFromCookie()
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token")?.value
 
     if (!token) {
         return NextResponse.json(
@@ -19,21 +20,20 @@ export async function PUT(req: Request) {
     }
 
     const body = await req.json()
-    const {id, name, description, contributors} = body
+    const { id, userId } = body
 
-    const data = await apiRequest(`/projects/${id}`, {
-        method: "PUT",
+    const data = await apiRequest(`/projects/${id}/contributors/${userId}`, {
+        method: "DELETE",
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
             id: id,
-            name: name,
-            description: description,
-            members: contributors
+            userId: userId
         }),
     })
+
 
     if (!data.success) {
         return NextResponse.json(
@@ -48,7 +48,5 @@ export async function PUT(req: Request) {
         )
     }
 
-
     return Response.json(data)
-
 }

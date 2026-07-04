@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    colors: {
+      "warning-orange": "#f59e0b"
+    }
   },
   plugins: [],
 }

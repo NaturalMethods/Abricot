@@ -111,6 +111,13 @@ export default function Dropdown({
             ? selected.label
             : placeHolder
 
+    const numericWidth = parseInt(width, 10);
+    const isSmall = numericWidth < 152;
+
+    const finalWidth = width
+        ? Math.max(parseInt(width, 10), 152)
+        : 152;
+
     return (
         <div
             ref={ref}
@@ -134,14 +141,17 @@ export default function Dropdown({
                     width,
                     height,
                     justifyContent: justify,
+                    paddingLeft: isSmall ? 10 : 0,
+                    paddingRight: isSmall ? 10 : 0,
                 }}
                 onClick={() =>
                     setOpen((prev) => !prev)
                 }
             >
-                <p>{displayText}</p>
+                <p className={""}>{displayText}</p>
 
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src="/arrowdown.svg"
                     width={16}
                     height={8}
@@ -152,7 +162,9 @@ export default function Dropdown({
             {open && (
                 <div
                     className={styles.menu}
-                    style={{ width }}
+                    style={{
+                        width: `${finalWidth}px`,
+                    }}
                 >
                     {options.map((option) => {
                         const isSelected = multiSelect

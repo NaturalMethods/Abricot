@@ -83,10 +83,10 @@ export default function LoginPage() {
 
             <form
                 onSubmit={handleLogin}
-                className={`flex-col align-center justify-space-evenly ${styles.logincontainer}`}
+                className={`flex-col align-center justify-space-evenly sm:w-[562px] ${styles.logincontainer}`}
             >
 
-                <Image
+                <Image loading={"eager"}
                     src="/logo.svg"
                     alt="logo"
                     width={252}
@@ -124,6 +124,7 @@ export default function LoginPage() {
                         />
 
                         <Button
+                            width="250px"
                             text={isLoading ? "Connexion..." : "Se connecter"}
                             type="submit"
                             disabled={isLoading}

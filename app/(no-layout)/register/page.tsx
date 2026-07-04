@@ -49,6 +49,7 @@ export default function RegisterPage (){
             }
 
             setUser({
+                id: data.user.id,
                 firstName: data.user.firstName,
                 lastName: data.user.lastName,
                 mail: data.user.email
@@ -75,8 +76,8 @@ export default function RegisterPage (){
     return(
         <section className={styles.loginpage}>
 
-            <form onSubmit={handleRegister} className={`flex-col align-center justify-space-evenly ${styles.logincontainer}`}>
-                <Image
+            <form onSubmit={handleRegister} className={`flex-col align-center sm:w-[562px] justify-space-evenly ${styles.logincontainer}`}>
+                <Image loading={"eager"}
                     src="/logo.svg"
                     alt="logo"
                     width={252}
@@ -104,6 +105,7 @@ export default function RegisterPage (){
                         />
                         <Button text={isLoading ? "Enregistrement" : "S'inscrire"}
                                 type="submit"
+                                width="250px"
                                 disabled={isLoading}
                         />
 

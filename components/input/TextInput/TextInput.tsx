@@ -66,7 +66,6 @@ export default function TextInput({
         if (isAutoComplete) {
             const result = await autoCompletionFunction(e.target.value)
 
-            console.log("Result:",result)
             setSuggestions(result)
 
             setShowSuggestions(
@@ -119,7 +118,7 @@ export default function TextInput({
                 />
 
                 {showIcon && (
-                    <Image
+                    <Image loading={"lazy"}
                         src={iconSrc}
                         alt={altIcon ?? ""}
                         width={iconWidth}

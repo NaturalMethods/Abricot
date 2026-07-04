@@ -27,8 +27,6 @@ export async function GET(request: Request,
         )
     }
 
-    console.log("Test:",data.data.project)
-
     return NextResponse.json({
         success: true,
         data: data.data.project

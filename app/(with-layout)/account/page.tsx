@@ -12,7 +12,7 @@ export default function accountPage (){
     }, [])
 
     return(
-        <section className={`flex-col align-center justify-center ${styles["account-container"]}`}>
+        <section className={`flex-col  align-center justify-center ${styles["account-container"]}`}>
             <AccountForm />
         </section>
     )

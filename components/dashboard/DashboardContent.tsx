@@ -50,7 +50,7 @@ export default function DashboardContent (){
 
                         <div className={`flex flex-row justify-start gap-2.5 w-full pb-6 `}>
                             <Chips text={"Liste"} onClick={switchPanel} active={!kanbanVisible}/>
-                            <Chips text={"Kanban"} onClick={switchPanel} active={kanbanVisible}/>
+                            <Chips text={"Kanban"} srcIcon={"/orangeminical.svg"} onClick={switchPanel} active={kanbanVisible}/>
                         </div>
 
                         <TaskList tasksList={tasksList} visible={!kanbanVisible} />

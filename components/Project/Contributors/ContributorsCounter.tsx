@@ -9,8 +9,8 @@ interface ContributorsCounterProps{
 export function ContributorsCounter({project}:ContributorsCounterProps){
 
     return(
-        <div className={`flex-row align-center gap8  ${styles.contributortitle}`}>
-            <h2 className="grey800">Contributeurs</h2>
+        <div className={`flex-col sm:flex-row align-center gap8  ${styles.contributortitle}`}>
+            <h2 className="grey800 whitespace-nowrap">Contributeurs</h2>
             <p className="inter16400 grey600">{(project?.members?.length ?? 0)+1} personnes</p>
         </div>
 

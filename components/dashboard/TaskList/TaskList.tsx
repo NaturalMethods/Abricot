@@ -47,7 +47,7 @@ export default function TaskList ({
         visible && (
             <section className={`flex flex-col w-full bg-white border border-[#E5E7EB] rounded-[10px] `}>
                 <div className={`flex flex-col gap-10 sm:m-10 m-4 ${styles.tasklistcontainer}`}>
-                    <div className={`flex flex-row items-center justify-between`}>
+                    <div className={`flex flex-col gap-4 sm:flex-row items-center justify-between`}>
                         <div className={`flex flex-col justify-center  ${styles.tasklistheader}`}>
                             <h2 className="grey800">Mes tâches assignées</h2>
                             <p className="inter16400 grey600">Par ordre de priorité</p>

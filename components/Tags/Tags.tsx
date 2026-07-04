@@ -65,8 +65,8 @@ export default function Tags ({style, label="",
             zIndex: style?.zIndex,
             marginLeft: style?.marginLeft,
         }}
-             className={`flex-col align-center justify-center ${styles.tags}` }>
-            <span className={`${font} ${textColors}`}>{label}</span>
+             className={` shrink-0 flex-col align-center justify-center ${styles.tags}` }>
+            <span className={` whitespace-nowrap ${font} ${textColors}`}>{label}</span>
         </div>
 
     )

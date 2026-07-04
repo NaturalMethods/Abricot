@@ -22,8 +22,6 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { id, email, role } = body
 
-    console.log("id:", id,"email:",email, "role:",role)
-
     const data = await apiRequest(`/projects/${id}/contributors`, {
         method: "POST",
         headers: {
@@ -37,7 +35,6 @@ export async function POST(req: Request) {
         }),
     })
 
-    console.log("message",data.message)
     if (!data.success) {
         return NextResponse.json(
             {

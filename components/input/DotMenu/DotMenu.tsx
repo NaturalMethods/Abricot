@@ -31,7 +31,7 @@ export default function DotMenu({ onEditAction, onDeleteAction }: Props) {
     return (
         <div ref={ref} style={{ position: "relative", display: "inline-block" }}>
             {/* BUTTON */}
-            <Image
+            <Image loading={"eager"}
                 src="/dotbutton.svg"
                 alt="Menu"
                 width={57}

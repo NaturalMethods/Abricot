@@ -31,9 +31,7 @@ export async function askGemini(prompt: string) {
 
 
     const data = await response.json();
-    console.log("dataaaa:",data)
 
-    console.log(data.candidates[0].content.parts[0].text);
     const text = data.candidates[0].content.parts[0].text
     return text;
 }

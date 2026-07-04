@@ -22,7 +22,7 @@ export function CommentSection({project,task}:CommentSectionProps){
     const [commentsVisible, setCommentsVisible] = useState(false)
     const [comment, setComment] = useState("");
 
-    const refresh = useContext(RefreshContext);
+    const {refresh} = useContext(RefreshContext);
 
     const {user} = useUser()
 
@@ -48,15 +48,15 @@ export function CommentSection({project,task}:CommentSectionProps){
             <hr className="separator" />
 
             <div
-                className="flex-row justify-space-between max-h-100 align-center"
+                className=" flex-row justify-space-between max-h-100 align-center"
                 onClick={() => setCommentsVisible(!commentsVisible)}
                 style={{ cursor: "pointer" }}
             >
                 <p className="inter14400 grey800">
                     Commentaires ({task?.comments?.length})
                 </p>
-
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src={commentsVisible ? "/arrowdown.svg" : "/arrowup.svg"}
                     alt="Ouvrir/Fermer les commentaires"
                     width={16}
@@ -77,8 +77,8 @@ export function CommentSection({project,task}:CommentSectionProps){
                                 label={getInitials(taskComment.author.name) ?? ""}
                                 font="inter10400"
                                 padding="8px 5px"
-                                width="17px"
-                                height="12px"
+                                width="27px"
+                                height="27px"
                                 backgroundColor="grey-200"
                                 textColor="grey-950"
                                 border="1px solid #FFFFFF"
@@ -108,8 +108,8 @@ export function CommentSection({project,task}:CommentSectionProps){
                             ) ?? ""}
                             font="inter10400"
                             padding={"8px 5px"}
-                            width={"17px"}
-                            height={"12px"}
+                            width={"27px"}
+                            height={"27px"}
                             backgroundColor={"light-orange"}
                             textColor={"grey950"}
                         />

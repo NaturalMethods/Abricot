@@ -28,7 +28,6 @@ export async function proxy(req: NextRequest) {
             new URL("/", req.url)
         )
 
-        console.log("Erreur")
         response.cookies.delete("token")
 
         return response

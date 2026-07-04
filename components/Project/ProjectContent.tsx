@@ -12,6 +12,8 @@ import {Task} from "@/app/types/Task";
 import { RefreshContext } from "@/app/contexts/RefreshContext/RefreshContext";
 import {LoadingSpinner} from "@/components/LoadingSpinner/LoadingSpinner";
 import {RefreshProvider} from "@/app/contexts/RefreshContext/RefreshProvider";
+import {error} from "next/dist/build/output/log";
+import {router} from "next/client";
 
 export default function SingleProjectContent (){
 
@@ -27,13 +29,17 @@ export default function SingleProjectContent (){
 
 
     useEffect(() => {
-        multipleFetch(
-            [
-                () => fetchDatas(() => getProject(id), setProject),
-                () => fetchDatas(() => getProjectTasks(id), setProjectTasks)
-            ],
-            setLoading
-        );
+        try {
+            multipleFetch(
+                [
+                    () => fetchDatas(() => getProject(id), setProject),
+                    () => fetchDatas(() => getProjectTasks(id), setProjectTasks)
+                ],
+                setLoading
+            );
+        }catch(error) {
+            if(error instanceof Error && error.message === "Unauthorized") router.push("/dashboard")
+        }
     }, [reloadKey]);
 
     useEffect(() => {
@@ -47,7 +53,7 @@ export default function SingleProjectContent (){
                 {loading ? (
                     <LoadingSpinner />
                 ) :(
-                    <div className={`flex-col align-start gap30 ${styles.projectcontainer}`}>
+                    <div className={`flex-col ml-8 mr-8 mt-16 align-start gap-8 lg:w-[clamp(1000px,100%,1300px)] pb-[50px]`}>
 
                         <ProjectHeader project={project} />
                         <ContributorsHeader project={project}/>

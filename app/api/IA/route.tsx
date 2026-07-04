@@ -2,25 +2,29 @@ import { askGemini } from "@/lib/utilsServer";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-    const body = await req.json();
+    const body = await req.json()
 
-    const text = await askGemini(body.prompt);
+    const text = await askGemini(body.prompt)
 
-    console.log("Gemini raw text:", text);
+    const cleaned = text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim()
 
-    let json;
+    const start = cleaned.indexOf("[")
+    const end = cleaned.lastIndexOf("]")
 
     try {
-        json = JSON.parse(text);
-    } catch (e) {
+        const json = JSON.parse(cleaned.slice(start, end + 1))
+        return NextResponse.json(json)
+    } catch {
         return NextResponse.json(
             {
                 error: "Invalid JSON returned by Gemini",
                 raw: text,
             },
             { status: 500 }
-        );
+        )
     }
-
-    return NextResponse.json(json);
 }
+

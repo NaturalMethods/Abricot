@@ -56,7 +56,8 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
     if (isDisplay) {
         return (
             <div style={{whiteSpace: 'nowrap', display: "flex", alignItems: "center" , gap: 8 }}>
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src="/minicalendar.svg"
                     alt="calendar"
                     width={18}
@@ -78,7 +79,7 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
                 style={{ cursor: "pointer" }}
                 onClick={() => setOpen(v => !v)}
             >
-                <Image
+                <Image loading={"lazy"}
                     src="/minicalendar.svg"
                     alt="calendar"
                     width={18}

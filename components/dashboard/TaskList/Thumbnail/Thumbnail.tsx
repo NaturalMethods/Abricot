@@ -8,12 +8,13 @@ import Button from "@/components/input/Button/Button";
 import Image from "next/image";
 import {Project} from "@/app/types/Project";
 import {formatDate} from "@/lib/utils";
-import {useState} from "react";
+import React, {useState} from "react";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import {Task} from "@/app/types/Task";
 import {DueDate} from "@/components/dashboard/TaskList/Thumbnail/SubComponents/DueDate";
 import {CommentedThumbnail} from "@/components/dashboard/TaskList/Thumbnail/CommentedThumbnail";
 import {ThumbnailInfos} from "@/components/dashboard/TaskList/Thumbnail/SubComponents/ThumbnailInfos";
+import {createTask} from "@/lib/projectsService";
 
 interface ThumbnailProps{
     project?: Project
@@ -22,6 +23,8 @@ interface ThumbnailProps{
     commented?: boolean
     isModal?: boolean
     task?: Task
+
+    onCloseAction?: () => void;
 
     onEdit?: () => void;
     onDelete?: (id : string|undefined) => void;
@@ -39,7 +42,8 @@ export default function Thumbnail ({   project,
                                         onEdit,
                                         onDelete,
                                         width = "95%",
-                                        height = "100%"
+                                        height = "100%",
+                                        onCloseAction
                                         }:ThumbnailProps){
 
 
@@ -72,10 +76,40 @@ export default function Thumbnail ({   project,
                   break;
     }
 
+    async function handleClick(e: React.FormEvent) {
+        e.preventDefault()
+
+        const title = task?.title ?? ""
+        const description = task?.description ?? ""
+
+        if(title.trim().length > 0 || description.trim().length > 0){
+            const resp = await createTask({
+                    id: project?.id,
+                    name: title.trim(),
+                    description: description.trim(),
+                }, "","","TODO")
+                if (resp?.success) {
+                    if (onCloseAction) {
+                        onCloseAction()
+                    }
+                }
+        }
+    }
+
 
     return(
-        <section className={`flex-col items-center border w-full border-[#E5E7EB] rounded-[10px]
-                             justify-space-between h-fit min-h-[162px] ${thumbnailClass}`}>
+        <section
+            onClick={format === "IA" ? handleClick : undefined}
+            className={`
+    flex-col items-center border w-full border-[#E5E7EB] rounded-[10px]
+    justify-space-between h-fit min-h-[162px] ${thumbnailClass}
+
+    ${format === "IA"
+                ? "transition-all duration-200 ease-in-out will-change-transform hover:border-warning-orange cursor-pointer hover:scale-[1.03] hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)]"
+                : ""
+            }
+  `}
+        >
 
             {defaultBool && (<div className={`flex-col md:flex-row align-center min-h-[162px] mt-2 mb-2 sm:mt-6 sm:mb-6  gap-7  pl-6 pr-6 justify-space-between w-full ${styles.thumbnailcontainer}`}>
                 <div className={"flex-col gap30"}>
@@ -136,25 +170,25 @@ export default function Thumbnail ({   project,
 
             {commentedBool && (<CommentedThumbnail project={project} task={task} onEdit={onEdit} onDelete={onDelete} />)}
 
-            {IaBool && (<div className={`flex-row align-center justify-space-between` }
+            {IaBool && (<div className={`flex-row align-center justify-space-between ` }
                              style={{height: height ?? "100%",
                                      width: width ?? "95%"
                              }} >
                 <div className={"flex-col gap30"}>
                     <div className={"flex-col gap8"}>
                         <div className={`flex-row align-center justify-space-between`}>
-                            <h2>{task?.title ?? "Title"}</h2>
+                            <h2>{task?.title ?? "Titre"}</h2>
                         </div>
-                        <p className="inter14400 grey600"> {task?.description ?? "Description"}</p>
+                        <p className="inter10400 sm:inter14400 grey600"> {task?.description ?? "Description"}</p>
                     </div>
                     <div className={"flex-row align-center gap15"}>
                         <div className={"flex-row gap8"}>
-                            <Image src={"/TrashCan.svg"} alt={"Icône de poubelle"} width={15} height={15} />
+                            <Image src={"/TrashCan.svg"} alt={"Icône de poubelle"} width={15} height={15} loading={"lazy"} />
                             <p className="inter12400 grey600">Supprimer</p>
                         </div>
                         <span>|</span>
                         <div className={"flex-row gap8"} onClick={() => setIsOpen(true)} >
-                            <Image src={"/Crayon.svg"} alt={"Icône de crayon"} width={15} height={15} />
+                            <Image src={"/Crayon.svg"} alt={"Icône de crayon"} width={15} height={15} loading={"lazy"} />
                             <p className="inter12400 grey600">Modifier</p>
                             {!isModal && <ModalTask project={task?.project} task={task} isOpen={isOpen} onCloseAction={() => setIsOpen(false)} isShow={true}/>
                             }

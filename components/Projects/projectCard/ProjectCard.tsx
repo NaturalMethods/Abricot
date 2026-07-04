@@ -93,7 +93,8 @@ export default function ProjectCard({project}: ProjectCardProps) {
             {/* TEAM */}
             <div className="flex-col gap15">
                 <div className="flex-row">
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                         src="/team.svg"
                         alt="icon"
                         width={18}
@@ -131,7 +132,7 @@ export default function ProjectCard({project}: ProjectCardProps) {
                         {project?.members?.map((member, index) => (
                             <Tags
                                 key={member.id ?? index}
-                                label={getInitials(member.user.name) ?? ""}
+                                label={getInitials(member.name) ?? ""}
                                 font="inter10400"
                                 padding="8px 5px"
                                 width="27px"

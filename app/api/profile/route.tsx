@@ -49,7 +49,6 @@ export async function PUT(req: Request) {
         body: JSON.stringify({ name,email }),
     })
 
-    console.log("Dataprofile:", data)
 
 
     if (!data.success) {

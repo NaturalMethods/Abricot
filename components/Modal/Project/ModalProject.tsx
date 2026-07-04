@@ -1,13 +1,15 @@
 import Modal from "@/components/Modal/Modal";
-import React, { useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import TextInput from "@/components/input/TextInput/TextInput";
 import Button from "@/components/input/Button/Button";
 import Image from "next/image";
 import styles from "../Modal.module.css";
-import {addContributor, createProject, modifyProject, searchUser} from "@/lib/projectsService";
+import {addContributor, createProject, delContributor, modifyProject, searchUser} from "@/lib/projectsService";
 import Tags from "@/components/Tags/Tags";
-import {User} from "@/app/types/User";
+import {Member, User} from "@/app/types/User";
 import {Project} from "@/app/types/Project";
+import {refresh} from "next/cache";
+import {RefreshContext} from "@/app/contexts/RefreshContext/RefreshContext";
 
 interface ModalProjectProps{
 
@@ -31,8 +33,21 @@ export default function ModalProject({
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [contributors, setContributors] = useState<User[]>([]);
+    const [contributors, setContributors] = useState<Member[]>([]);
     const [contributorsInput, setContributorsInput] = useState("");
+
+    const {refresh} = useContext(RefreshContext);
+
+    useEffect(() => {
+        setContributors(
+            project?.members?.map(m => ({
+                id: m.id,
+                email: m.email,
+                name: m.name,
+            } as Member)) ?? []
+        );
+
+    }, [])
 
     // -------------------------
     // FETCH USERS (API)
@@ -62,8 +77,8 @@ export default function ModalProject({
         )) return true
 
         if(isCreation && (title.trim().length > 0 &&
-            description.trim().length > 0 &&
-            contributors.length > 0)) return true
+            description.trim().length > 0
+        )) return true
 
         return false;
     }
@@ -71,6 +86,7 @@ export default function ModalProject({
         setTitle("");
         setDescription("");
         onCloseAction();
+        refresh()
     }
 
     function handleSubmit(e: React.FormEvent) {
@@ -89,37 +105,79 @@ export default function ModalProject({
 
                 if (resp?.success) closeModal();
             }
-            if (isModification){
-                if(project?.id && project?.id?.length > 0 || title.trim().length > 0 || description.trim().length > 0) {
-                    const resp = await modifyProject({
-                        id: project?.id,
-                        name: title.trim(),
-                        description: description.trim(),
 
-                    }, contributors.map(c => c.email));
-                    if (resp?.success) closeModal();
-                }
-                contributors.forEach(c => {
-                    if(project?.id)
-                    addContributor(project?.id,c.email, "CONTRIBUTOR");
-                });
-                //TODO resp de addContributor non pris compte ?
+            if (!isModification) return;
 
+            const projectId = project?.id;
+            if (!projectId) return;
+
+            const projectMembers = project?.members ?? [];
+
+            const sameIds =
+                contributors.length === projectMembers.length &&
+                contributors.every(c =>
+                    projectMembers.some(m => m.id === c.id)
+                );
+
+            const hasProjectChanges =
+                title.trim().length > 0 || description.trim().length > 0;
+
+
+            let newTitle;
+            if(title.trim().length === 0) newTitle = project?.name;
+            else newTitle = title.trim();
+
+            let newDescription;
+            if(description.trim().length === 0) newDescription = project?.description;
+            else newDescription = description.trim();
+
+// 1. UPDATE PROJECT (si nécessaire)
+            if (hasProjectChanges) {
+                const resp = await modifyProject(
+                    {
+                        id: projectId,
+                        name: newTitle,
+                        description: newDescription,
+                    },
+                    contributors.map(c => c.email)
+                );
+
+                if (!resp?.success) return;
             }
+
+// 2. SI RIEN À FAIRE
+            if (!hasProjectChanges && sameIds) {
+                return;
+            }
+
+// 3. SYNC CONTRIBUTORS SI NÉCESSAIRE
+            if (!sameIds || hasProjectChanges) {
+                await Promise.all([
+                    ...projectMembers.map(m =>
+                        delContributor(projectId, m.id)
+                    ),
+                    ...contributors.map(c =>
+                        addContributor(projectId, c.email, "CONTRIBUTOR")
+                    )
+                ]);
+            }
+
+// 4. CLOSE MODAL UNIQUEMENT À LA FIN
+            closeModal();
         }
 
         postProject();
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal isOpen={isOpen} onCloseAction={() => setIsOpen(false)}>
 
             {isCreation && (
                 <div className={`flex-col align-center gap15 ${styles.padding}`}>
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image
+                            <Image loading={"eager"}
                                 src="/cross.svg"
                                 width={15}
                                 height={15}
@@ -133,26 +191,26 @@ export default function ModalProject({
 
                             <div className="flex-col gap30">
 
-                                <h2>Créer un projet</h2>
+                                <h2 className={"sm:w-[452px] "}>Créer un projet</h2>
 
                                 <TextInput
                                     label="Titre*"
                                     value={title}
-                                    width="452px"
+                                    width="100%"
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
 
                                 <TextInput
                                     label="Description*"
                                     value={description}
-                                    width="452px"
+                                    width="100%"
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
 
                                 {/* ---------------- AUTOCOMPLETE ---------------- */}
                                 <TextInput
                                     label="Contributeurs"
-                                    width="452px"
+                                    width="100%"
                                     value={contributorsInput}
                                     onChange={(e) => setContributorsInput(e.target.value)}
                                     isAutoComplete
@@ -219,7 +277,7 @@ export default function ModalProject({
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image
+                            <Image loading={"eager"}
                                 src="/cross.svg"
                                 width={15}
                                 height={15}
@@ -233,28 +291,28 @@ export default function ModalProject({
 
                             <div className="flex-col gap30">
 
-                                <h2>Modifier un projet</h2>
+                                <h2 className={"sm:w-[452px]"}>Modifier un projet</h2>
 
                                 <TextInput
-                                    label="Titre*"
+                                    label="Titre"
                                     value={title}
                                     placeholder={project?.name}
-                                    width="452px"
+                                    width="100%"
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
 
                                 <TextInput
-                                    label="Description*"
+                                    label="Description"
                                     value={description}
                                     placeholder={project?.description}
-                                    width="452px"
+                                    width="100%"
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
 
                                 {/* ---------------- AUTOCOMPLETE ---------------- */}
                                 <TextInput
                                     label="Contributeurs"
-                                    width="452px"
+                                    width="100%"
                                     value={contributorsInput}
                                     placeholder={`${project?.members?.length} contributeurs`}
                                     onChange={(e) => setContributorsInput(e.target.value)}

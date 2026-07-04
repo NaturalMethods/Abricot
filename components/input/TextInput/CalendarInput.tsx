@@ -202,14 +202,14 @@ export default function CalendarInput({
     return (
         <div
             ref={ref}
-            className={`flex-col inter14400 ${styles["input-container"]}`}
+            className={`flex-col inter14400   ${styles["input-container"]}`}
             style={{ width, position: "relative" }}
         >
             {label && <label>{label}</label>}
 
             {/* INPUT */}
             <div
-                className={styles["input-wrapper"]}
+                className={`border border-[#E5E7EB] rounded-[8px] ${styles["input-wrapper"]}`}
                 style={{ width, height, cursor: "pointer" }}
                 onClick={() => setOpen((v) => !v)}
             >
@@ -226,7 +226,7 @@ export default function CalendarInput({
                     {value ? formatDisplayDate(value) : "Choisir une date"}
                 </div>
 
-                <Image
+                <Image loading={"lazy"}
                     src={iconSrc}
                     alt={altIcon ?? ""}
                     width={18}

@@ -25,8 +25,6 @@ export async function GET() {
         )
     }
 
-    console.log("Test2:", data)
-
     return NextResponse.json({
         success: true,
         data: data.data.projects
@@ -61,8 +59,6 @@ export async function POST(req: Request) {
             contributors: contributors
         })
 
-    console.log("Con;",test)
-
     const data = await apiRequest("/projects", {
         method: "POST",
         headers: {
@@ -76,7 +72,6 @@ export async function POST(req: Request) {
             }),
     })
 
-    console.log("message",data.message)
     if (!data.success) {
         return NextResponse.json(
             {

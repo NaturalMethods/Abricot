@@ -39,7 +39,7 @@ export default function AssignedTasks ({project, projectTasks, id}: AssignedTask
     return(
 
 
-        <section className={`flex-col w-full p-10 
+        <section className={`flex-col w-full sm:p-10 
                            bg-white border border-[#E5E7EB] rounded-[10px] ${styles.tasklist}`}>
 
 
@@ -47,7 +47,7 @@ export default function AssignedTasks ({project, projectTasks, id}: AssignedTask
             <div className={`flex-col  gap-10 ${styles.tasklistcontainer}`}>
                 <AssignedTasksHeader panelVisibilityState={calendarVisible} setPanelState={setCalendarVisible} setStatusFilter={setSelectedStatus}/>
 
-                <div className={" flex-col pr-10 pl-10 gap-4"}>
+                <div className={" flex-col sm:pr-10 sm:pl-10 gap-4"}>
                     {projectTasks.length > 0 && sortTasksByPriority(projectTasks ?? []).filter((task) => {
                         if (!selectedStatus) return true
                         return task.status === selectedStatus

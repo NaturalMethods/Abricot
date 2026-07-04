@@ -100,8 +100,6 @@ export async function login(
 
     const data = await response.json()
 
-    console.log("login:", data)
-
     return {
         ok: response.ok,
         data

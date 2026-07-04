@@ -10,14 +10,14 @@ interface ContributorsTagsProps{
 export function ContributorsTags({project}:ContributorsTagsProps,){
 
     return(
-        <div className={`flex-row gap15 ${styles.contributorlist}`}>
+        <div className={`flex-col lg:flex-row gap15 ${styles.contributorlist}`}>
             {project?.members?.map((member, index) => (
                 <div
                     key={member.id ?? index}
                     className="flex-row gap5"
                 >
                     <Tags
-                        label={getInitials(member.user.name) ?? ""}
+                        label={getInitials(member.name) ?? ""}
                         font="inter10400"
                         padding="8px 5px"
                         width="25px"
@@ -32,7 +32,7 @@ export function ContributorsTags({project}:ContributorsTagsProps,){
                         }}
                     />
                     <Tags
-                        label={member.user.name}
+                        label={member.name}
                         padding="8px 16px"
                         height="25px"
                         backgroundColor="grey-200"

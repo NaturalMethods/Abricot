@@ -15,7 +15,8 @@ export function ThumbnailInfos({project,task}:ThumbnailInfosProps){
 
         <div className={"flex-col  sm:flex-row w-full sm:items-center sm:justify-items-start gap-3"}>
             <div className={"flex-row lg:max-w-[120px] gap8"}>
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src="/greydirectoryicon.svg"
                     alt="icone de repertoire"
                     width={18}
@@ -29,7 +30,8 @@ export function ThumbnailInfos({project,task}:ThumbnailInfosProps){
             </div>
             <span className={"hidden sm:block"}>|</span>
             <div className={"flex-row gap8"}>
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src="/chaticon.svg"
                     alt="icon de message"
                     width={18}

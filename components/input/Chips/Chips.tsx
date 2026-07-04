@@ -7,6 +7,7 @@ interface ChipsProps {
     width?: string
     height?: string
     active?: boolean
+    srcIcon?: string
 }
 
 export default function Chips ({
@@ -15,6 +16,7 @@ export default function Chips ({
                                    width = "",
                                    height = "",
                                    active = false,
+                                   srcIcon="/listicon.svg",
                                }: ChipsProps) {
 
     return(
@@ -22,13 +24,14 @@ export default function Chips ({
              onClick={onClick}
              style={{width: width,
                      height: height}}>
-            <Image
-                src="/listicon.svg"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+                src={srcIcon}
                 alt="icon"
                 width={16}
                 height={16}
             />
-            <p className="inter14400 dark-orange">{text}</p>
+            <p className="hidden lg:block inter14400 dark-orange">{text}</p>
         </div>
     )
 }

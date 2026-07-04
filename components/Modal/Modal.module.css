@@ -4,7 +4,10 @@
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* au lieu de center */
+
+    overflow-y: auto;        /* autorise le scroll */
+    padding: 40px 20px;      /* espace en haut et en bas */
 
     background: rgba(0, 0, 0, 0.5);
     z-index: 999999;
@@ -17,10 +20,16 @@
 
     min-width: 400px;
     max-width: 90vw;
+    max-height: calc(100vh - 80px); /* 40px de marge en haut et en bas */
+
+    overflow-y: auto; /* scroll interne si nécessaire */
 
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 
     animation: slideIn 0.25s ease-out;
+}
+.modal::-webkit-scrollbar {
+    display: none;
 }
 
 @keyframes slideIn {

@@ -6,7 +6,6 @@ export function RefreshProvider({ children }: { children: React.ReactNode }) {
     const [reloadKey, setReloadKey] = useState(0);
 
     const refresh = () => {
-        console.log("provider reloadKey:", reloadKey);
         setReloadKey(k => k + 1);
     };
 

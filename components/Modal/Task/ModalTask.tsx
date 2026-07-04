@@ -47,8 +47,8 @@ export default function ModalTask({
                     }]
                     : []),
                 ...(project?.members?.map((member) => ({
-                    label: member.user.name,
-                    value: member.user.id,
+                    label: member.name,
+                    value: member.id,
                 })) ?? []),
             ].map((option) => [option.value, option])
         ).values()
@@ -106,11 +106,11 @@ export default function ModalTask({
             }, dueDate,assignedTo ,status??"TODO")
             if (resp?.success) {
                 closeModal()
+                refresh()
             }
         }
 
         if (isModification) {
-            console.log("assignee:", assignedTo);
 
             const resp = await modifyTask(
                 { id: projectId, name: project.name },
@@ -138,7 +138,7 @@ export default function ModalTask({
                     <form onSubmit={handleSubmit}>
                         {/* CLOSE */}
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image
+                            <Image loading={"eager"}
                                 src="/cross.svg"
                                 width={15}
                                 height={15}
@@ -150,12 +150,12 @@ export default function ModalTask({
 
                         <div className="flex-col gap56">
                             <div className="flex-col gap30">
-                                <h2>Créer une tâche</h2>
+                                <h2 className={"sm:w-[452px]"}>Créer une tâche</h2>
 
                                 <TextInput
                                     label="Titre*"
                                     value={title}
-                                    width="452px"
+                                    width="100%"
                                     ariaLabel="Titre"
                                     onChange={(e) => setTitle(e.target.value)}
                                                                  />
@@ -163,7 +163,7 @@ export default function ModalTask({
                                 <TextInput
                                     label="Description*"
                                     value={description}
-                                    width="452px"
+                                    width="100%"
                                     ariaLabel="Description"
                                     onChange={(e) =>
                                         setDescription(e.target.value)
@@ -173,7 +173,7 @@ export default function ModalTask({
                                 <CalendarInput
                                     label="Échéance*"
                                     value={dueDate}
-                                    width="452px"
+                                    width="100%"
                                     ariaLabel="Date d'échéance"
                                     onChange={setDueDate}
                                     iconSrc="/minicalendar.svg"
@@ -221,7 +221,7 @@ export default function ModalTask({
                     <form onSubmit={handleSubmit}>
                         {/* CLOSE */}
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image
+                            <Image loading={"eager"}
                                 src="/cross.svg"
                                 width={15}
                                 height={15}
@@ -233,12 +233,12 @@ export default function ModalTask({
 
                         <div className="flex-col gap56">
                             <div className="flex-col gap30">
-                                <h2>Modifier une tâche</h2>
+                                <h2 className={"sm:w-[452px]"}>Modifier une tâche</h2>
 
                                 <TextInput
                                     label="Titre*"
                                     value={title}
-                                    width="452px"
+                                    width="100%"
                                     ariaLabel="Titre"
                                     placeholder={task?.title}
                                     onChange={(e) =>
@@ -249,7 +249,7 @@ export default function ModalTask({
                                 <TextInput
                                     label="Description*"
                                     value={description}
-                                    width="452px"
+                                    width="100%"
                                     placeholder={task?.description}
                                     ariaLabel="Description"
                                     onChange={(e) =>
@@ -260,7 +260,7 @@ export default function ModalTask({
                                 <CalendarInput
                                     label="Échéance*"
                                     value={dueDate}
-                                    width="452px"
+                                    width="100%"
                                     ariaLabel="Date d'échéance"
                                     onChange={setDueDate}
                                     iconSrc="/minicalendar.svg"

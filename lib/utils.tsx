@@ -50,17 +50,16 @@ export function setPageTitle(title: string | undefined) {
 }
 export async function fetchDatas(functionToUse: () => any, saveState: any, setLoadingState?: (value:boolean) => void) {
 
-    try {
-        setLoadingState?.(true)
+
+
+    setLoadingState?.(true)
         const data = await functionToUse()
         saveState(data)
-    } catch (error) {
-        console.error(error)
-    }finally {
-        setTimeout(() => {
+
+    setTimeout(() => {
             setLoadingState?.(false);
         }, 400);
-    }
+
 
 }
 export async function multipleFetch(functions: (() => Promise<any>)[],  setLoadingState?: (value:boolean) => void) {

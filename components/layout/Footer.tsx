@@ -6,7 +6,8 @@ export default function Footer() {
     return (
         <footer className={`flex-row  justify-space-between ${styles.footer}`}>
             <div className={`flex-row align-center justify-space-between ${styles.footerdiv} `}>
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     className={styles["logo-black"]}
                     src="/Logo.svg"
                     alt="Website black Logo"

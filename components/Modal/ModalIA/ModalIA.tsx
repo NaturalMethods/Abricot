@@ -29,15 +29,6 @@ export default function ModalIA({
     const [tasks, setIATasks] = useState()
     const [loading, setLoading] = useState(false)
 
-
-    // -------------------------
-    // FORM VALIDATION
-    // -------------------------
-    function isFormValid() {
-
-
-        return false;
-    }
     function closeModal() {
         onCloseAction();
     }
@@ -50,7 +41,6 @@ export default function ModalIA({
         async function getTasksFromIa() {
             setLoading(true)
             setPrompt("")
-            console.log("TEst")
             try {
                 setIATasks(await askIA(prompt))
             }finally{
@@ -68,7 +58,7 @@ export default function ModalIA({
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image
+                            <Image loading={"eager"}
                                 src="/cross.svg"
                                 width={15}
                                 height={15}
@@ -83,7 +73,7 @@ export default function ModalIA({
                             <div className="flex-col max-w-100 gap30">
 
                                 <div className={"flex-row gap8 align-center"}>
-                                    <Image width={21} height={21} src={"/Star1.svg"} alt={"Twinkle twinkle little star"}/>
+                                    <Image loading={"lazy"} width={21} height={21} src={"/Star1.svg"} alt={"Twinkle twinkle little star"}/>
                                     <h2>Créer une tâche</h2>
                                 </div>
                                 <div className={"flex-col gap24 max-w-100"}>
@@ -92,12 +82,15 @@ export default function ModalIA({
                                         <LoadingSpinner />
                                     ) : tasks && tasks.length > 0 ? (
                                         tasks.map((task, index) => (
-                                            <Thumbnail
-                                                key={index}
-                                                task={task}
-                                                format="IA"
-                                                height="146px"
-                                            />
+                                            <div key={index} className="h-fit sm:h-[146px]">
+                                                <Thumbnail
+                                                    task={task}
+                                                    format="IA"
+                                                    height="100%"
+                                                    project={project}
+                                                    onCloseAction={onCloseAction}
+                                                />
+                                            </div>
                                         ))
                                     ) : (
                                         <div className="flex-col gap24 max-w-100">
@@ -109,22 +102,24 @@ export default function ModalIA({
 
                                 </div>
 
-                                <TextInput width={"452px"}
-                                           label={""}
-                                           placeholder={"Décrivez les tâches que vous souhaitez ajouter..."}
-                                           altIcon={"Petite étoile"}
-                                           iconSrc={"/IA Button.svg"}
-                                           iconWidth={24}
-                                           iconHeight={24}
-                                           showIcon={true}
-                                           backgroundColor={"grey-50"}
-                                           border={"none"}
-                                           borderRadius={"80px"}
-                                           value={prompt}
-                                           onChange={(e) => {
-                                               setPrompt(e.target.value)
-                                           }}
-                                />
+                                <div className={"w-full"}>
+                                    <TextInput width={"100%"}
+                                               label={""}
+                                               placeholder={"Décrivez les tâches que vous souhaitez ajouter..."}
+                                               altIcon={"Petite étoile"}
+                                               iconSrc={"/IA Button.svg"}
+                                               iconWidth={24}
+                                               iconHeight={24}
+                                               showIcon={true}
+                                               backgroundColor={"grey-50"}
+                                               border={"none"}
+                                               borderRadius={"80px"}
+                                               value={prompt}
+                                               onChange={(e) => {
+                                                   setPrompt(e.target.value)
+                                               }}
+                                    />
+                                </div>
 
                             </div>
 

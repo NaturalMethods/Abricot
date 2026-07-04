@@ -10,10 +10,10 @@ interface ContributorsHeaderProps{
 
 export function ContributorsHeader({project}: ContributorsHeaderProps){
     return(
-        <div className={`flex-row align-center justify-space-between ${styles.contributor}`}>
+        <div className={`flex-col lg:flex-row w-full align-center justify-space-between pt-4 pb-4 md:pt-0 md:pb-0 lg:h-[67px] ${styles.contributor}`}>
 
            <ContributorsCounter project={project}/>
-            <div className={`flex-row  align-center gap8 ${styles.contributorlist}`}>
+            <div className={`flex-col lg:flex-row  align-center gap8 ${styles.contributorlist}`}>
                 <OwnerTags project={project}/>
                 <ContributorsTags project={project}/>
             </div>

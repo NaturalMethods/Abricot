@@ -61,11 +61,11 @@ export default function AccountForm() {
     }
 
     return (
-        <section className="flex-col align-center gap30">
+        <section className="flex-col w-full  sm:pl-32 sm:pr-32 align-center gap30">
 
-            <section className={`flex-col align-center ${styles["account-modal-container"]}`}>
+            <section className={`flex-col w-full p-10 align-center ${styles["account-modal-container"]}`}>
 
-                <div className={`flex-col ${styles["account-modal-title"]}`}>
+                <div className={`flex-col w-full ${styles["account-modal-title"]}`}>
                     <h2 className="manrope18600 grey800 margin-bottom-zero">
                         Mon compte
                     </h2>
@@ -76,13 +76,13 @@ export default function AccountForm() {
 
                 <form
                     onSubmit={handleNewAccountInfos}
-                    className={`flex-col ${styles["account-modal-form"]}`}
+                    className={`flex-col w-full ${styles["account-modal-form"]}`}
                 >
 
                     <TextInput
                         label="Nom"
                         type="text"
-                        width="1097px"
+                        width="100%"
                         value={lastName}
                         ariaLabel={"Nom"}
                         placeholder={user?.lastName ?? ""}
@@ -92,7 +92,7 @@ export default function AccountForm() {
                     <TextInput
                         label="Prénom"
                         type="text"
-                        width="1097px"
+                        width="100%"
                         value={firstName}
                         ariaLabel={"Prénom"}
                         placeholder={user?.firstName ?? ""}
@@ -102,7 +102,7 @@ export default function AccountForm() {
                     <TextInput
                         label="Email"
                         type="email"
-                        width="1097px"
+                        width="100%"
                         value={email}
                         ariaLabel={"Email"}
                         placeholder={user?.mail}
@@ -112,7 +112,7 @@ export default function AccountForm() {
                     <TextInput
                         label="Mot de passe"
                         type="password"
-                        width="1097px"
+                        width="100%"
                         value={password}
                         ariaLabel="Password"
                         placeholder={"●●●●●●●●●●●"}
@@ -122,7 +122,7 @@ export default function AccountForm() {
                     <TextInput
                         label="Nouveau mot de passe"
                         type="password"
-                        width="1097px"
+                        width="100%"
                         ariaLabel={"Nouveau mot de passe"}
                         value={newPassword}
                         placeholder={"●●●●●●●●●●●"}

@@ -19,7 +19,6 @@ export function ProjectHeader({project}: ProjectHeaderProps){
     const [isModalProjectOpen, setModalProjectOpen] = useState(false);
     const [isModalIAOpen, setModalIAOpen] = useState(false);
 
-    const {refresh} = useContext(RefreshContext);
 
     // Function called when closing the modal, hide the modal and refresh the page components
     function modalCloseAction(){
@@ -36,15 +35,21 @@ export function ProjectHeader({project}: ProjectHeaderProps){
             setModalIAOpen(false)
         }
 
-        refresh()
+
     }
 
     return (
-        <div className={`flex-row align-center justify-space-between ${styles.projectheader}`}>
-            <div className={`flex-col  ${styles.dashboardheadertext}`}>
-                <div className={"flex-row align-center gap8"}>
+        <div className={`flex-col h-fit lg:flex-row lg:h-[70px] gap-8 pl-8 lg:pl-0  align-center justify-space-between ${styles.projectheader}`}>
+            <div className={`flex-col`}>
+                <div className={"flex-col sm:flex-row align-center gap8"}>
                     <h1 className="grey800">{project?.name}</h1>
-                    <p className={"inter14400 dark-orange underline"} onClick={()=> setModalProjectOpen(true)}>Modifier</p>
+                    <button
+                        type="button"
+                        className="inter14400 dark-orange underline cursor-pointer bg-transparent border-none p-0"
+                        onClick={() => setModalProjectOpen(true)}
+                    >
+                        Modifier
+                    </button>
                     <ModalProject isOpen={isModalProjectOpen}
                                   onCloseAction={() => modalCloseAction()}
                                   setIsOpen={setModalProjectOpen}
@@ -56,7 +61,7 @@ export function ProjectHeader({project}: ProjectHeaderProps){
                 </div>
                 <p className="inter18400 grey600">{project?.description}</p>
             </div>
-            <div className="flex-row gap15">
+            <div className="flex-col items-center md:flex-row gap15">
                 <Button text={"Créer une tâche"} width={"141px"} onClick={() => setIsCreationTaskModalOpen(true)} />
                 <ModalTask project={project}
                            isOpen={isCreationTaskModalOpen}
@@ -67,7 +72,7 @@ export function ProjectHeader({project}: ProjectHeaderProps){
                 <Button text={"IA"}
                         width={"94px"}
                         icon={
-                            <Image
+                            <Image loading={"lazy"}
                                 src="/star.svg"
                                 alt="search"
                                 width={16}
@@ -76,7 +81,7 @@ export function ProjectHeader({project}: ProjectHeaderProps){
                         } variant={"darkorange"}
                         onClick={() => setModalIAOpen(true)}
                 />
-                <ModalIA isOpen={isModalIAOpen} setIsOpen={setModalIAOpen} onCloseAction={modalCloseAction}/>
+                <ModalIA isOpen={isModalIAOpen} project={project} setIsOpen={setModalIAOpen} onCloseAction={modalCloseAction}/>
             </div>
 
 

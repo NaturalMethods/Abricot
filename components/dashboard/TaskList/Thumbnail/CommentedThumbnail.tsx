@@ -9,6 +9,7 @@ import {Task} from "@/app/types/Task";
 import {useState} from "react";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import {Project} from "@/app/types/Project";
+import {RefreshProvider} from "@/app/contexts/RefreshContext/RefreshProvider";
 
 interface CommentedThumbnailProps{
 
@@ -31,12 +32,12 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
 
     return (
 
-        <div className={`flex-row align-center pt-6 pb-6 pl-10 pr-10 w-full justify-space-between ${styles.thumbnailcontainer}`}>
+        <div className={`flex-row align-center  pt-6 pb-6 pl-10 pr-10 w-full justify-space-between ${styles.thumbnailcontainer}`}>
             <div className={`flex-col gap30 w-full ${commentedStyles.margintop}`}>
                 <div className={"flex-row justify-space-between"}>
                     <div className={"flex-col"}>
                         <div className={`flex-row align-center`}>
-                            <div className={`flex-row align-center gap8`}>
+                            <div className={`flex flex-col-reverse sm:flex-row sm:align-center gap8`}>
                                 <h2>{task?.title}</h2>
                                 <Tags label={task?.status} width={"75px"} height={"25px"} />
 
@@ -58,11 +59,11 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
 
                 <div className={"flex-col gap15"}>
 
-                    <div className={"flex-row gap8"}>
+                    <div className={" flex-row gap8"}>
                         <p className="inter12400 grey600">Echéance : </p>
                         <DueDate date={task?.dueDate} isDisplay />
                     </div>
-                    <div className={"flex-row align-center gap15"}>
+                    <div className={"flex-col sm:flex-row sm:align-center gap15"}>
                         <p className="inter12400 grey600">Assigné à : </p>
                         {task?.assignees?.map((assignee, index) => (
                             <div className="flex-row gap8" key={index}>
@@ -84,7 +85,7 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
                                 <Tags
                                     label={assignee.user.name}
                                     padding="8px 16px"
-                                    height="25px"
+                                    height="27px"
                                     backgroundColor="grey-200"
                                     textColor="grey600"
                                 />
@@ -94,7 +95,6 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
                     </div>
                 </div>
                 <CommentSection task={task} project={project}/>
-
             </div>
 
         </div>

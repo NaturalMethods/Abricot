@@ -3,17 +3,14 @@ export interface User{
     id: string
     email: string
     name: string
-    createdAt: string
-    updatedAt: string
+    createdAt?: string
+    updatedAt?: string
 }
 
-export interface Member{
-    id: string
+export interface Member extends User{
     role: string
     joinedAt: string
     projectId: string
-    user: Author
-    userId: string
 }
 
 export interface Assignee{
