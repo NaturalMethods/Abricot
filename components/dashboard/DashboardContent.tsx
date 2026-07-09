@@ -12,7 +12,6 @@ import {fetchDatas, setPageTitle} from "@/lib/utils";
 import {DashboardHeader} from "@/components/dashboard/Header/DashboardHeader";
 import { RefreshContext } from "@/app/contexts/RefreshContext/RefreshContext";
 import {LoadingSpinner} from "@/components/LoadingSpinner/LoadingSpinner";
-import {RefreshProvider} from "@/app/contexts/RefreshContext/RefreshProvider";
 
 export default function DashboardContent (){
 
@@ -29,8 +28,8 @@ export default function DashboardContent (){
 
     useEffect(() => {
 
-        fetchDatas(() => getTasksList(), setTasksList, setLoading);
-
+        const fetchSuccessful = fetchDatas(() => getTasksList(), setTasksList, setLoading);
+        if (!fetchSuccessful) return;
     }, [reloadKey]);
 
     useEffect(() => {

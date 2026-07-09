@@ -10,13 +10,13 @@ export default function Layout({
     return (
         <div className="layout">
 
-            <Header />
+            <Header/>
 
             <main className="content">
                 {children}
             </main>
 
-            <Footer />
+            <Footer/>
 
         </div>
     )

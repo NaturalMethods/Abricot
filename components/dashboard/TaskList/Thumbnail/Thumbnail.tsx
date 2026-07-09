@@ -7,11 +7,9 @@ import Tags from "@/components/Tags/Tags";
 import Button from "@/components/input/Button/Button";
 import Image from "next/image";
 import {Project} from "@/app/types/Project";
-import {formatDate} from "@/lib/utils";
 import React, {useState} from "react";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import {Task} from "@/app/types/Task";
-import {DueDate} from "@/components/dashboard/TaskList/Thumbnail/SubComponents/DueDate";
 import {CommentedThumbnail} from "@/components/dashboard/TaskList/Thumbnail/CommentedThumbnail";
 import {ThumbnailInfos} from "@/components/dashboard/TaskList/Thumbnail/SubComponents/ThumbnailInfos";
 import {createTask} from "@/lib/projectsService";
@@ -170,7 +168,7 @@ export default function Thumbnail ({   project,
 
             {commentedBool && (<CommentedThumbnail project={project} task={task} onEdit={onEdit} onDelete={onDelete} />)}
 
-            {IaBool && (<div className={`flex-row align-center justify-space-between ` }
+            {IaBool && (<div className={`flex-row sm:pl-10 sm:pr-10 sm:min-w-[500px] align-center justify-space-between ` }
                              style={{height: height ?? "100%",
                                      width: width ?? "95%"
                              }} >

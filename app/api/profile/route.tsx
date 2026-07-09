@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server"
-import { apiRequest } from "@/app/api/api"
+import {apiFetch, apiRequest} from "@/app/api/api"
 import {getTokenFromCookie} from "@/lib/utilsServer";
 
 export async function GET() {
 
     const token = await getTokenFromCookie()
 
-    const data = await apiRequest("/auth/profile", {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
+    const data = await apiFetch("/auth/profile", "GET", token)
+
+    console.log("profiule:",data)
 
     if (!data.success) {
         return NextResponse.json(

@@ -1,27 +1,30 @@
-
 import styles from "@/components/Tags/Tags.module.css";
 
-interface TagsProps{
-
-    label?:string
+interface TagsProps {
+    label?: string
     width?: string
     height?: string
-    backgroundColor?:string
-    textColor?:string
+    backgroundColor?: string
+    textColor?: string
     font?: string
     padding?: string
     border?: string
     style?: React.CSSProperties
+    onClick?: () => void
 }
 
-export default function Tags ({style, label="",
-                                  padding="0",
-                                  width,
-                                  height,
-                                  border="0",
-                                  font="inter14400",
-                                  backgroundColor,
-                                  textColor}:TagsProps){
+export default function Tags({
+                                 style,
+                                 label = "",
+                                 padding = "0",
+                                 width,
+                                 height,
+                                 border = "0",
+                                 font = "inter14400",
+                                 backgroundColor,
+                                 textColor,
+                                 onClick,
+                             }: TagsProps) {
 
     let backgroundColors = "light-red"
     let textColors = "flashy-red"
@@ -49,25 +52,60 @@ export default function Tags ({style, label="",
             break
     }
 
-    if(backgroundColor && textColor){
+    if (backgroundColor && textColor) {
         backgroundColors = backgroundColor
         textColors = textColor
     }
 
-    return(
-        <div style={{
-            backgroundColor: `var(--${backgroundColors})`,
-            width: width ?? "fit-content",
-            height: height ?? "fit-content",
-            padding: padding,
-            border: border,
-            position: "relative",
-            zIndex: style?.zIndex,
-            marginLeft: style?.marginLeft,
-        }}
-             className={` shrink-0 flex-col align-center justify-center ${styles.tags}` }>
-            <span className={` whitespace-nowrap ${font} ${textColors}`}>{label}</span>
-        </div>
 
+    const content = (
+        <>
+            <span className={`whitespace-nowrap ${font} ${textColors}`}>
+                {label}
+            </span>
+        </>
+    )
+
+
+    if (onClick) {
+        return (
+            <button
+                type="button"
+                onClick={onClick}
+                className={`shrink-0 flex-col align-center justify-center ${styles.tags}`}
+                style={{
+                    backgroundColor: `var(--${backgroundColors})`,
+                    width: width ?? "fit-content",
+                    height: height ?? "fit-content",
+                    padding,
+                    border,
+                    position: "relative",
+                    zIndex: style?.zIndex,
+                    marginLeft: style?.marginLeft,
+                    cursor: "pointer",
+                }}
+            >
+                {content}
+            </button>
+        )
+    }
+
+
+    return (
+        <div
+            style={{
+                backgroundColor: `var(--${backgroundColors})`,
+                width: width ?? "fit-content",
+                height: height ?? "fit-content",
+                padding,
+                border,
+                position: "relative",
+                zIndex: style?.zIndex,
+                marginLeft: style?.marginLeft,
+            }}
+            className={`shrink-0 flex-col align-center justify-center ${styles.tags}`}
+        >
+            {content}
+        </div>
     )
 }

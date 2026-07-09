@@ -138,14 +138,18 @@ export default function ModalTask({
                     <form onSubmit={handleSubmit}>
                         {/* CLOSE */}
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image loading={"eager"}
-                                src="/cross.svg"
-                                width={15}
-                                height={15}
-                                alt="Close modal"
+                            <button
+                                type="button"
                                 onClick={closeModal}
-                                style={{ cursor: "pointer" }}
-                            />
+                                aria-label="Fermer la fenêtre"
+                            >
+                                <Image
+                                    src="/cross.svg"
+                                    width={15}
+                                    height={15}
+                                    alt=""
+                                />
+                            </button>
                         </div>
 
                         <div className="flex-col gap56">
@@ -221,14 +225,18 @@ export default function ModalTask({
                     <form onSubmit={handleSubmit}>
                         {/* CLOSE */}
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image loading={"eager"}
-                                src="/cross.svg"
-                                width={15}
-                                height={15}
-                                alt="Close modal"
+                            <button
+                                type="button"
                                 onClick={closeModal}
-                                style={{ cursor: "pointer" }}
-                            />
+                                aria-label="Fermer la fenêtre"
+                            >
+                                <Image
+                                    src="/cross.svg"
+                                    width={15}
+                                    height={15}
+                                    alt=""
+                                />
+                            </button>
                         </div>
 
                         <div className="flex-col gap56">

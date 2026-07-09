@@ -50,17 +50,29 @@ export function setPageTitle(title: string | undefined) {
 }
 export async function fetchDatas(functionToUse: () => any, saveState: any, setLoadingState?: (value:boolean) => void) {
 
-
-
     setLoadingState?.(true)
+
+    try {
+        // Fetch with the function in parameter
         const data = await functionToUse()
+
+        console.log("daarararara", data)
+
         saveState(data)
 
-    setTimeout(() => {
+        setTimeout(() => {
             setLoadingState?.(false);
         }, 400);
 
+        return true
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    }catch(e){
+        console.log("dada")
+        setLoadingState?.(false);
+        return false
+
+    }
 }
 export async function multipleFetch(functions: (() => Promise<any>)[],  setLoadingState?: (value:boolean) => void) {
     try {

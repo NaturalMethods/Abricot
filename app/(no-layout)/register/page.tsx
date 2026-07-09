@@ -10,7 +10,11 @@ import {useRouter} from "next/navigation";
 import {useUser} from "@/app/contexts/useUser";
 import {register} from "@/lib/authService";
 
-export default function RegisterPage (){
+/**
+ * Component containing the registration page with the registration form.
+ * @constructor
+ */
+export default function RegisterPage() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -19,8 +23,9 @@ export default function RegisterPage (){
 
     const router = useRouter()
 
-    const { setUser } = useUser()
+    const {setUser} = useUser()
 
+    // Executed actions when submitting the form
     async function handleRegister(
         e: React.FormEvent
     ) {
@@ -35,19 +40,18 @@ export default function RegisterPage (){
 
         try {
 
-            const {
-                ok,
-                data
-            } = await register(
+            const {ok, data} = await register(
                 email,
                 password
             )
 
+            // Display error message if registration failed
             if (!ok) {
                 setHasRegisterError(true)
                 return
             }
 
+            // Set user data in context
             setUser({
                 id: data.user.id,
                 firstName: data.user.firstName,
@@ -59,29 +63,26 @@ export default function RegisterPage (){
             router.refresh()
 
         } catch (error) {
-
             console.error(
                 "Network error:",
                 error
             )
 
         } finally {
-
             setIsLoading(false)
-
         }
-
     }
 
-    return(
+    return (
         <section className={styles.loginpage}>
 
-            <form onSubmit={handleRegister} className={`flex-col align-center sm:w-[562px] justify-space-evenly ${styles.logincontainer}`}>
+            <form onSubmit={handleRegister}
+                  className={`flex-col align-center sm:w-[562px] justify-space-evenly ${styles.logincontainer}`}>
                 <Image loading={"eager"}
-                    src="/logo.svg"
-                    alt="logo"
-                    width={252}
-                    height={32}
+                       src="/logo.svg"
+                       alt="logo"
+                       width={252}
+                       height={32}
                 />
                 <div className="flex-col align-center">
                     <div className={`flex-col align-center ${styles.conform}`}>

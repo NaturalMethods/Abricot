@@ -1,17 +1,27 @@
 const BASE_URL = "http://localhost:8000"
 
-export async function apiRequest(
-    path: string,
-    options: RequestInit
-) {
-    const res = await fetch(`${BASE_URL}${path}`, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-        ...options,
-    })
+export async function apiRequest(path: string, options: RequestInit) {
 
-    return res.json()
+    try {
+        const res = await fetch(`${BASE_URL}${path}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            ...options,
+        })
+
+        console.log("apiRequest", res)
+
+        return res.json()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    }catch (e) {
+        return Response.json(
+            {   success: false,
+                error: "Backend unreachable" },
+            { status: 503 }
+        )
+
+    }
 }
 
 export function apiFetch(

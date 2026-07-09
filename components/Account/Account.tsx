@@ -61,7 +61,7 @@ export default function AccountForm() {
     }
 
     return (
-        <section className="flex-col w-full  sm:pl-32 sm:pr-32 align-center gap30">
+        <section className="flex-col w-full max-w-[1300px]  sm:pl-32 sm:pr-32 align-center gap30">
 
             <section className={`flex-col w-full p-10 align-center ${styles["account-modal-container"]}`}>
 

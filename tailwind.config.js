@@ -5,10 +5,11 @@ module.exports = {
     "./lib/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
-    colors: {
-      "warning-orange": "#f59e0b"
-    }
+    extend: {
+      colors: {
+        "warning-orange": "#f59e0b"
+      }
+    },
   },
   plugins: [],
 }

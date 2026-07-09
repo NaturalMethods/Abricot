@@ -5,15 +5,19 @@ import styles from "./Account.module.css"
 import {setPageTitle} from "@/lib/utils";
 import {useEffect} from "react";
 
-export default function accountPage (){
+/**
+ * Component for the account page of the application
+ * @constructor
+ */
+export default function AccountPage() {
 
     useEffect(() => {
         setPageTitle("Compte")
     }, [])
 
-    return(
+    return (
         <section className={`flex-col  align-center justify-center ${styles["account-container"]}`}>
-            <AccountForm />
+            <AccountForm/>
         </section>
     )
 }

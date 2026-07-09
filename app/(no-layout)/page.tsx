@@ -10,6 +10,10 @@ import {useRouter} from "next/navigation";
 import {useUser} from "@/app/contexts/useUser";
 import {formatName, login} from "@/lib/authService";
 
+/**
+ * Component containing the login page with the login form.
+ * @constructor
+ */
 export default function LoginPage() {
 
     const [email, setEmail] = useState("")
@@ -19,7 +23,7 @@ export default function LoginPage() {
 
     const router = useRouter()
 
-    const { setUser } = useUser()
+    const {setUser} = useUser()
 
 
     async function handleLogin(
@@ -37,8 +41,7 @@ export default function LoginPage() {
         try {
 
             const {
-                ok,
-                data
+                ok, data
             } = await login(
                 email,
                 password
@@ -54,6 +57,7 @@ export default function LoginPage() {
 
             const {firstName, lastName} = formatName(dataUser.name)
 
+            // Set user data in context
             setUser({
                 firstName,
                 lastName,
@@ -87,10 +91,10 @@ export default function LoginPage() {
             >
 
                 <Image loading={"eager"}
-                    src="/logo.svg"
-                    alt="logo"
-                    width={252}
-                    height={32}
+                       src="/logo.svg"
+                       alt="logo"
+                       width={252}
+                       height={32}
                 />
 
                 <div className="flex-col align-center">

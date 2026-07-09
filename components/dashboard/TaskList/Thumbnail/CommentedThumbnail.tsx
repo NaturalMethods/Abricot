@@ -9,7 +9,6 @@ import {Task} from "@/app/types/Task";
 import {useState} from "react";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import {Project} from "@/app/types/Project";
-import {RefreshProvider} from "@/app/contexts/RefreshContext/RefreshProvider";
 
 interface CommentedThumbnailProps{
 
@@ -32,7 +31,7 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
 
     return (
 
-        <div className={`flex-row align-center  pt-6 pb-6 pl-10 pr-10 w-full justify-space-between ${styles.thumbnailcontainer}`}>
+        <div className={`flex-row align-center pt-6 pb-6 pl-10 pr-10 w-full justify-space-between ${styles.thumbnailcontainer}`}>
             <div className={`flex-col gap30 w-full ${commentedStyles.margintop}`}>
                 <div className={"flex-row justify-space-between"}>
                     <div className={"flex-col"}>
@@ -44,7 +43,7 @@ export function CommentedThumbnail({project, task, onEdit, onDelete}: CommentedT
                             </div>
 
                         </div>
-                        <p className="inter14400 grey600"> {task?.description}</p>
+                        <p className="inter14400 sm:min-w-[500px]  grey600"> {task?.description}</p>
                     </div>
                     <DotMenu
                         onEditAction={() => setModalOpen(true)}

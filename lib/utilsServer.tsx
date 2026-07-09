@@ -30,8 +30,15 @@ export async function askGemini(prompt: string) {
 
 
 
-    const data = await response.json();
+    const data = await response;
 
-    const text = data.candidates[0].content.parts[0].text
+    console.log("askDATA", data)
+
+    const json = data.json();
+
+    console.log("askGemini", json)
+
+    const text = json.candidates[0].content.parts[0].text
+
     return text;
 }

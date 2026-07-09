@@ -1,5 +1,5 @@
 import Modal from "@/components/Modal/Modal";
-import React, { useState } from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import Image from "next/image";
 import styles from "../Modal.module.css";
 import {Project} from "@/app/types/Project";
@@ -10,8 +10,8 @@ import {LoadingSpinner} from "@/components/LoadingSpinner/LoadingSpinner";
 
 interface ModalIAProps{
 
-    isOpen: any,
-    setIsOpen? : any,
+    isOpen: boolean,
+    setIsOpen? : Dispatch<SetStateAction<boolean>>,
     onCloseAction : () => void,
     project?:Project,
 
@@ -58,14 +58,18 @@ export default function ModalIA({
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image loading={"eager"}
-                                src="/cross.svg"
-                                width={15}
-                                height={15}
-                                alt="close"
+                            <button
+                                type="button"
                                 onClick={closeModal}
-                                style={{ cursor: "pointer" }}
-                            />
+                                aria-label="Fermer la fenêtre"
+                            >
+                                <Image
+                                    src="/cross.svg"
+                                    width={15}
+                                    height={15}
+                                    alt=""
+                                />
+                            </button>
                         </div>
 
                         <div className="flex-col gap56">

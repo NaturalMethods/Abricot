@@ -39,12 +39,11 @@ export default function AssignedTasks ({project, projectTasks, id}: AssignedTask
     return(
 
 
-        <section className={`flex-col w-full sm:p-10 
-                           bg-white border border-[#E5E7EB] rounded-[10px] ${styles.tasklist}`}>
+        <section className={`flex-col w-full sm:p-10  border border-[#E5E7EB] rounded-[10px] bg-white`}>
 
 
 
-            <div className={`flex-col  gap-10 ${styles.tasklistcontainer}`}>
+            <div className={`flex-col gap-10 ${styles.tasklistcontainer}`}>
                 <AssignedTasksHeader panelVisibilityState={calendarVisible} setPanelState={setCalendarVisible} setStatusFilter={setSelectedStatus}/>
 
                 <div className={" flex-col sm:pr-10 sm:pl-10 gap-4"}>

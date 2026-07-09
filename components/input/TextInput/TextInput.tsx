@@ -1,5 +1,6 @@
 "use client"
-import { useEffect, useState } from "react"
+
+import { useEffect, useRef, useState } from "react"
 import styles from "./TextInput.module.css"
 import Image from "next/image"
 
@@ -19,10 +20,8 @@ interface TextInputProps {
     backgroundColor?: string
     ariaLabel?: string
     isAutoComplete?: boolean
-    autoCompletionFunction?: any
+    autoCompletionFunction?: (value: string) => Promise<string[]>
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-
-    // ✅ AJOUT
     onSelectSuggestion?: (value: string) => void
     border?: string
     borderRadius?: string
@@ -54,71 +53,175 @@ export default function TextInput({
     const [showError, setShowError] = useState(hasError)
     const [suggestions, setSuggestions] = useState<string[]>([])
     const [showSuggestions, setShowSuggestions] = useState(false)
+    const [activeSuggestion, setActiveSuggestion] = useState(-1)
+
+    const inputRef = useRef<HTMLInputElement>(null)
+
 
     useEffect(() => {
         setShowError(hasError)
     }, [hasError])
 
+
     async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setShowError(false)
+
         onChange?.(e)
 
-        if (isAutoComplete) {
+        if (isAutoComplete && autoCompletionFunction) {
             const result = await autoCompletionFunction(e.target.value)
 
             setSuggestions(result)
 
             setShowSuggestions(
-                e.target.value.trim() !== "" && result.length > 0
+                e.target.value.trim() !== "" &&
+                result.length > 0
             )
+
+            setActiveSuggestion(-1)
         }
     }
 
+
     function handleSelectSuggestion(suggestion: string) {
-        // 👉 envoie au parent
         onSelectSuggestion?.(suggestion)
 
-        // reset UI
         setShowSuggestions(false)
         setSuggestions([])
+        setActiveSuggestion(-1)
+
+        // Retour du focus sur l'input
+        setTimeout(() => {
+            inputRef.current?.focus()
+        }, 0)
     }
+
+
+    function handleKeyDown(
+        e: React.KeyboardEvent<HTMLInputElement>
+    ) {
+        if (!showSuggestions) return
+
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault()
+
+            setActiveSuggestion(prev =>
+                prev < suggestions.length - 1
+                    ? prev + 1
+                    : 0
+            )
+        }
+
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault()
+
+            setActiveSuggestion(prev =>
+                prev > 0
+                    ? prev - 1
+                    : suggestions.length - 1
+            )
+        }
+
+
+        if (
+            e.key === "Enter" &&
+            activeSuggestion >= 0
+        ) {
+            e.preventDefault()
+
+            handleSelectSuggestion(
+                suggestions[activeSuggestion]
+            )
+        }
+
+
+        if (e.key === "Escape") {
+            setShowSuggestions(false)
+            setActiveSuggestion(-1)
+        }
+    }
+
 
     const inputId = label
         ? label.toLowerCase().replace(/\s+/g, "-")
         : undefined
 
+
     return (
         <div
             className={`flex-col inter14400 ${styles["input-container"]}`}
-            style={{ width, position: "relative" }}
+            style={{
+                width,
+                position: "relative"
+            }}
         >
-            {label && <label htmlFor={inputId}>{label}</label>}
+
+            {label && (
+                <label htmlFor={inputId}>
+                    {label}
+                </label>
+            )}
+
 
             <div
                 className={styles["input-wrapper"]}
-                style={{ width, height }}
+                style={{
+                    width,
+                    height
+                }}
             >
+
                 <input
+                    ref={inputRef}
                     id={inputId}
-                    className={`inter14400 ${styles["input-field"]} ${
-                        showError ? styles["input-error"] : ""
-                    }`}
+                    className={`
+                        inter14400 
+                        ${styles["input-field"]}
+                        ${showError ? styles["input-error"] : ""}
+                    `}
                     style={{
                         width,
                         height,
-                        backgroundColor: `var(--${backgroundColor})`,
-                        border: border,
-                        borderRadius: borderRadius,
+                        backgroundColor: backgroundColor
+                            ? `var(--${backgroundColor})`
+                            : undefined,
+                        border,
+                        borderRadius,
                     }}
                     type={type}
                     placeholder={placeholder}
                     value={value}
                     aria-label={ariaLabel}
+                    role={
+                        isAutoComplete
+                            ? "combobox"
+                            : undefined
+                    }
+                    aria-autocomplete={
+                        isAutoComplete
+                            ? "list"
+                            : undefined
+                    }
+                    aria-expanded={
+                        isAutoComplete
+                            ? showSuggestions
+                            : undefined
+                    }
+                    aria-controls={
+                        isAutoComplete
+                            ? "autocomplete-list"
+                            : undefined
+                    }
                     onChange={handleChange}
+                    onKeyDown={handleKeyDown}
                 />
 
+
                 {showIcon && (
-                    <Image loading={"lazy"}
+                    <Image
+                        loading="lazy"
                         src={iconSrc}
                         alt={altIcon ?? ""}
                         width={iconWidth}
@@ -126,23 +229,44 @@ export default function TextInput({
                         className={styles["input-icon"]}
                     />
                 )}
+
             </div>
 
+
             {showSuggestions && (
-                <div className={styles["autocomplete-menu"]}>
+                <div
+                    id="autocomplete-list"
+                    role="listbox"
+                    className={styles["autocomplete-menu"]}
+                >
+
                     {suggestions.map((suggestion, index) => (
-                        <div
+                        <button
                             key={index}
-                            className={styles["autocomplete-item"]}
-                            onMouseDown={() =>
+                            type="button"
+                            role="option"
+                            aria-selected={
+                                activeSuggestion === index
+                            }
+                            className={`
+                                ${styles["autocomplete-item"]}
+                                ${
+                                activeSuggestion === index
+                                    ? styles.active
+                                    : ""
+                            }
+                            `}
+                            onClick={() =>
                                 handleSelectSuggestion(suggestion)
                             }
                         >
                             {suggestion}
-                        </div>
+                        </button>
                     ))}
+
                 </div>
             )}
+
         </div>
     )
 }

@@ -1,26 +1,11 @@
 import {Task} from "@/app/types/Task";
+import {proxyFetch} from "@/lib/projectsService";
 
-export async function getTasksList(
-) : Promise<{
-    tasks: Task[]
-}> {
-    const response = await fetch(
-            "/api/assigned-tasks",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type":
-                        "application/json",
-                },
-            }
-        )
+export async function getTasksList(): Promise<{ tasks: Task[] }> {
 
-        const data = await response.json()
+    const res = await proxyFetch(`/api/assigned-tasks`, "GET")
 
-        if (!response.ok) {
-            throw new Error("Impossible de récupérer les tâches")
-        }
 
-        return data.data.data.tasks
+    return res.data.tasks
 
 }

@@ -1,6 +1,5 @@
 import {Project} from "@/app/types/Project";
 import {Task} from "@/app/types/Task";
-import {router} from "next/client";
 import {Member} from "@/app/types/User";
 
 const BASE_URL = "http://localhost:3000"
@@ -9,16 +8,24 @@ export async function proxyRequest(
     path: string,
     options: RequestInit
 ) {
-    const res = await fetch(`${BASE_URL}${path}`, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-        ...options,
-    })
+    try {
+        const res = await fetch(`${BASE_URL}${path}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            ...options,
+        })
 
+        return res.json()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    }catch (e) {
+        return Response.json(
+            {   success: false,
+                error: "Server unreachable" },
+            { status: 503 }
+        )
 
-
-    return res.json()
+    }
 }
 export function proxyFetch(
     url: string,
@@ -44,9 +51,9 @@ export async function getProjects(): Promise<Project[]> {
 
     const projects = res.data ?? []
 
-    const flattenedProjects = projects.map((project: any) => {
+    return projects.map((project: Project) => {
         const flattenedMembers =
-            project.members?.map((m: any): Member => ({
+            project.members?.map((m: Member): Member => ({
                 id: m.user.id,
                 email: m.user.email,
                 name: m.user.name,
@@ -60,8 +67,6 @@ export async function getProjects(): Promise<Project[]> {
             members: flattenedMembers,
         }
     })
-
-    return flattenedProjects
 }
 export async function getProject(
     id: string | undefined
@@ -73,8 +78,8 @@ export async function getProject(
 
     const project = res.data
 
-    // On enlève l'imbrication du User dans membre (format API/ flattening)
-    const flattenedMembers = project.members?.map((m: any) => ({
+    // Flatten user in the data member received
+    const flattenedMembers = project.members?.map((m: Member) => ({
         id: m.user.id,
         email: m.user.email,
         name: m.user.name,
@@ -203,9 +208,17 @@ export async function askIA(prompt: string){
         prompt: prompt
     }
 
-    const res = await proxyFetch(`/api/IA`, "POST", body)
+    try {
+        return await proxyFetch(`/api/IA`, "POST", body)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    }catch(e){
+        return Response.json(
+            {   success: false,
+                error: "Server unreachable" },
+            { status: 503 }
+        )
+    }
 
-    return res
 }
 
 

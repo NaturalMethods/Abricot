@@ -1,5 +1,5 @@
 import Modal from "@/components/Modal/Modal";
-import React, {useContext, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import TextInput from "@/components/input/TextInput/TextInput";
 import Button from "@/components/input/Button/Button";
 import Image from "next/image";
@@ -8,13 +8,12 @@ import {addContributor, createProject, delContributor, modifyProject, searchUser
 import Tags from "@/components/Tags/Tags";
 import {Member, User} from "@/app/types/User";
 import {Project} from "@/app/types/Project";
-import {refresh} from "next/cache";
 import {RefreshContext} from "@/app/contexts/RefreshContext/RefreshContext";
 
 interface ModalProjectProps{
 
-    isOpen: any,
-    setIsOpen : any,
+    isOpen: boolean,
+    setIsOpen : Dispatch<SetStateAction<boolean>>,
     onCloseAction : () => void,
     isCreation : boolean,
     isModification: boolean,
@@ -33,7 +32,7 @@ export default function ModalProject({
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [contributors, setContributors] = useState<Member[]>([]);
+    const [contributors, setContributors] = useState<User[]>([]);
     const [contributorsInput, setContributorsInput] = useState("");
 
     const {refresh} = useContext(RefreshContext);
@@ -52,14 +51,13 @@ export default function ModalProject({
     // -------------------------
     // FETCH USERS (API)
     // -------------------------
-    async function getUsers(name: string): Promise<any> {
+    async function getUsers(name: string): Promise<User[]> {
         if (name.trim().length < 2) return [];
 
         const res = await searchUser(name);
-        //TODO reset Contributors fermeture de la modalProject
         if (!Array.isArray(res)) return [];
 
-        return res.map((u: any) => ({
+        return res.map((u: User) => ({
             id: u.id,
             name: u.name,
             email: u.email,
@@ -131,7 +129,7 @@ export default function ModalProject({
             if(description.trim().length === 0) newDescription = project?.description;
             else newDescription = description.trim();
 
-// 1. UPDATE PROJECT (si nécessaire)
+            // UPDATE PROJECT
             if (hasProjectChanges) {
                 const resp = await modifyProject(
                     {
@@ -145,24 +143,29 @@ export default function ModalProject({
                 if (!resp?.success) return;
             }
 
-// 2. SI RIEN À FAIRE
+            // NOTHING TO DO
             if (!hasProjectChanges && sameIds) {
                 return;
             }
 
-// 3. SYNC CONTRIBUTORS SI NÉCESSAIRE
+            // SYNC CONTRIBUTORS
             if (!sameIds || hasProjectChanges) {
-                await Promise.all([
-                    ...projectMembers.map(m =>
+                await Promise.all(
+                    projectMembers.map(m =>
                         delContributor(projectId, m.id)
-                    ),
-                    ...contributors.map(c =>
-                        addContributor(projectId, c.email, "CONTRIBUTOR")
                     )
-                ]);
+                );
+
+                await Promise.all(
+                    contributors
+                        .filter(c => !project.owner?.id || c.id !== project.owner.id)
+                        .map(c =>
+                            addContributor(projectId, c.email, "CONTRIBUTOR")
+                        )
+                );
             }
 
-// 4. CLOSE MODAL UNIQUEMENT À LA FIN
+            // CLOSE MODAL
             closeModal();
         }
 
@@ -177,14 +180,18 @@ export default function ModalProject({
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image loading={"eager"}
-                                src="/cross.svg"
-                                width={15}
-                                height={15}
-                                alt="close"
+                            <button
+                                type="button"
                                 onClick={closeModal}
-                                style={{ cursor: "pointer" }}
-                            />
+                                aria-label="Fermer la fenêtre"
+                            >
+                                <Image
+                                    src="/cross.svg"
+                                    width={15}
+                                    height={15}
+                                    alt=""
+                                />
+                            </button>
                         </div>
 
                         <div className="flex-col gap56">
@@ -240,22 +247,18 @@ export default function ModalProject({
                                 {/* ---------------- TAGS ---------------- */}
                                 <div className="flex-row flex-wrap gap10 mt10">
                                     {contributors.map((user) => (
-                                        <div
+                                        <Tags
                                             key={user.id}
+                                            label={user.name}
+                                            padding="8px 16px"
+                                            backgroundColor="grey-200"
+                                            textColor="grey600"
                                             onClick={() =>
                                                 setContributors(prev =>
                                                     prev.filter(u => u.id !== user.id)
                                                 )
                                             }
-                                            style={{ cursor: "pointer" }}
-                                        >
-                                            <Tags
-                                                label={user.name}
-                                                padding="8px 16px"
-                                                backgroundColor="grey-200"
-                                                textColor="grey600"
-                                            />
-                                        </div>
+                                        />
                                     ))}
                                 </div>
 
@@ -277,14 +280,18 @@ export default function ModalProject({
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex-row flex-row-end max-w-100">
-                            <Image loading={"eager"}
-                                src="/cross.svg"
-                                width={15}
-                                height={15}
-                                alt="close"
+                            <button
+                                type="button"
                                 onClick={closeModal}
-                                style={{ cursor: "pointer" }}
-                            />
+                                aria-label="Fermer la fenêtre"
+                            >
+                                <Image
+                                    src="/cross.svg"
+                                    width={15}
+                                    height={15}
+                                    alt=""
+                                />
+                            </button>
                         </div>
 
                         <div className="flex-col gap56">
@@ -343,22 +350,20 @@ export default function ModalProject({
                                 {/* ---------------- TAGS ---------------- */}
                                 <div className="flex-row flex-wrap gap10 mt10">
                                     {contributors.map((user) => (
-                                        <div
-                                            key={user.id}
-                                            onClick={() =>
-                                                setContributors(prev =>
-                                                    prev.filter(u => u.id !== user.id)
-                                                )
-                                            }
-                                            style={{ cursor: "pointer" }}
-                                        >
+
                                             <Tags
+                                                key={user.id}
                                                 label={user.name}
                                                 padding="8px 16px"
                                                 backgroundColor="grey-200"
                                                 textColor="grey600"
+                                                onClick={() =>
+                                                    setContributors(prev =>
+                                                        prev.filter(u => u.id !== user.id)
+                                                    )
+                                                }
                                             />
-                                        </div>
+
                                     ))}
                                 </div>
 
