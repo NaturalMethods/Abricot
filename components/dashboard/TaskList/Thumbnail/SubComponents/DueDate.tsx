@@ -41,6 +41,7 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
         setCurrentDate(new Date(year, month + offset, 1))
     }
 
+    // Close with mouse
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
             if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -52,12 +53,29 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
+    // Close with Escape
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === "Escape") {
+                setOpen(false)
+            }
+        }
+
+        document.addEventListener("keydown", handleKeyDown)
+
+        return () => {
+            document.removeEventListener(
+                "keydown",
+                handleKeyDown
+            )
+        }
+    }, [])
+
     // 🔥 MODE DISPLAY FORCÉ
     if (isDisplay) {
         return (
             <div style={{whiteSpace: 'nowrap', display: "flex", alignItems: "center" , gap: 8 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                     src="/minicalendar.svg"
                     alt="calendar"
                     width={18}
@@ -75,17 +93,27 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
     return (
         <div ref={ref} style={{ display: "flex", gap: 8, position: "relative" }}>
             {/* ICON */}
-            <div
-                style={{ cursor: "pointer" }}
+            <button
+                type="button"
+                aria-label="Ouvrir le calendrier"
+                aria-expanded={open}
                 onClick={() => setOpen(v => !v)}
+                style={{
+                    cursor: "pointer",
+                    border: "none",
+                    background: "transparent",
+                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                }}
             >
-                <Image loading={"lazy"}
+                <Image
                     src="/minicalendar.svg"
-                    alt="calendar"
+                    alt=""
                     width={18}
                     height={14}
                 />
-            </div>
+            </button>
 
             {/* DISPLAY */}
             <p className="inter12400 grey600">
@@ -132,17 +160,20 @@ export function DueDate({ date, onChange, isDisplay = false }: DueDateProps) {
                         ))}
 
                         {days.map((day) => (
-                            <div
+                            <button
                                 key={day}
+                                type="button"
                                 onClick={() => selectDay(day)}
                                 style={{
                                     textAlign: "center",
                                     cursor: "pointer",
                                     padding: 4,
+                                    border: "none",
+                                    background: "transparent",
                                 }}
                             >
                                 {day}
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </div>

@@ -25,7 +25,6 @@ export default function ModalIA({
                                      }: ModalIAProps) {
 
     const [prompt, setPrompt] = useState("");
-    const [description, setDescription] = useState("");
     const [tasks, setIATasks] = useState()
     const [loading, setLoading] = useState(false)
 
@@ -109,6 +108,7 @@ export default function ModalIA({
                                 <div className={"w-full"}>
                                     <TextInput width={"100%"}
                                                label={""}
+                                               ariaLabel={"Générer des tâches avec l'IA"}
                                                placeholder={"Décrivez les tâches que vous souhaitez ajouter..."}
                                                altIcon={"Petite étoile"}
                                                iconSrc={"/IA Button.svg"}

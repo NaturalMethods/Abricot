@@ -19,6 +19,7 @@ export async function proxyRequest(
         return res.json()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch (e) {
+
         return Response.json(
             {   success: false,
                 error: "Server unreachable" },

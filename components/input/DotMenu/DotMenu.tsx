@@ -8,45 +8,97 @@ type Props = {
     onDeleteAction?: () => void
 }
 
-export default function DotMenu({ onEditAction, onDeleteAction }: Props) {
+export default function DotMenu({
+                                    onEditAction,
+                                    onDeleteAction,
+                                }: Props) {
+
     const [open, setOpen] = useState(false)
-    const ref = useRef<HTMLDivElement>(null)
+
+    const containerRef = useRef<HTMLDivElement>(null)
+    const buttonRef = useRef<HTMLButtonElement>(null)
+    const firstItemRef = useRef<HTMLButtonElement>(null)
 
     function close() {
         setOpen(false)
+        buttonRef.current?.focus()
     }
 
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
-            if (ref.current && !ref.current.contains(e.target as Node)) {
-                close()
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(e.target as Node)
+            ) {
+                setOpen(false)
             }
         }
 
         document.addEventListener("mousedown", handleClickOutside)
+
         return () =>
-            document.removeEventListener("mousedown", handleClickOutside)
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            )
     }, [])
 
-    return (
-        <div ref={ref} style={{ position: "relative", display: "inline-block" }}>
-            {/* BUTTON */}
-            <Image loading={"eager"}
-                src="/dotbutton.svg"
-                alt="Menu"
-                width={57}
-                height={57}
-                onClick={() => setOpen((v) => !v)}
-                style={{
-                    cursor: "pointer",
-                    userSelect: "none",
-                }}
-            />
+    useEffect(() => {
+        if (!open) return
 
-            {/* MENU */}
+        firstItemRef.current?.focus()
+
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === "Escape") {
+                close()
+            }
+        }
+
+        document.addEventListener("keydown", handleKeyDown)
+
+        return () =>
+            document.removeEventListener(
+                "keydown",
+                handleKeyDown
+            )
+    }, [open])
+
+    return (
+        <div
+            ref={containerRef}
+            style={{
+                position: "relative",
+                display: "inline-block",
+            }}
+        >
+
+            <button
+                ref={buttonRef}
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={open}
+                aria-label="Ouvrir le menu"
+                onClick={() => setOpen(prev => !prev)}
+                style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                }}
+            >
+                <Image
+                    loading="eager"
+                    src="/dotbutton.svg"
+                    alt=""
+                    width={57}
+                    height={57}
+                />
+            </button>
+
             {open && (
                 <div
-                    className={"inter14400"}
+                    role="menu"
+                    className="inter14400"
                     style={{
                         position: "absolute",
                         top: "100%",
@@ -58,57 +110,64 @@ export default function DotMenu({ onEditAction, onDeleteAction }: Props) {
                         boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
                         zIndex: 1000,
                         minWidth: "160px",
-
-                        // animation
-                        opacity: 1,
-                        transform: "translateY(0)",
-                        transition: "all 0.15s ease",
                     }}
                 >
-                    {/* EDIT */}
-                    <div
+
+                    <button
+                        ref={firstItemRef}
+                        type="button"
+                        role="menuitem"
                         onClick={() => {
                             onEditAction?.()
                             close()
                         }}
                         style={{
+                            width: "100%",
                             padding: "12px 14px",
+                            textAlign: "left",
+                            border: "none",
+                            background: "transparent",
                             cursor: "pointer",
-                            transition: "background 0.15s ease",
                         }}
                         onMouseEnter={(e) =>
-                            (e.currentTarget.style.background = "#f5f5f5")
+                            e.currentTarget.style.background = "#f5f5f5"
                         }
                         onMouseLeave={(e) =>
-                            (e.currentTarget.style.background = "transparent")
+                            e.currentTarget.style.background = "transparent"
                         }
                     >
                         Modifier
-                    </div>
+                    </button>
 
-                    {/* DELETE */}
-                    <div
+                    <button
+                        type="button"
+                        role="menuitem"
                         onClick={() => {
                             onDeleteAction?.()
                             close()
                         }}
                         style={{
+                            width: "100%",
                             padding: "12px 14px",
-                            cursor: "pointer",
+                            textAlign: "left",
+                            border: "none",
+                            background: "transparent",
                             color: "#d11a2a",
-                            transition: "background 0.15s ease",
+                            cursor: "pointer",
                         }}
                         onMouseEnter={(e) =>
-                            (e.currentTarget.style.background = "#fff0f0")
+                            e.currentTarget.style.background = "#fff0f0"
                         }
                         onMouseLeave={(e) =>
-                            (e.currentTarget.style.background = "transparent")
+                            e.currentTarget.style.background = "transparent"
                         }
                     >
                         Supprimer
-                    </div>
+                    </button>
+
                 </div>
             )}
+
         </div>
     )
 }

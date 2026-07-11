@@ -1,6 +1,5 @@
 import commentedStyles from "@/components/dashboard/TaskList/Thumbnail/CommentedThumbnail.module.css";
 import React, {useContext, useEffect, useState} from "react";
-import Image from "next/image";
 import {formatCommentDate, getInitials} from "@/lib/utils";
 import Tags from "@/components/Tags/Tags";
 import TextInput from "@/components/input/TextInput/TextInput";
@@ -47,22 +46,35 @@ export function CommentSection({project,task}:CommentSectionProps){
         <div className={`flex-col gap10 ${commentedStyles.comments}`}>
             <hr className="separator" />
 
-            <div
-                className=" flex-row justify-space-between max-h-100 align-center"
-                onClick={() => setCommentsVisible(!commentsVisible)}
-                style={{ cursor: "pointer" }}
+            <button
+                type="button"
+                className="flex-row justify-space-between max-h-100 align-center"
+                onClick={() => setCommentsVisible(prev => !prev)}
+                aria-expanded={commentsVisible}
+                aria-label={
+                    commentsVisible
+                        ? "Masquer les commentaires"
+                        : "Afficher les commentaires"
+                }
+                style={{
+                    cursor: "pointer",
+                    width: "100%",
+                    border: "none",
+                    background: "transparent",
+                    padding: 0,
+                }}
             >
                 <p className="inter14400 grey800">
                     Commentaires ({task?.comments?.length})
                 </p>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+
                 <img
                     src={commentsVisible ? "/arrowdown.svg" : "/arrowup.svg"}
-                    alt="Ouvrir/Fermer les commentaires"
+                    alt=""
                     width={16}
                     height={8}
                 />
-            </div>
+            </button>
 
             <div
                 className={`${commentedStyles.commentsContent} ${

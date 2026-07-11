@@ -16,11 +16,11 @@ export async function POST(req: Request) {
         const start = cleaned.indexOf("[")
         const end = cleaned.lastIndexOf("]")
 
-
         const json = JSON.parse(cleaned.slice(start, end + 1))
 
         return NextResponse.json(json)
-    } catch {
+    } catch(e) {
+        console.log("je t'attrape", e)
         return NextResponse.json(
             {
                 error: "Invalid JSON returned by Gemini",

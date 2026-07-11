@@ -1,15 +1,14 @@
 "use client";
 
 import styles from "@/components/Projects/projectCard/ProjectCard.module.css";
-import Image from "next/image";
 import {Project} from "@/app/types/Project";
 import Tags from "@/components/Tags/Tags";
 import {getInitials} from "@/lib/utils";
 import {useUser} from "@/app/contexts/useUser";
-import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {getProjectTasks} from "@/lib/projectsService";
 import {Task} from "@/app/types/Task";
+import Link from "next/link";
 
 interface ProjectCardProps {
     project: Project;
@@ -17,7 +16,6 @@ interface ProjectCardProps {
 
 export default function ProjectCard({project}: ProjectCardProps) {
     const {user} = useUser();
-    const router = useRouter();
 
     const [projectTasks, setProjectTasks] = useState<Task[]>();
 
@@ -51,10 +49,16 @@ export default function ProjectCard({project}: ProjectCardProps) {
 
 
     return (
-        <section
-            style={{cursor: "pointer"}}
+        <Link
+            href={`/project/${project.id}`}
             className={`flex-col gap56 lg:min-w-[325px] ${styles.card}`}
-            onClick={() => router.push(`/project/${project.id}`)}
+            style={{
+                cursor: "pointer",
+                textDecoration: "none",
+                display: "flex",
+                color: "inherit",
+            }}
+            aria-label={`Ouvrir le projet ${project.name}`}
         >
             {/* HEADER */}
             <div className={`flex-col gap8 ${styles.headercard}`}>
@@ -150,6 +154,6 @@ export default function ProjectCard({project}: ProjectCardProps) {
                     </div>
                 </div>
             </div>
-        </section>
+        </Link>
     );
 }

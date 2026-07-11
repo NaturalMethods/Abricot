@@ -28,11 +28,15 @@ export default function UserProvider({ children }: UserProviderProps) {
             }
 
             const data = await response.json()
-            const fullName = data.data.user.name.split(" ")
+            const name = data.data.user.name?.trim() ?? ""
+
+            const fullName = name.length > 0
+                ? name.split(" ")
+                : []
 
             setUser({
-                firstName: fullName[0],
-                lastName: fullName[1] ?? "",
+                firstName: fullName[0] || "John",
+                lastName: fullName[1] || "Doe",
                 mail: data.data.user.email,
                 id: data.data.user.id,
             })

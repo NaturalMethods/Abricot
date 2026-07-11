@@ -47,7 +47,7 @@ export default function LoginPage() {
                 password
             )
 
-            if (!ok) {
+            if (!data.success) {
                 setHasLoginError(true)
                 return
             }
@@ -59,8 +59,8 @@ export default function LoginPage() {
 
             // Set user data in context
             setUser({
-                firstName,
-                lastName,
+                firstName: firstName?.trim() || "John",
+                lastName: lastName?.trim() || "Doe",
                 mail: dataUser.email,
                 id: dataUser.id,
             })

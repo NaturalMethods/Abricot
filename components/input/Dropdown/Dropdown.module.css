@@ -40,6 +40,10 @@
     cursor: pointer;
     transition: background 0.2s ease;
 
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
 
 }
 

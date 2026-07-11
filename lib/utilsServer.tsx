@@ -19,7 +19,7 @@ export async function askGemini(prompt: string) {
                     {
                         parts: [
                             {
-                                text:`Donne 3 tâches JSON strict (title, description <200 chars) rien d'autre: ${prompt}`,
+                                text: `Donne 3 tâches JSON strict (title, description <200 chars) rien d'autre: ${prompt}`,
                             },
                         ],
                     },
@@ -28,17 +28,11 @@ export async function askGemini(prompt: string) {
         }
     );
 
+    if (!response.ok) {
+        throw new Error(`Erreur Gemini : ${response.status}`);
+    }
 
+    const json = await response.json();
 
-    const data = await response;
-
-    console.log("askDATA", data)
-
-    const json = data.json();
-
-    console.log("askGemini", json)
-
-    const text = json.candidates[0].content.parts[0].text
-
-    return text;
+    return json.candidates?.[0]?.content?.parts?.[0]?.text;
 }

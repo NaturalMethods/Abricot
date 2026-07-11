@@ -56,8 +56,6 @@ export async function fetchDatas(functionToUse: () => any, saveState: any, setLo
         // Fetch with the function in parameter
         const data = await functionToUse()
 
-        console.log("daarararara", data)
-
         saveState(data)
 
         setTimeout(() => {

@@ -59,7 +59,7 @@ export default function RegisterPage() {
                 mail: data.user.email
             })
 
-            router.push("/dashboard")
+            router.push("/account")
             router.refresh()
 
         } catch (error) {

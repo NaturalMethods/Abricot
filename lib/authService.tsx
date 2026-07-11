@@ -1,4 +1,5 @@
 import {proxyFetch} from "@/lib/projectsService";
+import {NextResponse} from "next/server";
 
 
 export async function updateProfile(
@@ -44,25 +45,36 @@ export async function updatePassword(
 ){
 
     if(password?.trim() && newPassword?.trim()) {
+        try {
+            const response = await fetch(
+                "/api/password",
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                    },
+                    body: JSON.stringify({
+                        currentPassword: password,
+                        newPassword: newPassword,
+                    }),
+                }
+            )
+            if (response.ok)
+                return true
 
-        const response = await fetch(
-            "/api/password",
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type":
-                        "application/json",
+            else return false
+        }catch(e){
+
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Unauthorized",
                 },
-                body: JSON.stringify({
-                    currentPassword: password,
-                    newPassword: newPassword,
-                }),
-            }
-        )
-        if (response.ok)
-            return response.json()
+                { status: 401 }
+            )
 
-        else return null
+        }
     }
 }
 
@@ -83,27 +95,28 @@ export async function login(
     password: string
 ) {
 
-    const response = await fetch(
-        "/api/login",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                    "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
+        const response = await fetch(
+            "/api/login",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            }
+        )
+
+        const data = await response.json()
+
+        return {
+            ok: response.ok,
+            data
         }
-    )
 
-    const data = await response.json()
-
-    return {
-        ok: response.ok,
-        data
-    }
 }
 
 export function formatName(name: string) {

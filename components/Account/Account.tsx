@@ -43,6 +43,7 @@ export default function AccountForm() {
             newPassword
         )
 
+
         setFirstName("")
         setLastName("")
         setEmail("")

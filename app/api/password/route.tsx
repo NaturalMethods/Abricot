@@ -4,7 +4,7 @@ import {getTokenFromCookie} from "@/lib/utilsServer";
 
 export async function PUT(req: Request) {
 
-    const token = getTokenFromCookie()
+    const token = await getTokenFromCookie()
 
     const body = await req.json()
     const { currentPassword, newPassword } = body
@@ -17,6 +17,7 @@ export async function PUT(req: Request) {
         },
         body: JSON.stringify({ currentPassword: currentPassword, newPassword: newPassword }),
     })
+
 
     if (!data.success) {
         return NextResponse.json(

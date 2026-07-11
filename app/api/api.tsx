@@ -10,8 +10,6 @@ export async function apiRequest(path: string, options: RequestInit) {
             ...options,
         })
 
-        console.log("apiRequest", res)
-
         return res.json()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch (e) {
