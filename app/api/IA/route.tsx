@@ -19,8 +19,8 @@ export async function POST(req: Request) {
         const json = JSON.parse(cleaned.slice(start, end + 1))
 
         return NextResponse.json(json)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch(e) {
-        console.log("je t'attrape", e)
         return NextResponse.json(
             {
                 error: "Invalid JSON returned by Gemini",

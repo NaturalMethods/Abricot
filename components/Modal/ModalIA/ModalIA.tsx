@@ -28,6 +28,7 @@ export default function ModalIA({
     const [tasks, setIATasks] = useState()
     const [loading, setLoading] = useState(false)
 
+
     function closeModal() {
         onCloseAction();
     }

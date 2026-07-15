@@ -66,7 +66,6 @@ export async function fetchDatas(functionToUse: () => any, saveState: any, setLo
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch(e){
-        console.log("dada")
         setLoadingState?.(false);
         return false
 

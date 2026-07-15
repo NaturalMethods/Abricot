@@ -7,12 +7,13 @@ import Tags from "@/components/Tags/Tags";
 import Button from "@/components/input/Button/Button";
 import Image from "next/image";
 import {Project} from "@/app/types/Project";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import ModalTask from "@/components/Modal/Task/ModalTask";
 import {Task} from "@/app/types/Task";
 import {CommentedThumbnail} from "@/components/dashboard/TaskList/Thumbnail/CommentedThumbnail";
 import {ThumbnailInfos} from "@/components/dashboard/TaskList/Thumbnail/SubComponents/ThumbnailInfos";
 import {createTask} from "@/lib/projectsService";
+import {RefreshContext} from "@/app/contexts/RefreshContext/RefreshContext";
 
 interface ThumbnailProps{
     project?: Project
@@ -46,6 +47,8 @@ export default function Thumbnail ({   project,
 
 
     const [isOpen, setIsOpen] = useState(false)
+
+    const {refresh} = useContext(RefreshContext);
 
     let thumbnailClass = styles.thumbnail
     let reducedBool = false
@@ -88,6 +91,7 @@ export default function Thumbnail ({   project,
                 }, "","","TODO")
                 if (resp?.success) {
                     if (onCloseAction) {
+                        refresh()
                         onCloseAction()
                     }
                 }

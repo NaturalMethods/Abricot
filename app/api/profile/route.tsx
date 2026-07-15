@@ -8,8 +8,6 @@ export async function GET() {
 
     const data = await apiFetch("/auth/profile", "GET", token)
 
-    console.log("profiule:",data)
-
     if (!data.success) {
         return NextResponse.json(
             {
